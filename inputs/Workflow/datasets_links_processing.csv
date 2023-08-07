@@ -1,0 +1,12 @@
+Dataset;RFMO;Link to downolad;Pre-processing function;Comments
+XLS_WCPFC.csv;WCPFC;https://www.wcpfc.int/file/546125/download?token=cGogXnHE;https://www.wcpfc.int/file/546125/download?token=cGogXnHE;
+XLS_WCPO.csv;WCPFC;https://www.wcpfc.int/file/546125/download?token=cGogXnHE;https://www.wcpfc.int/file/546125/download?token=cGogXnHE;
+wcpfc_nominal_catch_code_lists.csv;WCPFC;https://www.wcpfc.int/file/546125/download?token=cGogXnHE;X;
+iotc_nominal_catch_firms_level0.csv;IOTC;http://iotc.org/data/datasets;https://raw.githubusercontent.com/eblondel/geoflow-tunaatlas/master/tunaatlas_scripts/pre-harmonization/data_cwp_format.R;cwp FORMAT
+iotc_nominal_catch_code_lists.csv;IOTC;http://iotc.org/data/datasets;X;
+CatchFlagGear.csv;IATTC;http://www.iattc.org/PublicDomainData/CatchByFlagGear.zip;https://raw.githubusercontent.com/eblondel/geoflow-tunaatlas/master/tunaatlas_scripts/pre-harmonization/east_pacific_ocean_nominal_catch_tunaatlasiattc_level0.R;
+iattc_nominal_catch_code_lists.csv;IATTC;;X;
+iccat_nominal_catch_firms_level0_20230405.csv;ICCAT;http://ICCAT.org/data/datasets;https://raw.githubusercontent.com/eblondel/geoflow-tunaatlas/master/tunaatlas_scripts/pre-harmonization/data_cwp_format.R;cwp FORMAT
+iccat_nominal_catch_code_lists.csv;ICCAT;;X;
+GlobalCatch_Flag_Gear.xlsx;CCSBT;https://www.ccsbt.org/en/userfiles/file/data/GlobalCatch_Flag_Gear.xlsx;https://raw.githubusercontent.com/eblondel/geoflow-tunaatlas/master/tunaatlas_scripts/pre-harmonization/southern_hemisphere_oceans_nominal_catch_tunaatlasccsbt_level0__bygear.R;
+ccsbt_nominal_catch_code_lists.csv;CCSBT;;X;

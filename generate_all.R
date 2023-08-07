@@ -3,8 +3,12 @@ library(officedown)
 library(officer)
 library(rmarkdown)
 
+install.packages("renv")
+renv::restore()
+
 # Run the R scripts 
 setwd("./initialisation/")
+source("00_CORE.R")
 setwd("..")
 
 # DOCX

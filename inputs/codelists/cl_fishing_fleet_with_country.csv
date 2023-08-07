@@ -1,0 +1,181 @@
+code,uri,label,definition,label_en,label_fr,label_es,country,tocheck
+ABW,,Aruba,,Aruba,Aruba,Aruba,Netherlands,Yes
+AGO,,Angola,,Angola,Angola,Angola,Angola,No
+AIA,,Anguilla,,Anguilla,Anguilla,Anguila,UK,Yes
+ALB,,Albania,,Albania,Albanie,Albania,Albania,No
+ARE,,United Arab Emirates,,United Arab Emirates,Émirats arabes unis,Emiratos Árabes Unidos,United Arab Emirates,No
+ARG,,Argentina,,Argentina,Argentine,Argentina,Argentina,No
+ASM,,American Samoa,,American Samoa,Samoa américaines,Samoa Americana,United States of America,Yes
+ATG,,Antigua and Barbuda,,Antigua and Barbuda,Antigua-et-Barbuda,Antigua y Barbuda,Antigua and Barbuda,No
+AUS,,Australia,,Australia,Australie,Australia,Australia,No
+BEN,,Benin,,Benin,Bénin,Benin,Benin,No
+BGD,,Bangladesh,,Bangladesh,Bangladesh,Bangladesh,Bangladesh,No
+BHR,,Bahrain,,Bahrain,Bahreïn,Bahrein,Bahrain,No
+BHS,,Bahamas,,Bahamas,Bahamas,Bahamas,Bahamas,No
+BLR,,Belarus,,Belarus,Bélarus,Belarús,Belarus,No
+BLZ,,Belize,,Belize,Belize,Belice,Belize,No
+BMU,,Bermuda,,Bermuda,Bermudes,Bermudas,UK,Yes
+BOL,,Bolivia (Plurinat.State),,Bolivia (Plurinat.State),Bolivie (État plurinat.),Bolivia (Estado Plurin.),Bolivia ,Yes
+BRA,,Brazil,,Brazil,Brésil,Brasil,Brazil,No
+BRB,,Barbados,,Barbados,Barbade,Barbados,Barbados,No
+CAN,,Canada,,Canada,Canada,Canadá,Canada,No
+CHE,,Switzerland,,Switzerland,Suisse,Suiza,Switzerland,No
+CHL,,Chile,,Chile,Chili,Chile,Chile,No
+CHN,,China,,China,Chine,China,China,No
+CIV,,Côte d'Ivoire,,Côte d'Ivoire,Côte d'Ivoire,Côte d'Ivoire,Côte d'Ivoire,No
+CMR,,Cameroon,,Cameroon,Cameroun,Camerún,Cameroon,No
+COG,,"Congo, Republic of",,"Congo, Republic of",République du Congo,República del Congo,"Congo, Republic of",No
+COK,,Cook Islands,,Cook Islands,Îles Cook,Islas Cook,New Zealand,Yes
+COL,,Colombia,,Colombia,Colombie,Colombia,Colombia,No
+COM,,Comoros,,Comoros,Comores,Comoras,Comoros,No
+CPV,,Cabo Verde,,Cabo Verde,Cabo Verde,Cabo Verde,Cabo Verde,No
+CRI,,Costa Rica,,Costa Rica,Costa Rica,Costa Rica,Costa Rica,No
+CUB,,Cuba,,Cuba,Cuba,Cuba,Cuba,No
+CUW,,Curaçao,,Curaçao,Curaçao,Curaçao,Curaçao,No
+CYM,,Cayman Islands,,Cayman Islands,Îles Caïmanes,Islas Caimán,UK,Yes
+DDR,,German Democratic Republic,,German Democratic Republic,République démocratique allemande,República democrática alemana,German Democratic Republic,No
+DJI,,Djibouti,,Djibouti,Djibouti,Djibouti,Djibouti,No
+DMA,,Dominica,,Dominica,Dominique,Dominica,Dominica,No
+DOM,,Dominican Republic,,Dominican Republic,République dominicaine,República Dominicana,Dominican Republic,No
+DZA,,Algeria,,Algeria,Algérie,Argelia,Algeria,No
+ECU,,Ecuador,,Ecuador,Équateur,Ecuador,Ecuador,No
+EGY,,Egypt,,Egypt,Égypte,Egipto,Egypt,No
+ERI,,Eritrea,,Eritrea,Érythrée,Eritrea,Eritrea,No
+EUBEL,,Belgium (EU),,Belgium (EU),Belgique (UE),Bélgica (UE),Belgium ,Yes
+EUBGR,,Bulgaria (EU),,Bulgaria (EU),Bulgarie (UE),Bulgaria (UE),Bulgaria ,Yes
+EUCYP,,Cyprus (EU),,Cyprus (EU),Chypre (UE),Chipre (UE),Cyprus ,Yes
+EUDEU,,Germany (EU),,Germany (EU),Allemagne (UE),Alemania (UE),Germany ,Yes
+EUDNK,,Denmark (EU),,Denmark (EU),Danemark (UE),Dinamarca (UE),Denmark ,Yes
+EUESP,,Spain (EU),,Spain (EU),Espagne (UE),España (UE),Spain ,Yes
+EUEST,,Estonia (EU),,Estonia (EU),Estonie (UE),Estonia (UE),Estonia ,Yes
+EUFRA,,France (EU),,France (EU),France (UE),Francia (UE),France ,Yes
+EUGBR,,United Kingdom (EU),,United Kingdom (EU),Royaume-Uni (UE),Reino Unido (UE),United Kingdom ,Yes
+EUGRC,,Greece (EU),,Greece (EU),Grèce (UE),Grecia (UE),Greece ,Yes
+EUHRV,,Croatia (EU),,Croatia (EU),Croatie (UE),Croacia (UE),Croatia ,Yes
+EUIRL,,Ireland (EU),,Ireland (EU),Irlande (UE),Irlanda (UE),Ireland ,Yes
+EUITA,,Italy (EU),,Italy (EU),Italie (UE),Italia (UE),Italy ,Yes
+EULTU,,Lithuania (EU),,Lithuania (EU),Lituanie (UE),Lituania (UE),Lithuania ,Yes
+EULVA,,Latvia (EU),,Latvia (EU),Lettonie (UE),Letonia (UE),Latvia ,Yes
+EUMLT,,Malta (EU),,Malta (EU),Malte (UE),Malta (UE),Malta ,Yes
+EUNLD,,Netherlands (EU),,Netherlands (EU),Pays-Bas (UE),Países Bajos (UE),Netherlands ,Yes
+EUPOL,,Poland (EU),,Poland (EU),Pologne (UE),Polonia (UE),Poland ,Yes
+EUPRT,,Portugal (EU),,Portugal (EU),Portugal (UE),Portugal (UE),Portugal ,Yes
+EUR,,European Union,,European Union,Union européenne,Unión europea,European Union,No
+EUROU,,Romania (EU),,Romania (EU),Roumanie (UE),Rumania (UE),Romania ,Yes
+EUSVN,,Slovenia (EU),,Slovenia (EU),Slovénie (UE),Eslovenia (UE),Slovenia ,Yes
+EUSWE,,Sweden (EU),,Sweden (EU),Suède (UE),Suecia (UE),Sweden ,Yes
+FJI,,"Fiji, Republic of",,"Fiji, Republic of",République des Fidji,República de Fiji,"Fiji, Republic of",No
+FLK,,Falkland Is.(Malvinas),,Falkland Is.(Malvinas),Îles Falkland(Malvinas),Islas Malvinas(Falkland),UK,Yes
+FRAT,,France (territories),,France (territories),France (territoires),Francia (territorios),France ,Yes
+FRO,,Faroe Islands,,Faroe Islands,Îles Féroé,Islas Feroe,Denmark,Yes
+FSM,,"Micronesia,Fed.States of",,"Micronesia,Fed.States of",Micronésie(États féd.de),Micronesia(Estados Fed.),"Micronesia,Fed.States of",No
+GAB,,Gabon,,Gabon,Gabon,Gabón,Gabon,No
+GBR,,United Kingdom,,United Kingdom,Royaume-Uni,Reino Unido,United Kingdom,No
+GBRT,,UK (territories),,UK (territories),Royaume-Uni (territoires),Reino Unido (territorios),UK ,Yes
+GEO,,Georgia,,Georgia,Géorgie,Georgia,Georgia,No
+GHA,,Ghana,,Ghana,Ghana,Ghana,Ghana,No
+GIN,,Guinea,,Guinea,Guinée,Guinea,Guinea,No
+GMB,,Gambia,,Gambia,Gambie,Gambia,Gambia,No
+GNB,,Guinea-Bissau,,Guinea-Bissau,Guinée-Bissau,Guinea-Bissau,Guinea-Bissau,No
+GNQ,,Equatorial Guinea,,Equatorial Guinea,Guinée équatoriale,Guinea Ecuatorial,Equatorial Guinea,No
+GRD,,Grenada,,Grenada,Grenade,Granada,Grenada,No
+GTM,,Guatemala,,Guatemala,Guatemala,Guatemala,Guatemala,No
+GUM,,Guam,,Guam,Guam,Guam,United States of America,Yes
+GUY,,Guyana,,Guyana,Guyana,Guyana,Guyana,No
+HND,,Honduras,,Honduras,Honduras,Honduras,Honduras,No
+HTI,,Haiti,,Haiti,Haïti,Haití,Haiti,No
+IDN,,Indonesia,,Indonesia,Indonésie,Indonesia,Indonesia,No
+IND,,India,,India,Inde,India,India,No
+IRN,,Iran (Islamic Rep. of),,Iran (Islamic Rep. of),Iran (Rép. islamique d'),Irán (Rep. Islámica del),Iran ,Yes
+ISL,,Iceland,,Iceland,Islande,Islandia,Iceland,No
+ISR,,Israel,,Israel,Israël,Israel,Israel,No
+JAM,,Jamaica,,Jamaica,Jamaïque,Jamaica,Jamaica,No
+JOR,,Jordan,,Jordan,Jordanie,Jordania,Jordan,No
+JPN,,Japan,,Japan,Japon,Japón,Japan,No
+KEN,,Kenya,,Kenya,Kenya,Kenya,Kenya,No
+KHM,,Cambodia,,Cambodia,Cambodge,Camboya,Cambodia,No
+KIR,,Kiribati,,Kiribati,Kiribati,Kiribati,Kiribati,No
+KNA,,Saint Kitts and Nevis,,Saint Kitts and Nevis,Saint-Kitts-et-Nevis,Saint Kitts y Nevis,Saint Kitts and Nevis,No
+KOR,,"Korea, Republic of",,"Korea, Republic of",République de Corée,República de Corea,"Korea, Republic of",No
+KWT,,Kuwait,,Kuwait,Koweït,Kuwait,Kuwait,No
+LBN,,Lebanon,,Lebanon,Liban,Líbano,Lebanon,No
+LBR,,Liberia,,Liberia,Libéria,Liberia,Liberia,No
+LBY,,Libya,,Libya,Libye,Libia,Libya,No
+LCA,,Saint Lucia,,Saint Lucia,Sainte-Lucie,Santa Lucía,Saint Lucia,No
+LKA,,Sri Lanka,,Sri Lanka,Sri Lanka,Sri Lanka,Sri Lanka,No
+MAR,,Morocco,,Morocco,Maroc,Marruecos,Morocco,No
+MDG,,Madagascar,,Madagascar,Madagascar,Madagascar,Madagascar,No
+MDV,,Maldives,,Maldives,Maldives,Maldivas,Maldives,No
+MEX,,Mexico,,Mexico,Mexique,México,Mexico,No
+MHL,,Marshall Islands,,Marshall Islands,Îles Marshall,Islas Marshall,United States of America,Yes
+MMR,,Myanmar,,Myanmar,Myanmar,Myanmar,Myanmar,No
+MNE,,Montenegro,,Montenegro,Monténégro,Montenegro,Montenegro,No
+MNP,,Northern Mariana Is.,,Northern Mariana Is.,Îles Mariannes du Nord,Islas Marianas septent.,United States of America,Yes
+MOZ,,Mozambique,,Mozambique,Mozambique,Mozambique,Mozambique,No
+MRT,,Mauritania,,Mauritania,Mauritanie,Mauritania,Mauritania,No
+MUS,,Mauritius,,Mauritius,Maurice,Mauricio,Mauritius,No
+MYS,,Malaysia,,Malaysia,Malaisie,Malasia,Malaysia,No
+NAM,,Namibia,,Namibia,Namibie,Namibia,Namibia,No
+NCL,,New Caledonia,,New Caledonia,Nouvelle-Calédonie,Nueva Caledonia,France,Yes
+NEI,,Other nei,,Other nei,Autres nca,Otros nep,Other nei,No
+NGA,,Nigeria,,Nigeria,Nigéria,Nigeria,Nigeria,No
+NIC,,Nicaragua,,Nicaragua,Nicaragua,Nicaragua,Nicaragua,No
+NIU,,Niue,,Niue,Nioué,Niue,Niue,No
+NOR,,Norway,,Norway,Norvège,Noruega,Norway,No
+NRU,,Nauru,,Nauru,Nauru,Nauru,Nauru,No
+NZL,,New Zealand,,New Zealand,Nouvelle-Zélande,Nueva Zelandia,New Zealand,No
+OMN,,Oman,,Oman,Oman,Omán,Oman,No
+PAK,,Pakistan,,Pakistan,Pakistan,Pakistán,Pakistan,No
+PAN,,Panama,,Panama,Panama,Panamá,Panama,No
+PER,,Peru,,Peru,Pérou,Perú,Peru,No
+PHL,,Philippines,,Philippines,Philippines,Filipinas,Philippines,No
+PLW,,Palau,,Palau,Palaos,Palau,United States of America,Yes
+PNG,,Papua New Guinea,,Papua New Guinea,Papouasie-Nlle-Guinée,Papua Nueva Guinea,Papua New Guinea,No
+PRI,,Puerto Rico,,Puerto Rico,Porto Rico,Puerto Rico,United States of America,Yes
+PSE,,"Palestine, Occupied Tr.",,"Palestine, Occupied Tr.","Palestine, terr.occupé","Palestina, Terri.Ocupado","Palestine, Occupied Tr.",No
+PYF,,French Polynesia,,French Polynesia,Polynésie française,Polinesia Francesa,France,Yes
+QAT,,Qatar,,Qatar,Qatar,Qatar,Qatar,No
+RUS,,Russian Federation,,Russian Federation,Fédération de Russie,Federación de Rusia,Russian Federation,No
+SAU,,Saudi Arabia,,Saudi Arabia,Arabie saoudite,Arabia Saudita,Saudi Arabia,No
+SCG,,Serbia and Montenegro,,Serbia and Montenegro,Serbie-et-Monténégro,Serbia y Montenegro,Serbia and Montenegro,No
+SDN,,Sudan,,Sudan,Soudan,Sudán,Sudan,No
+SEN,,Senegal,,Senegal,Sénégal,Senegal,Senegal,No
+SGP,,Singapore,,Singapore,Singapour,Singapur,Singapore,No
+SHN,,Saint Helena,,Saint Helena,Sainte-Hélène,Santa Elena,UK,Yes
+SLB,,Solomon Islands,,Solomon Islands,Îles Salomon,Islas Salomón,Solomon Islands,No
+SLE,,Sierra Leone,,Sierra Leone,Sierra Leone,Sierra Leona,Sierra Leone,No
+SLV,,El Salvador,,El Salvador,El Salvador,El Salvador,El Salvador,No
+SOM,,Somalia,,Somalia,Somalie,Somalia,Somalia,No
+SPM,,St. Pierre and Miquelon,,St. Pierre and Miquelon,Saint-Pierre-et-Miquelon,San Pedro y Miquelón,St. Pierre and Miquelon,No
+SRB,,Serbia,,Serbia,Serbie,Serbia,Serbia,No
+STP,,Sao Tome and Principe,,Sao Tome and Principe,Sao Tomé-et-Principe,Santo Tomé y Príncipe,Sao Tome and Principe,No
+SUN,,Un. Sov. Soc. Rep.,,Un. Sov. Soc. Rep.,Union des Rép.soc.sov.,Unión de Rep.Soc.Sov.,Un. Sov. Soc. Rep.,No
+SUR,,Suriname,,Suriname,Suriname,Suriname,Suriname,No
+SYC,,Seychelles,,Seychelles,Seychelles,Seychelles,Seychelles,No
+SYR,,Syrian Arab Republic,,Syrian Arab Republic,Rép. arabe syrienne,República Árabe Siria,Syrian Arab Republic,No
+TCA,,Turks and Caicos Is.,,Turks and Caicos Is.,Îles Turques et Caïques,Islas Turcas y Caicos,UK,Yes
+TGO,,Togo,,Togo,Togo,Togo,Togo,No
+THA,,Thailand,,Thailand,Thaïlande,Tailandia,Thailand,No
+TKM,,Turkmenistan,,Turkmenistan,Turkménistan,Turkmenistán,Turkmenistan,No
+TLS,,Timor-Leste,,Timor-Leste,Timor-Leste,Timor-Leste,Timor-Leste,No
+TON,,Tonga,,Tonga,Tonga,Tonga,Tonga,No
+TTO,,Trinidad and Tobago,,Trinidad and Tobago,Trinité-et-Tobago,Trinidad y Tabago,Trinidad and Tobago,No
+TUN,,Tunisia,,Tunisia,Tunisie,Túnez,Tunisia,No
+TUR,,Turkey,,Turkey,Turquie,Turquía,Turkey,No
+TUV,,Tuvalu,,Tuvalu,Tuvalu,Tuvalu,Tuvalu,No
+TWN,,Taiwan Province of China,,Taiwan Province of China,Prov. chinoise de Taïwan,Prov. china de Taiwán,Taiwan Province of China,No
+TZA,,"Tanzania, United Rep. of",,"Tanzania, United Rep. of",Rép.-Unie de Tanzanie,Rep. Unida de Tanzanía,"Tanzania, United Rep. of",No
+UKR,,Ukraine,,Ukraine,Ukraine,Ucrania,Ukraine,No
+URY,,Uruguay,,Uruguay,Uruguay,Uruguay,Uruguay,No
+USA,,United States of America,,United States of America,États-Unis d'Amérique,EstadosUnidos de América,United States of America,No
+VCT,,Saint Vincent/Grenadines,,Saint Vincent/Grenadines,Saint-Vincent/Grenadines,San Vicente/Grenadinas,Saint Vincent/Grenadines,No
+VEN,,"Venezuela, Boliv Rep of",,"Venezuela, Boliv Rep of","Venezuela, Rép boliv du","Venezuela, Rep Boliv de","Venezuela, Boliv Rep of",No
+VGB,,British Virgin Islands,,British Virgin Islands,Îles Vierges britanniq.,Islas Vírgenes Britán.,UK,Yes
+VIR,,US Virgin Islands,,US Virgin Islands,Îles Vierges américaines,Islas Vírgenes (EE.UU.),United States of America,Yes
+VNM,,Viet Nam,,Viet Nam,Viet Nam,Viet Nam,Viet Nam,No
+VUT,,Vanuatu,,Vanuatu,Vanuatu,Vanuatu,Vanuatu,No
+WLF,,Wallis and Futuna Is.,,Wallis and Futuna Is.,Îles Wallis et Futuna,Islas Wallis y Futuna,France,Yes
+WSM,,Samoa,,Samoa,Samoa,Samoa,Samoa,No
+YEM,,Yemen,,Yemen,Yémen,Yemen,Yemen,No
+YUG,,Yugoslavia SFR,,Yugoslavia SFR,RFS de Yougoslavie,RFS de Yugoslavia,Yugoslavia SFR,No
+ZAF,,South Africa,,South Africa,Afrique du Sud,Sudáfrica,South Africa,No

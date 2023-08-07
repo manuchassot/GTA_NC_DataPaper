@@ -1,0 +1,106 @@
+---
+title: "Partnering with Regional Fisheries Management Organisations to build global data sets of tuna fisheries catches"
+#title: "From national to global: Building global catches from tuna fisheries"
+author: Emmanuel Chassot^1,2^, Emmanuel Blondel^2,\(^\dagger\)^, Peter Williams^3^,
+  Nick Vogel^4^, Carlos Palma^5^, Colin Millar^6^, Tim Jones^7^, Sylvain Caillot^4^,
+  Carlos Mayor^5^, Marc Taconet^2^, Fabio Fiorellato^1,2^, Bastien Grasset^8^, and Julien
+  Barde^8^
+output:
+  officedown::rdocx_document:
+    reference_docx: ../templates/rdoc_template.docx
+  reference_num: yes
+csl: nature.csl
+bibliography: GTA.bib
+link-citations: yes
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, 
+                      tab.cap.pre = "Tab. ", 
+                      tab.cap.sep = ". ", 
+                      tab.cap.style ="Table Caption", 
+#                      tab.cap.fp_text = officer::fp_text_lite(italic = TRUE, bold = TRUE), 
+                      fig.cap = TRUE, 
+                      fig.cap.pre = "Fig. ", 
+                      fig.cap.sep = ". ", 
+                      fig.cap.style = "Caption label",
+                      dpi = 300
+                      )
+```
+
+```{r HeaderTest, echo = FALSE}
+bl_header = function(txt, position) {
+  block_list(
+    fpar(values = txt, fp_p = fp_par(text.align = position, border.bottom = fp_border()), fp_t = fp_text_lite(color = "black", bold = FALSE))
+  )
+}
+sec_pr = prop_section(
+  header_default = bl_header("Global tuna catches | Data paper draft", "right"),
+  header_first = bl_header("Global tuna catches | Data paper draft", "right"),
+  header_even = bl_header("Global tuna catches | Data paper draft", "left"),
+)
+```
+
+```{r, echo = FALSE, eval = TRUE}
+block_section(sec_pr)
+```
+
+```{r TextStyleExample, echo = FALSE}
+fp = fp_par(
+  text.align = "center", 
+  padding.bottom = 20, padding.top = 120, 
+  border.bottom = fp_border())
+
+ft = fp_text(shading.color='#EFEFEF', bold = TRUE)
+```
+
+```{r child = "01_AUTHORS.Rmd"}
+```
+
+```{r child = "02_ABSTRACT.Rmd"}
+```
+
+```{r child = "03_BACKGROUND_SUMMARY.Rmd"}
+```
+
+```{r child = "04_METHODS.Rmd"}
+```
+
+```{r child = "05_DATA_RECORDS.Rmd"}
+```
+
+```{r child = "06_TECHNICAL_VALIDATION.Rmd"}
+```
+
+```{r child = "07_USAGE_NOTES.Rmd"}
+```
+
+```{r child = "08_CODE_AVAILABILITY.Rmd"}
+```
+
+```{r child = "09_ACKNOWLEDGMENTS.Rmd"}
+```
+
+```{r child = "10_AUTHOR_CONTRIBUTIONS.Rmd"}
+```
+
+```{r child = "11_COMPETING_INTERESTS.Rmd"}
+```
+
+```{r child = "12_FIGURES.Rmd"}
+```
+
+```{r child = "13_FIGURE_LEGENDS.Rmd"}
+```
+
+```{r child = "14_TABLES.Rmd"}
+```
+
+```{r child = "15_REFERENCES.Rmd"}
+```
+
+
+
+
+
+

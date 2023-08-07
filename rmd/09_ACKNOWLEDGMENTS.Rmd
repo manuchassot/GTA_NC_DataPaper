@@ -1,0 +1,3 @@
+# Acknowledgments
+
+_The Acknowledgements should contain text acknowledging non-author contributors. Acknowledgements should be brief, and should not include thanks to anonymous referees and editors or effusive comments. Grant or contribution numbers may be acknowledged._

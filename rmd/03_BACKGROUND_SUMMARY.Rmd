@@ -1,0 +1,7 @@
+# Background and summary
+
+_The Background & Summary should provide an overview of the study design and the data generated, including any background information needed to put this study in the context of previous work and the literature, and should reference literature as needed. The section should also briefly outline the broader goals that motivated collection of the data, as well as its potential use. We also encourage authors to include a figure that provides a schematic overview of the study design or workflow (if applicable)._
+
++ SOFIA
++ Tuna atlases
++ Global markets

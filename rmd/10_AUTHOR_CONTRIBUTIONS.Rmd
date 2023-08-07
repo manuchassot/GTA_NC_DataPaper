@@ -1,0 +1,3 @@
+# Author contributions
+
+_Each author's contribution to the work should be described briefly, on a separate line, in the Author Contributions section._

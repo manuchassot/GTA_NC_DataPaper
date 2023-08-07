@@ -1,0 +1,3 @@
+# Figure legends
+
+_Figure legends begin with a brief title sentence summarizing the purpose of the figure as a whole, and continue with a short description of what is shown. Legends should ideally be no more than 350 words, and may contain literature references. The first sentence of the legend will be used as the title for the figure. It should contain no references of any kind, including to specific figure panels, bibliographic citations or references to other figures or panels._

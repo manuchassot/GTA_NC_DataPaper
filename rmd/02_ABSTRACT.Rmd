@@ -1,0 +1,13 @@
+# Abstract
+
+<!-- _Maximum 170 words recommended_ -->
+
+<!-- _The Abstract should succinctly describe the study the resulting data, and their potential reuse, but should not make any claims regarding new scientific findings. No references are allowed in this section._ -->
+
+We built the most complete data set of annual catches of global tuna fisheries for the period 1950-2021 by compiling and harmonizing public domain data available from the five tuna Regional Fisheries Management Organisations (t-RFMOs): the Commission for the Conservation of Southern Bluefin Tuna (CCSBT), the Inter-American Tropical Tuna Commission (IATTC), the International Commission for the Conservation of Atlantic Tunas (ICCAT), the Indian Ocean Tuna Commission (IOTC), and the Western and Central Pacific Fisheries Commission (WCPFC).
+
+The data set covers medium- and large-sized pelagic species monitored by the five t-RFMOs that occur in both neritic and oceanic habitats of the world oceans, including tunas (X species), billfish (XX species), bonitos (X species), Spanish mackerels (X species), and wahoo. In addition, catches reported for several pelagic sharks and rays that may be targeted or incidentally caught in tuna and tuna-like fisheries are included in the data set.
+
+This data set provides a benchmark for the monitoring and assessment of the artisanal and industrial fisheries of more than XX countries that have exploited tuna and tuna-like species for both subsistence and commercial interest over the last seven decades. 
+
+<!-- , which belong to the Scombridae, Istiophoridae, and Xiphiidae families -->

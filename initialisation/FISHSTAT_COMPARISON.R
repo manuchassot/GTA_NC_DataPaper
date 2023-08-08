@@ -1,6 +1,6 @@
 
-fishstatdataset <- read_csv("inputs/data/Capture_Quantity.csv")
-fishingfleet_FS <- read_csv("inputs/data/CL_FI_COUNTRY_GROUPS.csv")
+fishstatdataset <- read_csv("inputs/data/comparison_Fishstat_NC/Capture_Quantity.csv")
+fishingfleet_FS <- read_csv("inputs/data/comparison_Fishstat_NC/CL_FI_COUNTRY_GROUPS.csv")
 cl_species_level0 <- read_csv("inputs/codelists/cl_species_level0.csv")
 
 

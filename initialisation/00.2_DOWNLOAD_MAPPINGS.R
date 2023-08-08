@@ -26,4 +26,9 @@ if(!file.exists("../inputs/mappings/codelist_mapping_species_asfis_speciesgroup_
 
 }
 
+## Species to ocean basin ####
+if(!file.exists("../inputs/mappings/codelist_mapping_source_authority_species.csv"))
+  
+  download.file("https://raw.githubusercontent.com/fdiwg/fdi-mappings/main/cross-term/codelist_mapping_source_authority_species.csv", destfile = "../inputs/mappings/codelist_mapping_source_authority_species.csv", mode = "wb")
+
 print("Mapping code lists of each tRFMO from the github repo downloaded!")

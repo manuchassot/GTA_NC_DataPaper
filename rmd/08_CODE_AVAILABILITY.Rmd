@@ -1,3 +1,14 @@
 # Code availability
 
 _For all studies using custom code in the generation or processing of datasets, a statement must be included under the subheading "Code availability", indicating whether and how the code can be accessed, including any restrictions to access. This section should also include information on the versions of any software used, if relevant, and any specific variables or parameters used to generate, test, or process the current dataset._
+
+
+The custom code responsible for generating the nominal catch dataset within the Global Tuna Atlas is openly accessible via the GitHub repository: https://github.com/firms-gta/geoflow-tunaatlas.git. Interested parties can visit this link to review the codebase. Notably, the code is unrestricted and free to access. The dataset is available on zenodo DOI TO BE PUT 
+
+The procedure for crafting and disseminating datasets predominantly relies on the geoflow package, executed within RStudio. This package offers the requisite R tools for executing the workflow, compatible with R versions 4.2 and 4.3.
+
+The initial dataset resides on a private Google Drive and was acquired by following the provided metadata link. The use of a Google Drive to stock the data is not mandatory for the workflow. This can be replicate in local with changing local geoflow options in the "Data" column of the sheet used in the workflow.
+
+For those seeking to replicate this data paper, the corresponding code is accessible at https://github.com/manuchassot/GTA_NC_DataPaper.git.
+
+Furthermore, the conclusive and intermediate data employed to facilitate comprehensive analysis for each treatment emanates as a direct outcome of the Global Tuna Atlas workflow (located in the "Markdown" folder). These data files have been replicated within the confines of this project directory.

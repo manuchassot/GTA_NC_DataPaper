@@ -14,3 +14,62 @@ Generally, this **should not include**:
 -	follow-up experiments aimed at testing or supporting an interpretation of the data
 -	statistical hypothesis testing 
 -	exploratory computational analyses_
+
+The dataset is a version of what is been done by other organization such as FAO. A study of differences between the Nominal Catch dataset of the Global Tuna Atlas (Nominal Catch GTA) and the Fishstat data from FAO (Fishstat) has been performed. The mappind dataset to perform the harmonisation of the fishingfleet are available on : 
+
+The main outputs of this analysis is the difference between the final data. 
+
+```{r}
+knitr::include_graphics(("outputs/Comp_FS_NC/figures/Diffstratas/Comparison.of.number.of.stratas.between.the.two.datasets.png"))
+```
+
+Some of the dimensions are completely disapperagin or appearing between the two datasets. 
+
+```{r}
+data <- read.csv("outputs/Comp_FS_NC/figures/Diffstratas/Disappearing.or.appearing.strata.between.Fishstat.and.NC.csv") %>% dplyr::select(-measurement_unit) %>% dplyr::rename("Difference in millions" = "Difference.in.millions")
+
+qflextable2(data, grouped_data = c("Dimension"), columns_to_color  = c("Difference in millions"))
+```
+
+This concerns the gear that are specified only in the Nominal Catch dataset as well as species that are specified only in one or the other dataset. Eventually, some fishing_fleet are not mapped the same way in both datasets creating the disappearing and appearing. 
+
+### Species
+
+However, most of the differences are in the repartition of the species and species group. 
+
+```{r}
+knitr::include_graphics(("outputs/Comp_FS_NC/figures/Piechartsdimensions/Distribution.in.value.for.the.dimension...species.group.gta.png"))
+knitr::include_graphics(("outputs/Comp_FS_NC/figures/Piechartsdimensions/Distribution.in.value.for.the.dimension...species.png"))
+
+```
+
+The Skipjack tuna, the most catched tuna has a relative importance very different between the two datasets. The major tuna Thunus Albacares, coded as ALB represents 6% of the data in the NC dataset but less that 1% in the Fishstat.
+
+### Fishing_fleet
+
+```{r}
+knitr::include_graphics(("outputs/Comp_FS_NC/figures/Piechartsdimensions/Distribution.in.value.for.the.dimension...country.label.png"))
+
+```
+
+The relative importance of countries seems to be close one from another, however the catches of China are much different. 
+
+Recap:
+
+```{r}
+`%notin%` <- Negate(`%in%`)
+
+diffstratas <- read.csv("outputs/Comp_FS_NC/figures/Diffstratas/Difference.between.stratas.of.the.two.datasets.csv") %>% dplyr::filter(Dimension %notin% c("year", "GRIDTYPE")) %>% dplyr::select(-measurement_unit) %>% dplyr::rename("Loss / Gain" = "Loss...Gain", "Difference in value" = "Difference.in.value")
+
+qflextable2(diffstratas, grouped_data = c("Dimension", "Loss / Gain"), columns_to_color = c("Difference in value"))
+
+```
+
+## Time series differences
+
+Eventually, even if the Nominal catch data provides data for 32 years more than the Fishstat, the concerned year have not much differences in percentage. 
+```{r}
+knitr::include_graphics(("outputs/Comp_FS_NC/figures/Temporal/Evolutions.of.values.for.the.dimension.year.for.Fishstat.and.NC.dataset..png"))
+
+```
+

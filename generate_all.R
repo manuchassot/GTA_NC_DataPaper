@@ -8,9 +8,7 @@ library(rmarkdown)
 
 
 # Run the R scripts 
-setwd("./initialisation/")
-source("00_CORE.R")
-setwd("..")
+source(here("initialisation/00_CORE.R"))
 
 # DOCX
 # see YAML params here: https://davidgohel.github.io/officedown/reference/rdocx_document.html

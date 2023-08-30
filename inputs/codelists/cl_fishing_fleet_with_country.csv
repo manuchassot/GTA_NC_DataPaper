@@ -15,7 +15,7 @@ BHS,,Bahamas,,Bahamas,Bahamas,Bahamas,Bahamas,No
 BLR,,Belarus,,Belarus,Bélarus,Belarús,Belarus,No
 BLZ,,Belize,,Belize,Belize,Belice,Belize,No
 BMU,,Bermuda,,Bermuda,Bermudes,Bermudas,United Kingdom,Yes
-BOL,,Bolivia (Plurinat.State),,Bolivia (Plurinat.State),Bolivie (État plurinat.),Bolivia (Estado Plurin.),Bolivia,Yes
+BOL,,Bolivia (Plurinat.State),,Bolivia (Plurinat.State),Bolivie (État plurinat.),Bolivia (Estado Plurin.),Bolivia ,Yes
 BRA,,Brazil,,Brazil,Brésil,Brasil,Brazil,No
 BRB,,Barbados,,Barbados,Barbade,Barbados,Barbados,No
 CAN,,Canada,,Canada,Canada,Canadá,Canada,No
@@ -41,37 +41,37 @@ DZA,,Algeria,,Algeria,Algérie,Argelia,Algeria,No
 ECU,,Ecuador,,Ecuador,Équateur,Ecuador,Ecuador,No
 EGY,,Egypt,,Egypt,Égypte,Egipto,Egypt,No
 ERI,,Eritrea,,Eritrea,Érythrée,Eritrea,Eritrea,No
-EUBEL,,Belgium (EU),,Belgium (EU),Belgique (UE),Bélgica (UE),Belgium,Yes
-EUBGR,,Bulgaria (EU),,Bulgaria (EU),Bulgarie (UE),Bulgaria (UE),Bulgaria,Yes
-EUCYP,,Cyprus (EU),,Cyprus (EU),Chypre (UE),Chipre (UE),Cyprus,Yes
-EUDEU,,Germany (EU),,Germany (EU),Allemagne (UE),Alemania (UE),Germany,Yes
-EUDNK,,Denmark (EU),,Denmark (EU),Danemark (UE),Dinamarca (UE),Denmark,Yes
-EUESP,,Spain (EU),,Spain (EU),Espagne (UE),España (UE),Spain,Yes
-EUEST,,Estonia (EU),,Estonia (EU),Estonie (UE),Estonia (UE),Estonia,Yes
-EUFRA,,France (EU),,France (EU),France (UE),Francia (UE),France,Yes
-EUGBR,,United Kingdom (EU),,United Kingdom (EU),Royaume-Uni (UE),Reino Unido (UE),United Kingdom,Yes
-EUGRC,,Greece (EU),,Greece (EU),Grèce (UE),Grecia (UE),Greece,Yes
-EUHRV,,Croatia (EU),,Croatia (EU),Croatie (UE),Croacia (UE),Croatia,Yes
-EUIRL,,Ireland (EU),,Ireland (EU),Irlande (UE),Irlanda (UE),Ireland,Yes
-EUITA,,Italy (EU),,Italy (EU),Italie (UE),Italia (UE),Italy,Yes
-EULTU,,Lithuania (EU),,Lithuania (EU),Lituanie (UE),Lituania (UE),Lithuania,Yes
-EULVA,,Latvia (EU),,Latvia (EU),Lettonie (UE),Letonia (UE),Latvia,Yes
-EUMLT,,Malta (EU),,Malta (EU),Malte (UE),Malta (UE),Malta,Yes
-EUNLD,,Netherlands (EU),,Netherlands (EU),Pays-Bas (UE),Países Bajos (UE),Netherlands,Yes
-EUPOL,,Poland (EU),,Poland (EU),Pologne (UE),Polonia (UE),Poland,Yes
-EUPRT,,Portugal (EU),,Portugal (EU),Portugal (UE),Portugal (UE),Portugal,Yes
+EUBEL,,Belgium (EU),,Belgium (EU),Belgique (UE),Bélgica (UE),Belgium ,Yes
+EUBGR,,Bulgaria (EU),,Bulgaria (EU),Bulgarie (UE),Bulgaria (UE),Bulgaria ,Yes
+EUCYP,,Cyprus (EU),,Cyprus (EU),Chypre (UE),Chipre (UE),Cyprus ,Yes
+EUDEU,,Germany (EU),,Germany (EU),Allemagne (UE),Alemania (UE),Germany ,Yes
+EUDNK,,Denmark (EU),,Denmark (EU),Danemark (UE),Dinamarca (UE),Denmark ,Yes
+EUESP,,Spain (EU),,Spain (EU),Espagne (UE),España (UE),Spain ,Yes
+EUEST,,Estonia (EU),,Estonia (EU),Estonie (UE),Estonia (UE),Estonia ,Yes
+EUFRA,,France (EU),,France (EU),France (UE),Francia (UE),France ,Yes
+EUGBR,,United Kingdom (EU),,United Kingdom (EU),Royaume-Uni (UE),Reino Unido (UE),United Kingdom ,Yes
+EUGRC,,Greece (EU),,Greece (EU),Grèce (UE),Grecia (UE),Greece ,Yes
+EUHRV,,Croatia (EU),,Croatia (EU),Croatie (UE),Croacia (UE),Croatia ,Yes
+EUIRL,,Ireland (EU),,Ireland (EU),Irlande (UE),Irlanda (UE),Ireland ,Yes
+EUITA,,Italy (EU),,Italy (EU),Italie (UE),Italia (UE),Italy ,Yes
+EULTU,,Lithuania (EU),,Lithuania (EU),Lituanie (UE),Lituania (UE),Lithuania ,Yes
+EULVA,,Latvia (EU),,Latvia (EU),Lettonie (UE),Letonia (UE),Latvia ,Yes
+EUMLT,,Malta (EU),,Malta (EU),Malte (UE),Malta (UE),Malta ,Yes
+EUNLD,,Netherlands (EU),,Netherlands (EU),Pays-Bas (UE),Países Bajos (UE),Netherlands ,Yes
+EUPOL,,Poland (EU),,Poland (EU),Pologne (UE),Polonia (UE),Poland ,Yes
+EUPRT,,Portugal (EU),,Portugal (EU),Portugal (UE),Portugal (UE),Portugal ,Yes
 EUR,,European Union,,European Union,Union européenne,Unión europea,European Union,No
-EUROU,,Romania (EU),,Romania (EU),Roumanie (UE),Rumania (UE),Romania,Yes
-EUSVN,,Slovenia (EU),,Slovenia (EU),Slovénie (UE),Eslovenia (UE),Slovenia,Yes
-EUSWE,,Sweden (EU),,Sweden (EU),Suède (UE),Suecia (UE),Sweden,Yes
+EUROU,,Romania (EU),,Romania (EU),Roumanie (UE),Rumania (UE),Romania ,Yes
+EUSVN,,Slovenia (EU),,Slovenia (EU),Slovénie (UE),Eslovenia (UE),Slovenia ,Yes
+EUSWE,,Sweden (EU),,Sweden (EU),Suède (UE),Suecia (UE),Sweden ,Yes
 FJI,,"Fiji, Republic of",,"Fiji, Republic of",République des Fidji,República de Fiji,"Fiji, Republic of",No
 FLK,,Falkland Is.(Malvinas),,Falkland Is.(Malvinas),Îles Falkland(Malvinas),Islas Malvinas(Falkland),United Kingdom,Yes
-FRAT,,France (territories),,France (territories),France (territoires),Francia (territorios),France,Yes
+FRAT,,France (territories),,France (territories),France (territoires),Francia (territorios),France ,Yes
 FRO,,Faroe Islands,,Faroe Islands,Îles Féroé,Islas Feroe,Denmark,Yes
 FSM,,"Micronesia,Fed.States of",,"Micronesia,Fed.States of",Micronésie(États féd.de),Micronesia(Estados Fed.),"Micronesia,Fed.States of",No
 GAB,,Gabon,,Gabon,Gabon,Gabón,Gabon,No
 GBR,,United Kingdom,,United Kingdom,Royaume-Uni,Reino Unido,United Kingdom,No
-GBRT,,UK (territories),,UK (territories),Royaume-Uni (territoires),Reino Unido (territorios),United Kingdom,Yes
+GBRT,,UK (territories),,UK (territories),Royaume-Uni (territoires),Reino Unido (territorios),UK ,Yes
 GEO,,Georgia,,Georgia,Géorgie,Georgia,Georgia,No
 GHA,,Ghana,,Ghana,Ghana,Ghana,Ghana,No
 GIN,,Guinea,,Guinea,Guinée,Guinea,Guinea,No
@@ -86,7 +86,7 @@ HND,,Honduras,,Honduras,Honduras,Honduras,Honduras,No
 HTI,,Haiti,,Haiti,Haïti,Haití,Haiti,No
 IDN,,Indonesia,,Indonesia,Indonésie,Indonesia,Indonesia,No
 IND,,India,,India,Inde,India,India,No
-IRN,,Iran (Islamic Rep. of),,Iran (Islamic Rep. of),Iran (Rép. islamique d'),Irán (Rep. Islámica del),Iran,Yes
+IRN,,Iran (Islamic Rep. of),,Iran (Islamic Rep. of),Iran (Rép. islamique d'),Irán (Rep. Islámica del),Iran ,Yes
 ISL,,Iceland,,Iceland,Islande,Islandia,Iceland,No
 ISR,,Israel,,Israel,Israël,Israel,Israel,No
 JAM,,Jamaica,,Jamaica,Jamaïque,Jamaica,Jamaica,No
@@ -179,3 +179,4 @@ WSM,,Samoa,,Samoa,Samoa,Samoa,Samoa,No
 YEM,,Yemen,,Yemen,Yémen,Yemen,Yemen,No
 YUG,,Yugoslavia SFR,,Yugoslavia SFR,RFS de Yougoslavie,RFS de Yugoslavia,Yugoslavia SFR,No
 ZAF,,South Africa,,South Africa,Afrique du Sud,Sudáfrica,South Africa,No
+,,St. Pierre and Miquelon,,,,,France,Yes

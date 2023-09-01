@@ -14,4 +14,5 @@ source(here("initialisation/92_MAP_PACIFIC_PROJECTION_FUNCTION.R"))
 source(here("initialisation/01.3_LOAD_CODE_LIST_MAPPINGS.R"))
 source(here("initialisation/01.4_LOAD_SPATIAL_LAYERS.R"))
 source(here("initialisation/02_LOAD_NC_DATA.R"))
+source(here("initialisation/03_LOAD_FSJDATA.R"))
 

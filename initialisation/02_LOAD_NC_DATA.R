@@ -1,5 +1,5 @@
 # Nominal catches ####
-NC_RAW = fread("../inputs/data/global_nominal_catch_firms_level0.csv")
+NC_RAW = fread("../inputs/data/global_nominal_catch_firms_level0.csv", colClasses = c(gear_type = "character"))
 
 # Append taxonomic information
 NC = merge(NC_RAW, SPECIES_ITIS[, .(species_group_gta = `Species group`, species_code_asfis = `ASFIS code`, taxon = `Scientific name`, species_aggregate = Aggregate, tsn = TSN)], by.x = "species", by.y = "species_code_asfis", all.x = TRUE)
@@ -12,4 +12,15 @@ NC = merge(NC, GEARS[, .(code, gear_label = label)], by.x = "gear_type", by.y = 
 
 # Append fleet names
 NC = merge(NC, FLEETS[, .(code, fleet_label = label)], by.x = "fishing_fleet", by.y = "code", all.x = TRUE)
+
+# Create ocean basin from areas
+# Temp fix before geographic identifiers are corrected (i.e., proper CCSBT file with ocean)
+NC[source_authority == "IOTC", ocean_basin := "Indian Ocean"]
+NC[source_authority == "ICCAT", ocean_basin := "Atlantic Ocean"]
+NC[source_authority == "WCPFC", ocean_basin := "Western-Central Pacific Ocean"]
+NC[source_authority == "IATTC", ocean_basin := "Eastern Pacific Ocean"]
+NC[source_authority == "CCSBT", ocean_basin := "CCSBT"]    # To be changed
+
+# Temp export for FFA
+#write.csv(NC[year %in% 1950:2021], "../outputs/GTA_NC_1950_2021.csv", row.names = FALSE)
     

@@ -1,11 +1,10 @@
-
-install.packages("renv")
+#install.packages("renv")
 renv::restore()
+
 # Libraries
 library(officedown)
 library(officer)
 library(rmarkdown)
-
 
 # Run the R scripts 
 setwd("./initialisation/")

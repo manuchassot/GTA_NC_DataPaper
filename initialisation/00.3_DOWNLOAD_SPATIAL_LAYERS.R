@@ -22,6 +22,6 @@ TRFMO    = rbindlist(list(CCSBT_SF, ICCAT_SF, IATTC_SF, IOTC_SF, WCPFC_SF))
 TRFMO_SF = st_sf(TRFMO)
 
 # Save the spatial layers
-save.image(file = "../inputs/spatial_layers/SpatialLayers.RData")
+save(list = c("COUNTRIES_SF", "CCSBT_SF", "ICCAT_SF", "IATTC_SF", "IOTC_SF", "WCPFC_SF", "TRFMO_SF"), file = "../inputs/spatial_layers/SpatialLayers.RData")
 
 print("Spatial layers downloaded from FAO geoserver and saved as RData!")

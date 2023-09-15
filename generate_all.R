@@ -1,14 +1,15 @@
-# Run the R scripts 
-setwd("./initialisation/")
-source("00_CORE.R")
-setwd("..")
-
-# Initialise library backup
+# Install/initialise/restore library backup
 if(!require(renv)){
   install.packages("renv")
   suppressPackageStartupMessages(library(renv, quietly = TRUE))
 }
 
+# Run the R scripts 
+setwd("./initialisation/")
+source("00_CORE.R")
+setwd("..")
+
+# Initialise/restore library backup
 renv::init()
 
 # Restore library backup

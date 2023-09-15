@@ -1,8 +1,8 @@
-# Install/initialise/restore library backup
-if(!require(renv)){
-  install.packages("renv")
-  suppressPackageStartupMessages(library(renv, quietly = TRUE))
-}
+# # Install/initialise/restore library backup
+# if(!require(renv)){
+#   install.packages("renv")
+#   suppressPackageStartupMessages(library(renv, quietly = TRUE))
+# }
 
 # Run the R scripts 
 setwd("./initialisation/")
@@ -10,10 +10,10 @@ source("00_CORE.R")
 setwd("..")
 
 # Initialise/restore library backup
-renv::init()
+#renv::init()
 
 # Restore library backup
-renv::
+#renv::restore()
 
 # DOCX
 # see YAML params here: https://davidgohel.github.io/officedown/reference/rdocx_document.html

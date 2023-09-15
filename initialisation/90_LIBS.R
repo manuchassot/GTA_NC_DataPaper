@@ -24,7 +24,8 @@ pacman::p_load("tidyverse",
                "magrittr", 
                "officedown", 
                "officer", 
-               "rmarkdown")
+               "rmarkdown", 
+               "renv")
 
 # set theme for all charts
 ggplot2::theme_set(theme_bw())

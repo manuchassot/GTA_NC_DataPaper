@@ -1,4 +1,6 @@
 # Nominal catches ####
+zip::unzip("../inputs/data/global_nominal_catch_firms_level0.zip", exdir = "../inputs/data/")
+
 NC_RAW = fread("../inputs/data/global_nominal_catch_firms_level0.csv", colClasses = c(gear_type = "character"))
 
 # Append taxonomic information
@@ -20,7 +22,3 @@ NC[source_authority == "ICCAT", ocean_basin := "Atlantic Ocean"]
 NC[source_authority == "WCPFC", ocean_basin := "Western-Central Pacific Ocean"]
 NC[source_authority == "IATTC", ocean_basin := "Eastern Pacific Ocean"]
 NC[source_authority == "CCSBT", ocean_basin := "CCSBT"]    # To be changed
-
-# Temp export for FFA
-#write.csv(NC[year %in% 1950:2021], "../outputs/GTA_NC_1950_2021.csv", row.names = FALSE)
-    

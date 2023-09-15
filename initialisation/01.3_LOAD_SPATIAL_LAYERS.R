@@ -4,6 +4,6 @@ print("Loading the spatial layers...")
 WORLD_BORDERS_SF = ne_countries(returnclass = "sf")
 
 ## Countries and tRFMO areas
-load("../inputs/spatial_layers/SpatialLayers.RData")
+base::load("../inputs/spatial_layers/SpatialLayers.RData")
 
 print("Spatial layers loaded!")

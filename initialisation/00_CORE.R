@@ -9,24 +9,24 @@ source("91_COLOR_LAYOUT.R")
 source("92_MAP_PACIFIC_PROJECTION_FUNCTION.R")
 
 # Download/load GTA code lists (8 files expected)
-if(!length(list.files(path = "../inputs/codelists/", pattern = "csv")) == 8)
-  source("00.1_DOWNLOAD_CODE_LISTS.R")
-  source("01.1_LOAD_CODE_LISTS.R")
+if(!length(list.files(path = "../inputs/codelists/", pattern = "csv")) >= 8)
+  source("00.1_DOWNLOAD_GTA_CODE_LISTS.R")
+source("01.1_LOAD_GTA_CODE_LISTS.R")
 
 # Download/load GTA mappings (17 files expected)
-if(!length(list.files(path = "../inputs/mappings/", pattern = "csv")) == 17)
-  source("00.2_DOWNLOAD_MAPPINGS.R")
-  source("01.2_LOAD_MAPPINGS.R")
+if(!length(list.files(path = "../inputs/mappings/", pattern = "csv")) >= 17)
+  source("00.2_DOWNLOAD_GTA_MAPPINGS.R")
+  source("01.2_LOAD_GTA_MAPPINGS.R")
 
 # Download/load GTA spatial layers
 if(!file.exists("../inputs/spatial_layers/SpatialLayers.RData"))
-  source("00.3_DOWNLOAD_SPATIAL_LAYERS.R")
-  source("01.3_LOAD_SPATIAL_LAYERS.R")
+  source("00.3_DOWNLOAD_GTA_SPATIAL_LAYERS.R")
+  source("01.3_LOAD_GTA_SPATIAL_LAYERS.R")
 
 # Load tuna RFMO catches
 source("02_LOAD_NC_DATA.R")
 
-# Load FAO FishstatJ (FSJ) code lists
+# Download/load FAO FishstatJ (FSJ) code lists
 # Available from here: https://www.fao.org/fishery/statistics-query/en/capture/capture_quantity
 if(!file.exists("../inputs/data/FSJ/Capture_Quantity.csv")){
   temp = tempfile(tmpdir = "../inputs/data/FSJ/")
@@ -35,9 +35,8 @@ if(!file.exists("../inputs/data/FSJ/Capture_Quantity.csv")){
   unlink(temp)
 }
 
-
-
-source("03_LOAD_FSJDATA.R")
+source("03.1_LOAD_FSJ_CODE_LISTS.R")
+source("03.2_LOAD_FSJ_DATA.R")
 
 
 

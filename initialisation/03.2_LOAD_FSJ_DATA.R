@@ -1,4 +1,4 @@
-print("Reading FAO catches...")
+print("Reading FAO catches from the global capture production database...")
 
 # Read the catch data
 CAPTURE_RAW = fread("../inputs/data/FSJ/Capture_Quantity.csv")
@@ -9,3 +9,4 @@ CAPTURE = CAPTURE_RAW[CL_COUNTRIES, on = c("COUNTRY.UN_CODE" = "UN_CODE"), nomat
 # Filter on tuna and tuna-like species and sharks and rays
 CAPTURE = CAPTURE[ISSCAAP_NAME %in% c("Tunas, bonitos, billfishes", "Sharks, rays, chimaeras")]
 
+print("FAO catches read and filtered!")

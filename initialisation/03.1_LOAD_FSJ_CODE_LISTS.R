@@ -1,3 +1,5 @@
+print("Loading the code lists for FSJ data...")
+
 # Read the code lists
 CL_COUNTRIES = fread("../inputs/data/FSJ/CL_FI_COUNTRY_GROUPS.csv", encoding = "UTF-8")[, .(UN_CODE = UN_Code, COUNTRY_CODE = ISO3_Code, COUNTRY = Name_En)]
 
@@ -7,3 +9,4 @@ CL_AREAS = fread("../inputs/data/FSJ/CL_FI_WATERAREA_GROUPS.csv")[, .(FISHING_GR
 
 CL_UNITS = fread("../inputs/data/FSJ/FSJ_UNIT.csv")[, .(MEASUREMENT_CODE = Code, MEASUREMENT_NAME = Name_En)]
 
+print("FSJ code lists loaded!")

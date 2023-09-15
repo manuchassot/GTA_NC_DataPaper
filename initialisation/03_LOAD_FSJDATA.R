@@ -1,2 +1,1 @@
 # Total capture production
-FSJ = 

@@ -1,15 +1,18 @@
-#install.packages("renv")
-renv::restore()
-
-# Libraries
-library(officedown)
-library(officer)
-library(rmarkdown)
-
 # Run the R scripts 
 setwd("./initialisation/")
 source("00_CORE.R")
 setwd("..")
+
+# Initialise library backup
+if(!require(renv)){
+  install.packages("renv")
+  suppressPackageStartupMessages(library(renv, quietly = TRUE))
+}
+
+renv::init()
+
+# Restore library backup
+renv::
 
 # DOCX
 # see YAML params here: https://davidgohel.github.io/officedown/reference/rdocx_document.html

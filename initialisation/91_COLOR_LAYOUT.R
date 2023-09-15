@@ -20,7 +20,7 @@ GTA_SPECIES_GROUP_COL = data.table(species_group_gta = factor(c("Billfishes",
                                                                 "Spanish mackerels", 
                                                                 "Temperate tunas", 
                                                                 "Tropical tunas"), ordered = TRUE), 
-                                   FILL = rev(ggsci::pal_simpsons()(9)), 
+                                   FILL = rev(pal_simpsons()(9)), 
                                    OUTLINE = rev(colorspace::darken(ggsci::pal_simpsons()(9), 0.2))
                                    )
 

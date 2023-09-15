@@ -1,8 +1,10 @@
 # Prevents formatting of numbers using scientific notation
 options(scipen = 99999)
 
-# Includes defaults and helper functions
+# Load and save library environment
 source("90_LIBS.R")
+
+# Includes defaults and helper functions
 source("91_COLOR_LAYOUT.R")
 source("92_MAP_PACIFIC_PROJECTION_FUNCTION.R")
 

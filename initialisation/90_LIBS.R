@@ -3,7 +3,7 @@ print("Loading external libraries...")
 # Install/load pacman
 if(!require(pacman)){
   install.packages("pacman")
-  suppressPackageStartupMessages(library(pacman,quietly = TRUE))
+  suppressPackageStartupMessages(library(pacman, quietly = TRUE))
 }
 
 # Install/load libraries required for analysis
@@ -21,8 +21,10 @@ pacman::p_load("tidyverse",
                "raster", 
                "rnaturalearth", 
                "cmocean", 
-               "magrittr"
-               )
+               "magrittr", 
+               "officedown", 
+               "officer", 
+               "rmarkdown")
 
 # set theme for all charts
 ggplot2::theme_set(theme_bw())

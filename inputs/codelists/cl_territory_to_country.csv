@@ -1,25 +1,27 @@
-territory	country
-Aruba	Netherlands
-Anguilla	UK
-American Samoa	United States of America
-Bermuda	UK
-Cayman Islands	UK
-Cook Islands	New Zealand
-Faroe Islands	Denmark
-Falkland Is.(Malvinas)	UK
-French Polynesia	France
-Guam	United States of America
-Marshall Islands	United States of America
-New Caledonia	France
-Northern Mariana Is.	United States of America
-Palau	United States of America
-Puerto Rico	United States of America
-Saint Helena	UK
-Turks and Caicos Is.	UK
-US Virgin Islands	United States of America
-British Virgin Islands	UK
-Wallis and Futuna Is.	France
-European Union	NA
-German Democratic Republic	NA
-Other nei	NA
-Un. Sov. Soc. Rep.	NA
+territory,country
+Aruba,Netherlands
+Anguilla,United Kingdom
+American Samoa,United States of America
+Bermuda,United Kingdom
+Cayman Islands,United Kingdom
+Cook Islands,New Zealand
+Faroe Islands,Denmark
+Falkland Is.(Malvinas),United Kingdom
+French Polynesia,France
+Guam,United States of America
+Marshall Islands,United States of America
+New Caledonia,France
+Northern Mariana Is.,United States of America
+Palau,United States of America
+Puerto Rico,United States of America
+Saint Helena,United Kingdom
+Turks and Caicos Is.,United Kingdom
+US Virgin Islands,United States of America
+British Virgin Islands,UK
+Wallis and Futuna Is.,France
+European Union,NA
+German Democratic Republic,NA
+Other nei,NA
+Un. Sov. Soc. Rep.,NA
+St. Pierre and Miquelon,France
+Wallis and Futuna Is.,France

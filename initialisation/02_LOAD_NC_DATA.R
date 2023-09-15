@@ -18,6 +18,9 @@ NC = merge(NC, GEARS[, .(code, gear_label = label)], by.x = "gear_type", by.y = 
 # Append fleet names
 NC = merge(NC, FLEETS[, .(code, fleet_label = label)], by.x = "fishing_fleet", by.y = "code", all.x = TRUE)
 
+# Append year
+NC[, year := year(time_start)]
+
 # Create ocean basin from areas
 # Temp fix before geographic identifiers are corrected (i.e., proper CCSBT file with ocean)
 NC[source_authority == "IOTC", ocean_basin  := "Indian Ocean"]

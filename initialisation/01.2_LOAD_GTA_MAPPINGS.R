@@ -1,7 +1,7 @@
 print("Loading the mapping files...")
 
 # SOURCE AUTHORITY - SPECIES
-SOURCE_AUTHORITY_SPECIES = fread("../inputs/mappings/codelist_mapping_source_authority_species.csv")
+MAPPING_SOURCE_AUTHORITY_SPECIES = fread("../inputs/mappings/codelist_mapping_source_authority_species.csv")
 
 ## GTA SPECIES GROUPS MAPPING ####
 MAPPING_SP_SPG = fread("../inputs/mappings/codelist_mapping_species_asfis_speciesgroup_tunaatlas.csv")

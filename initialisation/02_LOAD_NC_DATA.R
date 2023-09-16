@@ -15,10 +15,13 @@ NC = merge(NC, SPECIES_LEVEL0[, .(code, species_name = name_en)], by.x = "specie
 # Append gear information
 NC = merge(NC, GEARS[, .(code, gear_label = label)], by.x = "gear_type", by.y = "code", all.x = TRUE)
 
-# Append fleet names
+# Append fleet labels
 NC = merge(NC, FLEETS[, .(code, fleet_label = label)], by.x = "fishing_fleet", by.y = "code", all.x = TRUE)
 
-# Append year
+# Append countries
+NC = merge(NC, MAPPING_FLEET_COUNTRY, by.x = "fishing_fleet", by.y = "fleet_code", all.x = TRUE)
+
+# Add year
 NC[, year := year(time_start)]
 
 # Create ocean basin from areas
@@ -27,6 +30,6 @@ NC[source_authority == "IOTC", ocean_basin  := "Indian Ocean"]
 NC[source_authority == "ICCAT", ocean_basin := "Atlantic Ocean"]
 NC[source_authority == "WCPFC", ocean_basin := "Western-Central Pacific Ocean"]
 NC[source_authority == "IATTC", ocean_basin := "Eastern Pacific Ocean"]
-NC[source_authority == "CCSBT", ocean_basin := "CCSBT"]    # To be changed
+NC[source_authority == "CCSBT", ocean_basin := "CCSBT"]    # To be changed with 3 oceans
 
 print("tRFMO nominal catches read!")

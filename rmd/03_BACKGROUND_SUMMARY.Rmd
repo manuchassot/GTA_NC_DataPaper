@@ -22,8 +22,7 @@ In parallel to tRFMOs, the UN Food and Agriculture Organisation (FAO) has compil
 
 ## The Global Tuna Atlas
 
-The time series of total catch available from the five tRFMOs (1) provide better input data than the FAO capture production database for fisheries and stock status assessments based on catch-based models despite the limitations of these approaches [@Zhou2017;Free2020], (2) provide a benchmark for assessing the FAO data and identify misreporting issues of  [e.g., @JustelRubio2016], and (3) include information on fishing gear which is instrumental for some analyses such as catch reconstructions [@Pauly2016;@Zeller2023]. While these approaches are inherently associated with uncertainties [@Ye2017], information on fishing gear is key in such an estimation process as it drives the composition of the catch [@Watson2006]. The GTA does provide such information for most fish species caught in tuna and tuna-like species in the world oceans over several decades.
-
+Time series of total catch available from the five tRFMOs (1) provide a benchmark for assessing the FAO data and identify misreporting issues [@JustelRubio2016], (2) provide better input data than the FAO capture production database for fisheries and stock status assessments based on catch-based models despite the limitations of these approaches [@Zhou2017;@Free2020], and (3) include information on fishing gear which is instrumental for analyses such as catch reconstructions [@Watson2006;@Pauly2016;@Zeller2023].
 
 
 

@@ -28,9 +28,12 @@ datasets_links_processing <- read_delim(here("inputs/Workflow/datasets_links_pro
 
 ```
 
-```{r tab.cap = "Datasets and pre-processing functions used in the creation of the final dataset "}
-require(flextable)
-qflextable(as_grouped_data(datasets_links_processing, groups = c("RFMO") ))
+```{r tab.cap = "Datasets and pre-processing functions used in the creation of the final dataset", out.width='100%'}
+
+
+groupped <- flextable::as_grouped_data(datasets_links_processing, groups = c("RFMO"))
+flextable(groupped, cwidth = 1.25)
+
 ```
 
 ## Creation of the Global Dataset
@@ -57,15 +60,11 @@ This step involves filtering the data to retain only the information pertaining 
 
 ```{r tab.cap = "Species retained in the final dataset by tRFMOs" }
 
-require(dplyr)
-
-
-ft <- flextable(as_grouped_data(cl_species_level0  %>% arrange(desc(species)) %>% dplyr::select(species, source_authority), groups = "species")) %>% 
+ft <- flextable(as_grouped_data(cl_species_level0  %>% arrange((species)) %>% dplyr::select(species, source_authority), groups = "species")) %>% 
   merge_v(j = "species", part = "header") %>%
   set_caption(caption = paste("Download Link:", download_link))
 
-# Print the flextable
-ft
+# Do not Print the flextable that is to big, rather saving it for annexe
 
 
 ```
@@ -76,16 +75,16 @@ It results in losses in number of species and in number of species group.
 ```{r}
 diffstratasnumber <- read.csv("outputs/filtering_species/figures/Diffstratas/Comparison.of.number.of.stratas.between.the.two.datasets.csv")
 
-tidy <- diffstratasnumber[c(1, 3, 4, 5, 6),]
+tidy <- diffstratasnumber[c(1, 3, 4, 5, 6),] %>% rename(" " = X, "Before filtering" = "Before.filtering", "After filtering" = "After.filtering")
 
-qflextable2(tidy)
+qflextable2(tidy, columns_to_color = "Difference")
 ```
 
 To be noted, one of the main tuna i.e. Southern Bluefin Tuna, for which CCSBT is considered the only authoritative source of information for the species is impacted by this treatment. As CCSBT possesses expertise in managing and overseeing data related to this species, their dataset is selected as the primary source for Southern Bluefin Tuna information. This careful selection ensures that the dataset remains focused and representative of SBT data while benefiting from the expertise of the CCSBT. The impact is of the following on the Soutern Bluefin Tuna data only is of 4.3% of the value. 
 
 ```{r out.height = "460px", out.width='800px', echo=F}
 
-knitr::include_graphics(("outputs/filtering_sbf/figures/Piechartsdimensions/Distribution.in.value.for.the.dimension...source.authority.pdf"))
+knitr::include_graphics(here("rmd/outputs/filtering_sbf/figures/Piechartsdimensions/Distribution.in.value.for.the.dimension...source.authority.pdf"))
 
 ```
 

@@ -6,7 +6,6 @@ Possible content **may include**:
 
 -	experiments that support or validate the data-collection procedure(s) (e.g. negative controls, or an analysis of standards to confirm measurement linearity)
 -	statistical analyses of experimental error and variation
--	phenotypic or genotypic assessments of biological samples (e.g. confirming disease status, cell line identity, or the success of perturbations)
 -	general discussions of any procedures used to ensure reliable and unbiased data production, such as blinding and randomization, sample tracking systems, etc. 
 -	any other information needed for assessment of technical rigour by the referees
 
@@ -17,29 +16,57 @@ Generally, this **should not include**:
 
 The dataset is a version of what is been done by other organization such as FAO. A study of differences between the Nominal Catch dataset of the Global Tuna Atlas (Nominal Catch GTA) and the Fishstat data from FAO (Fishstat) has been performed. The mappind dataset to perform the harmonisation of the fishingfleet are available on : 
 
+The mapping for fishingfleet for FAO dataset is the one provided on fishingfleet_FS with minor changes for "Sudan (former)" aggregated with "Sudan" and "Channels Islands" aggregated with "UK": code to be found on ""
+
 The main outputs of this analysis is the difference between the final data. 
 
-```{r}
-knitr::include_graphics(("outputs/Comp_FS_NC/figures/Diffstratas/Comparison.of.number.of.stratas.between.the.two.datasets.png"))
+```{r child="~/Documents/GTA_NC_DataPaper/rmd/setup_markdown.Rmd", cache=TRUE}
+
 ```
 
-Some of the dimensions are completely disapperagin or appearing between the two datasets. 
 
 ```{r}
-data <- read.csv("outputs/Comp_FS_NC/figures/Diffstratas/Disappearing.or.appearing.strata.between.Fishstat.and.NC.csv") %>% dplyr::select(-measurement_unit) %>% dplyr::rename("Difference in millions" = "Difference.in.millions")
+table_comp <- read.csv(here("rmd/outputs/Comp_FS_NC/figures/Diffstratas/Comparison.of.number.of.stratas.between.the.two.datasets.csv"))
+
+qflextable2(table_comp, columns_to_color  = c("Difference"))
+```
+
+```{r}
+list_not_commun <-readRDS(here("inputs/data/comparison_Fishstat_NC/notcommuntime_species.rds"))
+
+min_year_not_commun <- lubridate::year(min(list_not_commun$year$year))
+max_year_not_commun <- lubridate::year(max(list_not_commun$year$year))
+
+# species_name <- read.csv(here("inputs/codelists/cl_asfis_species.csv"))
+# 
+# species_name <- inner_join(list_not_commun$species, species_name, by = c("species" = "code")) %>% dplyr::select(label,code = species, measurement_value, onlyin )
+```
+
+What can be seen in this analysis is that many years declared by several tRFMOs are not declared in Fishstats data, for the rest of the analysis we will only keep the years where both dataset declared data. However for years from `r min_year_not_commun` to `r max_year_not_commun` , only NC data contains declaration. 
+
+However, even if they do have the same number of fishingfleet, they are not equivalent i.e. some fishingfleet are disappearing in one or the other. Here is the recap of the dimensions that are completely disappearing or appearing between the two datasets. 
+
+```{r}
+data <- read.csv(here("rmd/outputs/Comp_FS_NC/figures/Diffstratas/Disappearing.or.appearing.strata.between.Fishstat.and.NC.csv")) %>% dplyr::select(-measurement_unit) %>% dplyr::rename("Difference in millions" = "Difference.in.millions")
 
 qflextable2(data, grouped_data = c("Dimension"), columns_to_color  = c("Difference in millions"))
 ```
 
 This concerns the gear that are specified only in the Nominal Catch dataset as well as species that are specified only in one or the other dataset. Eventually, some fishing_fleet are not mapped the same way in both datasets creating the disappearing and appearing. 
 
+For the fishingfleet, NC does not provide data for some countries (with minor impact on the global data) that are `r unique((data %>% dplyr::filter(Loss...Gain == "Loss" & Dimension == "country_label")))$Precision`, however it provides data with aggregated fishingfleet (i.e nei).
+
 ### Species
 
-However, most of the differences are in the repartition of the species and species group. 
+However, most of the differences are in the **repartition** of the species and species group. 
 
-```{r}
-knitr::include_graphics(("outputs/Comp_FS_NC/figures/Piechartsdimensions/Distribution.in.value.for.the.dimension...species.group.gta.png"))
-knitr::include_graphics(("outputs/Comp_FS_NC/figures/Piechartsdimensions/Distribution.in.value.for.the.dimension...species.png"))
+```{r fig.cap = 'Relatives percentage of catches by species (1) and species group (2) for Fishstat and Nominal catches dataset'}
+
+knitr::include_graphics(here("rmd/outputs/Comp_FS_NC/figures/Piechartsdimensions/Distribution.in.value.for.the.dimension...species.group.gta.png"))
+
+knitr::include_graphics(here("rmd/outputs/Comp_FS_NC/figures/Piechartsdimensions/Distribution.in.value.for.the.dimension...species.png"))
+
+
 
 ```
 
@@ -47,7 +74,8 @@ The Skipjack tuna, the most catched tuna has a relative importance very differen
 
 ### Fishing_fleet
 
-```{r}
+```{r fig.cap = 'Relatives percentage of catches by country for Fishstat and Nominal catches dataset'}
+
 knitr::include_graphics(("outputs/Comp_FS_NC/figures/Piechartsdimensions/Distribution.in.value.for.the.dimension...country.label.png"))
 
 ```
@@ -59,7 +87,7 @@ Recap:
 ```{r}
 `%notin%` <- Negate(`%in%`)
 
-diffstratas <- read.csv("outputs/Comp_FS_NC/figures/Diffstratas/Difference.between.stratas.of.the.two.datasets.csv") %>% dplyr::filter(Dimension %notin% c("year", "GRIDTYPE")) %>% dplyr::select(-measurement_unit) %>% dplyr::rename("Loss / Gain" = "Loss...Gain", "Difference in value" = "Difference.in.value")
+diffstratas <- read.csv(here("rmd/outputs/Comp_FS_NC/figures/Diffstratas/Difference.between.stratas.of.the.two.datasets.csv")) %>% dplyr::filter(Dimension %notin% c("year", "GRIDTYPE")) %>% dplyr::select(-measurement_unit) %>% dplyr::rename("Loss / Gain" = "Loss...Gain", "Difference in value" = "Difference.in.value")
 
 qflextable2(diffstratas, grouped_data = c("Dimension", "Loss / Gain"), columns_to_color = c("Difference in value"))
 
@@ -67,9 +95,18 @@ qflextable2(diffstratas, grouped_data = c("Dimension", "Loss / Gain"), columns_t
 
 ## Time series differences
 
-Eventually, even if the Nominal catch data provides data for 32 years more than the Fishstat, the concerned year have not much differences in percentage. 
+Eventually, even if the Nominal catch data provides data for 32 years more than the Fishstat, the year concerned by declarations from both dataset have big differences in percentage. 
+
 ```{r}
-knitr::include_graphics(("outputs/Comp_FS_NC/figures/Temporal/Evolutions.of.values.for.the.dimension.year.for.Fishstat.and.NC.dataset..png"))
+
+knitr::include_graphics(here("rmd/outputs/Comp_FS_NC/figures/Temporal/Evolutions.of.values.for.the.dimension.year.for.Fishstat.and.NC.dataset..png"))
+
+```
+
+
+An analysis comparing only the year where both dataset provided data has been ran. The outputs are yet not much different as the year where only one of the dataset has been provided are have particularly low catches. The main outputs of this analysis can be seen in Annex.
+
+```{r}
 
 ```
 

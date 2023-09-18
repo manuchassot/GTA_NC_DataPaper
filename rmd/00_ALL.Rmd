@@ -1,6 +1,7 @@
 ---
-title: "Partnering with Regional Fisheries Management Organisations to build global data sets of tuna fisheries catches"
+title: "Partnering with Regional Fisheries Management Organisations to build global data sets of tuna fisheries"
 #title: "From national to global: Building global catches from tuna fisheries"
+subtitle: "The Global Tuna Atlas"
 author: Emmanuel Chassot^1,2^, Emmanuel Blondel^2,\(^\dagger\)^, Peter Williams^3^,
   Nick Vogel^4^, Carlos Palma^5^, Colin Millar^6^, Tim Jones^7^, Sylvain Caillot^4^,
   Carlos Mayor^5^, Marc Taconet^2^, Fabio Fiorellato^1,2^, Bastien Grasset^8^, and Julien

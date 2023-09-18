@@ -1,26 +1,23 @@
+# # Install/initialise/restore library backup
+# if(!require(renv)){
+#   install.packages("renv")
+#   suppressPackageStartupMessages(library(renv, quietly = TRUE))
+# }
 
-if(!require(renv)){
-  install.packages("renv")
-  require(renv)
-  renv::activate()
-  renv::init()
-}
-renv::restore()
-# Libraries
-library(officedown)
-library(officer)
-library(rmarkdown)
-
-require(here)
 # Run the R scripts 
-source(here("initialisation/00_CORE.R"))
+setwd("./initialisation/")
+source("00_CORE.R")
+setwd("..")
+
+# Initialise/restore library backup
+#renv::init()
+
+# Restore library backup
+#renv::restore()
 
 # DOCX
 # see YAML params here: https://davidgohel.github.io/officedown/reference/rdocx_document.html
-
-source(knitr::purl(here("rmd/setup_markdown.Rmd"), quiet=TRUE))
-
-render(here("rmd/00_ALL.Rmd"), 
-       output_dir    = here("outputs/"), 
-       output_file   = here("GTA_Nominal_Catch_Data_Paper.docx")
+render("rmd/00_ALL.Rmd", 
+       output_dir    = "outputs/", 
+       output_file   = "GTA_Nominal_Catch_Data_Paper.docx"
 )

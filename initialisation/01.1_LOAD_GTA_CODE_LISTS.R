@@ -22,6 +22,6 @@ FLEETS = fread("../inputs/codelists/cl_fishing_fleet.csv", encoding = "UTF-8")
 
 ## FAO countries ####
 # https://data.iotc.org/reference/latest/domain/admin/#countries
-COUNTRIES = fread("../inputs/codelists/cl_countries.csv")
+COUNTRIES = data.table(read.xlsx("../inputs/codelists/cl_countries.xlsx"))
 
 print("Code list files loaded!")

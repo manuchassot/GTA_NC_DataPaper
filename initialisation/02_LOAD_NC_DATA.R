@@ -25,11 +25,9 @@ NC = merge(NC, MAPPING_FLEET_COUNTRY, by.x = "fishing_fleet", by.y = "fleet_code
 NC[, year := year(time_start)]
 
 # Create ocean basin from areas
-# Temp fix before geographic identifiers are corrected (i.e., proper CCSBT file with ocean)
-NC[source_authority == "IOTC", ocean_basin  := "Indian Ocean"]
-NC[source_authority == "ICCAT", ocean_basin := "Atlantic Ocean"]
-NC[source_authority == "WCPFC", ocean_basin := "Western-Central Pacific Ocean"]
-NC[source_authority == "IATTC", ocean_basin := "Eastern Pacific Ocean"]
-NC[source_authority == "CCSBT", ocean_basin := "CCSBT"]    # To be changed with 3 oceans
+NC[geographic_identifier %in% c("Atlantic", "ATW", "A+M", "ATL", "ATE", "ATS", "MED", "ASW", "ASE", "ATN", "AT", "ANW","ANE"), ocean_basin := "Atlantic Ocean"]
+NC[geographic_identifier %in% c("F51", "IOTC_WEST", "IOTC_EAST", "IOTC"), ocean_basin  := "Indian Ocean"]
+NC[geographic_identifier %in% c("WCPO", "WCPFC"), ocean_basin := "Western-Central Pacific Ocean"]
+NC[geographic_identifier == "EPO", ocean_basin := "Eastern Pacific Ocean"]
 
 print("tRFMO nominal catches read!")

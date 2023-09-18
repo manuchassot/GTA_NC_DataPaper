@@ -37,6 +37,10 @@ if(!file.exists("../inputs/data/FSJ/Capture_Quantity.csv")){
 
 source("03.1_LOAD_FSJ_CODE_LISTS.R")
 source("03.2_LOAD_FSJ_DATA.R")
+source("03.3_LOAD_FSJ_MAPPING.R")
 
+# Describe the data
+#source("04_RFMO_MAPS.R")
+source("05_NC_CHARTS.R")
 
 

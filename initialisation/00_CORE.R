@@ -1,6 +1,5 @@
 # Prevents formatting of numbers using scientific notation
 options(scipen = 99999)
-<<<<<<< HEAD
 require(here)
 # Includes defaults and helper functions
 source(here("initialisation/90_LIBS.R"))
@@ -16,7 +15,6 @@ source(here("initialisation/01.3_LOAD_CODE_LIST_MAPPINGS.R"))
 source(here("initialisation/01.4_LOAD_SPATIAL_LAYERS.R"))
 source(here("initialisation/02_LOAD_NC_DATA.R"))
 source(here("initialisation/03_LOAD_FSJDATA.R"))
-=======
 
 # Load and save library environment
 source("90_LIBS.R")
@@ -56,5 +54,4 @@ source("03.1_LOAD_FSJ_CODE_LISTS.R")
 source("03.2_LOAD_FSJ_DATA.R")
 
 
->>>>>>> 89165a34f78cfb406a7db34d5bc6d97a32f175e0
 

@@ -4,7 +4,7 @@
 #   suppressPackageStartupMessages(library(renv, quietly = TRUE))
 # }
 
-# Run the R scripts 
+# Run the R scripts
 setwd("./initialisation/")
 source("00_CORE.R")
 setwd("..")

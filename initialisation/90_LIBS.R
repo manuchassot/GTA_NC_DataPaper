@@ -26,7 +26,9 @@ pacman::p_load("tidyverse",
                "officer", 
                "rmarkdown", 
                "renv", 
-               "readr")
+               "readr", 
+               "here", 
+               "flextable")
 
 # set theme for all charts
 ggplot2::theme_set(theme_bw())

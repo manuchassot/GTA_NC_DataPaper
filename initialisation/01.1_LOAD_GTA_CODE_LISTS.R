@@ -30,6 +30,6 @@ MAPPING_SP_SPG = fread(here("inputs/mappings/codelist_mapping_species_asfis_spec
 MAPPING_SP_SPG = merge(MAPPING_SP_SPG, SPECIES_GROUP[, .(code, species_group_label = label)], by.x = "trg_code", by.y = "code")
 ## FAO countries ####
 # https://data.iotc.org/reference/latest/domain/admin/#countries
-COUNTRIES = fread("../inputs/codelists/cl_countries.csv")
+COUNTRIES = data.table(read.xlsx("../inputs/codelists/cl_countries.xlsx"))
 
 print("Code list files loaded!")

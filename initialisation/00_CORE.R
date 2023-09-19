@@ -39,7 +39,9 @@ if(!file.exists("../inputs/spatial_layers/SpatialLayers.RData"))
   source("01.3_LOAD_GTA_SPATIAL_LAYERS.R")
 
 # Load tuna RFMO catches
-source("02_LOAD_NC_DATA.R")
+if(!file.exists("../inputs/data/GTA/global_nominal_catch_firms_level0.csv")) 
+  zip::unzip("../inputs/data/GTA/global_nominal_catch_firms_level0.zip", exdir = "../inputs/data/GTA/")
+  source("02_LOAD_NC_DATA.R")
 
 # Download/load FAO FishstatJ (FSJ) code lists
 # Available from here: https://www.fao.org/fishery/statistics-query/en/capture/capture_quantity
@@ -52,6 +54,10 @@ if(!file.exists("../inputs/data/FSJ/Capture_Quantity.csv")){
 
 source("03.1_LOAD_FSJ_CODE_LISTS.R")
 source("03.2_LOAD_FSJ_DATA.R")
+source("03.3_LOAD_FSJ_MAPPING.R")
 
+# Describe the data
+#source("04_RFMO_MAPS.R")
+source("05_NC_CHARTS.R")
 
 

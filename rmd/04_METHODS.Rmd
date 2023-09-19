@@ -12,9 +12,11 @@ Fisheries data sets managed by tRFMOs are generally updated on an annual basis a
 <!-- In addition, each dataset can be periodically updated from the official websites of the tRFMOs. -->
 <!-- Six datasets and five mapping datasets are used to create the final nominal catch dataset. -->
 
-## Data exchange format
+## Data exchange format and mapping
 
-CWP standards |  (FIRM) | ASFIS/ISSCFG/FIRMS fleets
+- CWP standards
+- Building of the specific GTA FIRMS fishing fleet code list 
+- Mapping with ASFIS/ISSCFG/FIRMS fleets
 
 <!-- ## Data pre-processing -->
 

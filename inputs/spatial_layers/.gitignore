@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 SpatialLayers.RData
 =======
 # History files
@@ -47,4 +46,3 @@ vignettes/*.pdf
 *.html
 *.pdf
 *.RData
->>>>>>> 89165a34f78cfb406a7db34d5bc6d97a32f175e0

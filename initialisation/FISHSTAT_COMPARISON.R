@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 # Read data and code lists
 fishstatdataset <- read_csv("../inputs/data/FSJ/Capture_Quantity.csv")
 fishingfleet_FS <- read_csv("../inputs/data/FSJ/CL_FI_COUNTRY_GROUPS.csv")
@@ -86,7 +84,6 @@ dir.create(here("inputs/data/comparison_Fishstat_NC/NC"), recursive = TRUE)
 saveRDS(fishstatdataset_filtered , here("inputs/data/comparison_Fishstat_NC/Fishstat/rds.rds"))
 saveRDS(NC_RAW_tidy_comp, here("inputs/data/comparison_Fishstat_NC/NC/rds.rds"))
 
->>>>>>> 89165a34f78cfb406a7db34d5bc6d97a32f175e0
 ## Those files will be used in the comparison file
 
 dir.create(here("rmd/outputs/Comp_FS_NC/figures"), recursive = TRUE, showWarnings = FALSE)

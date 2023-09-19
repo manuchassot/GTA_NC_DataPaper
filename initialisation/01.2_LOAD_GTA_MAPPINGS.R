@@ -5,7 +5,7 @@ MAPPING_SOURCE_AUTHORITY_SPECIES = fread("../inputs/mappings/codelist_mapping_so
 
 # FISHING FLEET - COUNTRY
 # No countries for 
-MAPPING_FLEET_COUNTRY = fread("../inputs/mappings/codelist_mapping_fishing_fleet_country.csv", na.strings = "NA")
+MAPPING_FLEET_COUNTRY = data.table(read.xlsx("../inputs/mappings/codelist_mapping_fishing_fleet_country.xlsx"))
 
 # Add country label
 MAPPING_FLEET_COUNTRY = merge(MAPPING_FLEET_COUNTRY, COUNTRIES[, .(CODE_ISO3, FULL_NAME_EN, SHORT_NAME_EN, NOCS_CATEGORY)], by.x = "country_code", by.y = "CODE_ISO3", all.x = TRUE)

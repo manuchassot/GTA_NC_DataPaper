@@ -1,9 +1,6 @@
 print("Reading tRFMO nominal catches...")
 
 # Nominal catches ####
-if(!file.exists("../inputs/data/GTA/global_nominal_catch_firms_level0.csv"))
-zip::unzip("../inputs/data/GTA/global_nominal_catch_firms_level0.zip", exdir = "../inputs/data/GTA/")
-
 NC_RAW = fread("../inputs/data/GTA/global_nominal_catch_firms_level0.csv", colClasses = c(gear_type = "character"))
 
 # Append taxonomic information

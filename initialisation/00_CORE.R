@@ -11,7 +11,7 @@ source("92_MAP_PACIFIC_PROJECTION_FUNCTION.R")
 # Download/load GTA code lists (8 files expected)
 if(!length(list.files(path = "../inputs/codelists/", pattern = "csv")) >= 8)
   source("00.1_DOWNLOAD_GTA_CODE_LISTS.R")
-source("01.1_LOAD_GTA_CODE_LISTS.R")
+  source("01.1_LOAD_GTA_CODE_LISTS.R")
 
 # Download/load GTA mappings (17 files expected)
 if(!length(list.files(path = "../inputs/mappings/", pattern = "csv")) >= 17)

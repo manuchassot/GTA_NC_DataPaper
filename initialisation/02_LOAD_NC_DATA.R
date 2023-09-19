@@ -28,3 +28,13 @@ NC[geographic_identifier %in% c("WCPO", "WCPFC"), ocean_basin := "Western-Centra
 NC[geographic_identifier == "EPO", ocean_basin := "Eastern Pacific Ocean"]
 
 print("tRFMO nominal catches read!")
+
+
+# temp data exports for manu
+# NC_GTA_TROP_PS_YEAR_SPECIES_RFMO = NC[gear_label %in% ("Purse seines") & species %in% c("BET", "SKJ", "YFT") & year(time_start)>1949, .(GEAR_GROUP = "PS", CATCH = round(sum(measurement_value))), keyby = .(YEAR = year, RFMO = source_authority, SPECIES_CODE = species)]
+# 
+# write.csv(NC_GTA_TROP_PS_YEAR_SPECIES_RFMO, "../outputs/NC_GTA_TROP_PS_YEAR_SPECIES_RFMO.csv", row.names = FALSE)
+# 
+# NC_GTA_TROP_PS_YEAR_SPECIES_OCEAN = NC[gear_label %in% ("Purse seines") & species %in% c("BET", "SKJ", "YFT") & year(time_start)>1949, .(GEAR_GROUP = "PS", CATCH = round(sum(measurement_value))), keyby = .(YEAR = year, OCEAN = ocean_basin, SPECIES_CODE = species)]
+# 
+# write.csv(NC_GTA_TROP_PS_YEAR_SPECIES_OCEAN, "../outputs/NC_GTA_TROP_PS_YEAR_SPECIES_OCEAN.csv", row.names = FALSE)

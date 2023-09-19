@@ -204,7 +204,7 @@ gg <- ggplot() +
 
 
 gg
-ggsave(here("outputs/charts/plotsFS_NC/captures_by_countryggplot.png"), plot = gg, width = 8, height = 6, dpi = 300)
+ggsave(here("outputs/charts/captures_by_countryggplot.png"), plot = gg, width = 8, height = 6, dpi = 300)
 
 tmap_options(max.categories = 153)
 
@@ -238,5 +238,5 @@ tm <- tm_shape(aggregated_data) +
   tm_layout(legend.show = FALSE)  # Remove the legend
 tm
 
-tmap_save(tm, filename = here("outputs/charts/plotsFS_NC/captures_by_country.png"))
+tmap_save(tm, filename = here("outputs/charts/captures_by_country.png"))
 

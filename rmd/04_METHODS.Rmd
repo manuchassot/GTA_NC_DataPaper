@@ -61,7 +61,7 @@ qflextable(datasets_links_processing)
 ```
 
 ```{r results='asis'}
-CWP_format <- read_delim("inputs/CWP_format.csv", 
+CWP_format <- read_delim(here("inputs/CWP_format.csv"), 
     delim = ";", escape_double = FALSE, trim_ws = TRUE)
 qflextable(CWP_format)
 ```
@@ -100,15 +100,6 @@ qflextable2(tidy, columns_to_color = "Difference")
 
 This step involves filtering the data to retain only the information pertaining to species under the mandate of the tRFMOs. The retained species are selected to align with the specific conservation and management goals of each tRFMO.`r SPECIES_ITIS[Aggregate == FALSE, length(unique(TSN))]` are selected.
 
-```{r tab.cap = "Species retained in the final dataset by tRFMOs", eval = FALSE}
-require(dplyr)
-
-ft <- flextable(as_grouped_data(cl_species_level0 %>% arrange(desc(species)) %>% dplyr::select(species, source_authority), groups = "species")) %>% 
-  merge_v(j = "species", part = "header") %>%
-  set_caption(caption = paste("Download Link:", download_link))
-
-ft
-```
 
 To be noted, catches of one of the main tuna i.e. Southern Bluefin Tuna is impacted by this treatment. As CCSBT possesses expertise in managing and overseeing data related to this species, their dataset is selected as the primary source for Southern Bluefin Tuna information. The impact is 4.3% of the global value for this species. 
 
@@ -118,7 +109,7 @@ To enhance the comprehensibility and usability of the dataset, additional tempor
 
 The code used to perform this workflow is available on: [https://raw.githubusercontent.com/eblondel/geoflow-tunaatlas/master/tunaatlas_scripts/generation/create_global_tuna_atlas_nominal_catch.R](#0){.uri}
 
-## Geoflow workflow and database model?
+## Geoflow workflow and database model
 
 The workflow of creation and the dissemination of the Nominal catch is using the geoflow package <https://github.com/r-geoflow/geoflow>.
 

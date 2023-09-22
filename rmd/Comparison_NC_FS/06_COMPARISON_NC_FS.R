@@ -173,6 +173,8 @@ ggplot(comp_NC_FS) +
 
 dir.create(here("inputs/data/comparison_Fishstat_NC/Fishstat"), recursive = TRUE)
 dir.create(here("inputs/data/comparison_Fishstat_NC/NC"), recursive = TRUE)
+fishstatdataset_filtered$gear_label <- "UNK"
+
 saveRDS(fishstatdataset_filtered , here("inputs/data/comparison_Fishstat_NC/Fishstat/rds.rds"))
 saveRDS(NC_to_comp_tidy_comp, here("inputs/data/comparison_Fishstat_NC/NC/rds.rds"))
 

@@ -44,5 +44,8 @@ source("03.3_LOAD_FSJ_MAPPING.R")
 # Describe the data
 #source("04_RFMO_MAPS.R")
 source("05_NC_CHARTS.R")
+source(here("initialisation/06_COMPARISON_NC_FS.R"))
+source(here("initialisation/07_FSJ_CHARTS.R"))
+source(here("initialisation/08_CAPTURES_MAP_COUNTRY.R"))
 
 

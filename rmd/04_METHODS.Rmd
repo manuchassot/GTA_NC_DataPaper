@@ -1,82 +1,116 @@
 # Methods
 
-<!-- _The Methods should include detailed text describing any steps or procedures used in producing the data, including full descriptions of the experimental design, data acquisition and any computational processing. See [the detailed section in our submission guidelines](https://www.nature.com/sdata/publish/submission-guidelines#sec-5) for advice on writing a transparent and reproducible methods section. Related methods should be grouped under corresponding subheadings where possible, and methods should be described in enough detail to allow other researchers to interpret and repeat, if required, the full study. Specific data outputs should be explicitly referenced via data citation (see Data Records and Citing Data, below). -->
-<!-- Authors should cite previous descriptions of the methods under use, but ideally the method descriptions should be complete enough for others to understand and reproduce the methods and processing steps without referring to associated publications. There is no limit to the length of the Methods section._ -->
+<!-- The Methods should include detailed text describing any steps or procedures used in producing the data, including full descriptions of the experimental design, data acquisition and any computational processing. See [the detailed section in our submission guidelines](https://www.nature.com/sdata/publish/submission-guidelines#sec-5) for advice on writing a transparent and reproducible methods section. Related methods should be grouped under corresponding subheadings where possible, and methods should be described in enough detail to allow other researchers to interpret and repeat, if required, the full study. Specific data outputs should be explicitly referenced via data citation (see Data Records and Citing Data, below). -->
 
-This section describes the steps and procedures used to create the global nominal catch dataset from the data available within each tRFMO.
+<!-- Authors should cite previous descriptions of the methods under use, but ideally the method descriptions should be complete enough for others to understand and reproduce the methods and processing steps without referring to associated publications. There is no limit to the length of the Methods section. -->
 
-## Data call
+This section provides a comprehensive description of the steps and procedures used to create the Nominal catch dataset from the different datasets provided by tRFMOs (tuna Regional Fisheries Management Organization).
+
+## Data origin
+
+### Gathering of the data by tRFMOs:
+
+Each tRFMOs has different exchange formats to gather data from fishboats/countries or fisheries. to be continued
+
+### Gathering for Nominal catch dataset:
+
+#### Data call
 
 Fisheries data sets managed by tRFMOs are generally updated on an annual basis according to their respective data submission cycle. Some revisions may also be performed on an irregular basis following corrections and improvements made to historical data. Each year, an official data call is made by the Steering Committee of the FAO Fisheries Resources Monitoring System (FIRMS) to get the most up-to-date versions of the nominal catch data set built by each Secretariat. It takes place around June to ensure that the data will include catches up to the year preceding the call.
 
-<!-- In addition, each dataset can be periodically updated from the official websites of the tRFMOs. -->
-<!-- Six datasets and five mapping datasets are used to create the final nominal catch dataset. -->
+#### The CWP Data Exchange Format
 
-## Exchange format & mapping
+For effective amalgamation of multiple datasets, a unified data exchange format has been crafted. Central to this format is the inclusion of:
 
-- CWP standards
-- Building of the specific GTA FIRMS fishing fleet code list 
-- Mapping with ASFIS/ISSCFG/FIRMS fleets
+-   Digital Format Standardization:
 
-<!-- ## Data pre-processing -->
+The Comma-Separated-Value (CSV) format, adhering to the RFC 4180 standard, has been endorsed.
 
-<!-- Before combining the datasets, a pre-processing step is applied to three out of the five datasets to restructure their shape. This restructuring ensures uniformity in the format of the data, facilitating the subsequent integration process. Additionally, to ensure consistency and comparability across datasets, a harmonization process is performed to standardize the code lists. The harmonized datasets allow for seamless data integration and accurate analysis across different tRFMOs. -->
+-   File Encoding Protocol:
 
-<!-- Below is a table listing the links to the datasets provided by each tRFMO: -->
+Whether in CSV or JSON format, encoding is standardized to UTF-8.
 
-<!-- ```{r, warning = FALSE, message = FALSE} -->
-<!-- datasets_links_processing <- read_delim(here("inputs/Workflow/datasets_links_processing.csv"),  -->
-<!--     delim = ";", escape_double = FALSE, col_types = cols(`Dataset;RFMO;Link to downolad;Pre-processing function;Comments` = col_character()), trim_ws = TRUE) -->
-<!-- ``` -->
+-   Data Dictionary:
 
-<!-- ```{r tab.cap = "Datasets and pre-processing functions used in the creation of the final dataset"} -->
-<!-- qflextable(datasets_links_processing) -->
-<!-- ``` -->
+A robust data dictionary has been established to guide the structure and semantics of the fisheries data exchange format. This repository, containing terms for column headers and their definitive explanations, is accessible at FDI Terms on GitHub. <https://github.com/fdiwg/fdi-terms> Notably, a specific fisheries term isn't rigidly bound to a single reference code list but varies based on its application context.
 
-## Creation of the global dataset
+In context-specific scenarios, like the Global Tuna Atlas, associations with particular code lists : <https://github.com/fdiwg/fdi-mappings/tree/main/global/firms/gta>
+
+The Global Tuna Atlas has adopted the Generic (measurement-independent) data structure for its operations. \ref table
+
+This section describes the steps and procedures used to create the global nominal catch dataset from the data available within each tRFMO.
+
+### Exchange format & mapping
+
+-   Building of the specific GTA FIRMS fishing fleet code list
+-   Mapping with ASFIS/ISSCFG/FIRMS fleets
+
+### Creation of the global dataset
+
+#### Data pre-processing
+
+Before combining the datasets, a pre-processing step is applied to three out of the five datasets to restructure their shape to follow the CWP standards. This restructuring ensures uniformity in the format of the data, facilitating the subsequent integration process. Below is a table listing the links to the datasets provided by each tRFMO:
+
+```{r, warning == FALSE, message = FALSE}
+datasets_links_processing <- read_delim(here("inputs/Workflow/datasets_links_processing.csv"),
+    delim = ";", escape_double = FALSE, col_types = cols(`Dataset;RFMO;Link to downolad;Pre-processing function;Comments` = col_character()), trim_ws = TRUE)
+```
+
+```{r tab.cap = "Datasets and pre-processing functions used in the creation of the final dataset"}
+qflextable(datasets_links_processing)
+```
+
+```{r results='asis'}
+CWP_format <- read_delim(here("inputs/CWP_format.csv"), 
+    delim = ";", escape_double = FALSE, trim_ws = TRUE)
+qflextable(CWP_format)
+```
+
+#### Data Mapping the data
+
+Additionally, to ensure consistency and comparability across datasets, a harmonization process is performed to standardize the code lists for datasets not having be mapped yet. The harmonized datasets allow for seamless data integration and accurate analysis across different tRFMOs. The recap of the mapping can be found in table \ref table
 
 Upon completing the pre-processing and harmonization steps, the global nominal catch dataset is constructed by binding and filtering the data.
 
-<!-- ### Binding -->
+1.  Binding of Datasets for each Ocean Region:
 
-<!-- All individual tRFMO datasets, representing different ocean regions, are combined through a data-binding process. This integration ensures comprehensive coverage of global tuna catch data, providing a holistic view of tuna fisheries on a global scale. The binding process brings together data from various regions, enabling cross-regional analysis and facilitating the identification of global trends and patterns in tuna catch. -->
+All the individual tRFMO datasets, representing different ocean regions, are combined through a data-binding process.
 
-### Filtering for southern Bluefin tuna (SBF) data from CCSBT
+2.  Filtering on Species under Mandate by the tRFMOs:
 
-During this stage, a specific data filtering process is implemented to retain only the data relevant to Southern Bluefin Tuna (SBT) provided by the CCSBT (Commission for the Conservation of Southern Bluefin Tuna). As CCSBT possesses expertise in managing and overseeing data related to this species, their dataset is selected as the primary source for Southern Bluefin Tuna information. This careful selection ensures that the dataset remains focused and representative of SBT data while benefiting from the expertise of the CCSBT.
+```{r}
 
-As a consequence of this step, data not falling within the mandate of CCSBT or not related to Southern Bluefin Tuna may be excluded from the final dataset. This filtering process aims to maintain precision and relevance, allowing for a comprehensive analysis of Southern Bluefin Tuna catch data within the context of CCSBT's expertise.
-
-### Filtering on species under Mandate by the tRFMOs
-
-```{r hide = TRUE, eval = FALSE}
 file_url <- "https://raw.githubusercontent.com/fdiwg/fdi-mappings/main/cross-term/codelist_mapping_source_authority_species.csv"
 download_link <- paste0("[Download CSV](<", file_url, ">)")
 
 cl_species_level0 <- readr::read_csv(file_url)
+
+
 ```
 
-This step involves filtering the data to retain only the information pertaining to species under the mandate of the tRFMOs. The retained species are carefully selected to align with the specific conservation and management goals of each tRFMO. The resulting dataset exclusively focuses on these species, ensuring a more targeted analysis that directly addresses the priorities and responsibilities of each respective tRFMO. `r SPECIES_ITIS[Aggregate == FALSE, length(unique(TSN))]` are selected. 
+```{r}
 
-```{r tab.cap = "Species retained in the final dataset by tRFMOs", eval = FALSE}
-require(dplyr)
+diffstratasnumber <- read.csv("outputs/filtering_species/figures/Diffstratas/Comparison.of.number.of.stratas.between.the.two.datasets.csv")
 
-ft <- flextable(as_grouped_data(cl_species_level0 %>% arrange(desc(species)) %>% dplyr::select(species, source_authority), groups = "species")) %>% 
-  merge_v(j = "species", part = "header") %>%
-  set_caption(caption = paste("Download Link:", download_link))
+tidy <- diffstratasnumber[c(1, 3, 4, 5, 6),] %>% rename(" " = X, "Before filtering" = "Before.filtering", "After filtering" = "After.filtering")
 
-ft
+qflextable2(tidy, columns_to_color = "Difference")
+
 ```
 
-## Data enrichment
-
-To enhance the comprehensibility and usability of the dataset, additional temporal and grouping information is enriched in the data. Specifically, temporal information such as time stamps and date columns are added, enabling temporal analysis and trend identification. Additionally, group columns are introduced, categorizing species and fishing gear types, facilitating efficient grouping and analysis of the data based on common characteristics.
-
-<!-- By enriching the dataset with these additional features, the resulting dataset becomes a valuable resource for researchers and policymakers to gain deeper insights into global tuna catch dynamics, fishing patterns, and species-specific trends. -->
-
-<!-- The methods presented here enable the creation of a reliable, harmonized, and enriched Nominal catch dataset that contributes to a better understanding of global tuna fisheries.  -->
+This step involves filtering the data to retain only the information pertaining to species under the mandate of the tRFMOs. The retained species are selected to align with the specific conservation and management goals of each tRFMO.`r SPECIES_ITIS[Aggregate == FALSE, length(unique(TSN))]` are selected.
 
 
+To be noted, catches of one of the main tuna i.e. Southern Bluefin Tuna is impacted by this treatment. As CCSBT possesses expertise in managing and overseeing data related to this species, their dataset is selected as the primary source for Southern Bluefin Tuna information. The impact is 4.3% of the global value for this species. 
 
+3. Enriching data
 
+To enhance the comprehensibility and usability of the dataset, additional temporal and grouping information is enriched in the data, categorizing species and fishing gear types using mapping of the Data Dictionary.
 
+The code used to perform this workflow is available on: [https://raw.githubusercontent.com/eblondel/geoflow-tunaatlas/master/tunaatlas_scripts/generation/create_global_tuna_atlas_nominal_catch.R](#0){.uri}
+
+## Geoflow workflow and database model
+
+The workflow of creation and the dissemination of the Nominal catch is using the geoflow package <https://github.com/r-geoflow/geoflow>.
+
+Geoflow offers a mechanism that simplifies the coordination and performance of workflows centered on metadata, aligning with the FAIR (Findable, Accessible, Interoperable, and Reusable) principles of data management.

@@ -1,3 +1,4 @@
 # Acknowledgments
 
-_The Acknowledgements should contain text acknowledging non-author contributors. Acknowledgements should be brief, and should not include thanks to anonymous referees and editors or effusive comments. Grant or contribution numbers may be acknowledged._
+We extend our sincere appreciation to FIRMS steering committee for their instrumental role in implementing the CWP standard exchange format. Additionally, we acknowledge the financial support from Blue Cloud 2026 European project.
+

@@ -1,3 +1,6 @@
 # Code availability
 
 _For all studies using custom code in the generation or processing of datasets, a statement must be included under the subheading "Code availability", indicating whether and how the code can be accessed, including any restrictions to access. This section should also include information on the versions of any software used, if relevant, and any specific variables or parameters used to generate, test, or process the current dataset._
+
+All the codes are available in the repository "". The packages environement to run this workflow is recapped in the renv.lock files and we strongly recommend the use of renv to run the workflow.
+

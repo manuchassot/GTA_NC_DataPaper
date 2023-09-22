@@ -24,8 +24,6 @@ if(!file.exists("../inputs/mappings/codelist_mapping_species_asfis_speciesgroup_
   
   download.file("https://raw.githubusercontent.com/fdiwg/fdi-mappings/main/global/firms/gta/codelist_mapping_species_asfis_speciesgroup_tunaatlas.csv", destfile = "../inputs/mappings/codelist_mapping_species_asfis_speciesgroup_tunaatlas.csv", mode = "wb")
 
-}
-
 ## Species to ocean basin ####
 if(!file.exists("../inputs/mappings/codelist_mapping_source_authority_species.csv"))
   

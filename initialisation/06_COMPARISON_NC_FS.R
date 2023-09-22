@@ -14,12 +14,12 @@ CAPTURE_TO_COMPARE <- CAPTURE_TO_COMPARE %>% dplyr::select(-c('STATUS'))
 CAPTURE_TO_COMPARE$measurement_unit <- "t"
 
 CAPTURE_TO_COMPARE$ocean_basin <- recode(CAPTURE_TO_COMPARE$ocean_basin,
-                              `America, South - Inland waters` = "Other",
+                              `America, South - Inland waters` = "America, South - Inland waters",
                               `Atlantic, Northwest` = "Atlantic Ocean",
                               `Atlantic, Northeast` = "Atlantic Ocean",
                               `Atlantic, Western Central` = "Atlantic Ocean",
                               `Atlantic, Eastern Central` = "Atlantic Ocean",
-                              `Mediterranean and Black Sea` = "Other",
+                              `Mediterranean and Black Sea` = "Mediterranean and Black Sea",
                               `Atlantic, Southwest` = "Atlantic Ocean",
                               `Atlantic, Southeast` = "Atlantic Ocean",
                               `Atlantic, Antarctic` = "Atlantic Ocean",
@@ -41,7 +41,6 @@ dir.create(here("inputs/data/comparison_Fishstat_NC/NC"), recursive = TRUE)
 
 CAPTURE_TO_COMPARE$year <- as.Date(paste(CAPTURE_TO_COMPARE$year, "-01-01", sep = ""), format = "%Y-%m-%d")
 NC$year <- as.Date(paste(NC$year, "-01-01", sep = ""), format = "%Y-%m-%d")
-
 
 saveRDS(CAPTURE_TO_COMPARE , here("inputs/data/comparison_Fishstat_NC/Fishstat/rds.rds"))
 saveRDS(NC, here("inputs/data/comparison_Fishstat_NC/NC/rds.rds"))
@@ -116,7 +115,6 @@ c_all <- c(c_existing, c_child)
 # Download all files
 lapply(c_all, copyrmd)
 
-CAPTURE_TO_COMPARE$gear_label <- "UNK"
 
 common_cols <- c("species", "measurement_type", "year", "measurement_value", 
                  "country_code", "species_group_gta", "taxon", "species_name", 
@@ -127,16 +125,60 @@ parameters_child_global <- list(fig.path = "figures",
                                 unique_analyse = FALSE, 
                                 parameter_init =here("inputs/data/comparison_Fishstat_NC/Fishstat"), 
                                 parameter_final = here("inputs/data/comparison_Fishstat_NC/NC"), 
-                                parameter_colnames_to_keep =common_cols,
+                                parameter_colnames_to_keep =c("species", "measurement_type", "year", "measurement_value", 
+                                                              "country_code", "species_group_gta", "taxon", "species_name", 
+                                                              "gear_label", "fleet_label", "ocean_basin", "measurement_unit"),
                                 parameter_diff_value_or_percent = "Difference in value",
                                 parameter_fact = "catch", shape_without_geom = NULL, 
                                 species_group = NULL, child_header = "", 
                                 parameter_titre_dataset_1 = "Fishstat",
 parameter_titre_dataset_2 = "Nominal catch" )
 
+child_env_global <- new.env()
+list2env(parameters_child_global, child_env_global)
 
 source(purl(here("rmd/Comparison_NC_FS/Functions_markdown.Rmd")))
 rmarkdown::render(here("rmd/Comparison_NC_FS/comparison.Rmd"), 
                   envir =  child_env_global, 
-                  output_dir = here("rmd/outputs/Comp_FS_NC"))
+                  output_dir = here("rmd/Comparison_NC_FS/figures"))
 
+
+
+## Comparison on filtered data
+
+NC_filtered <- NC %>% dplyr::filter(species %in% unique(CAPTURE_TO_COMPARE$species))
+CAPTURE_TO_COMPARE_filtered <- CAPTURE_TO_COMPARE %>% filter(species %in% unique(NC_filtered$species))
+
+
+NC_filtered <- NC_filtered %>% filter(year %in% unique(CAPTURE_TO_COMPARE_filtered$year))
+CAPTURE_TO_COMPARE_filtered <- CAPTURE_TO_COMPARE_filtered %>% filter(year %in% unique(NC_filtered$year))
+
+dir.create(here("inputs/data/comparison_Fishstat_NC/Fishstat_filtered"), recursive = TRUE)
+dir.create(here("inputs/data/comparison_Fishstat_NC/NC_filtered"), recursive = TRUE)
+
+saveRDS(CAPTURE_TO_COMPARE_filtered , here("inputs/data/comparison_Fishstat_NC/Fishstat_filtered/rds.rds"))
+saveRDS(NC_filtered, here("inputs/data/comparison_Fishstat_NC/NC_filtered/rds.rds"))
+
+
+
+parameters_child_global <- list(fig.path = "figures", 
+                                print_map = FALSE, parameter_time_dimension = "year", 
+                                unique_analyse = FALSE, 
+                                parameter_init =here("inputs/data/comparison_Fishstat_NC/Fishstat"), 
+                                parameter_final = here("inputs/data/comparison_Fishstat_NC/NC"), 
+                                parameter_colnames_to_keep =c("species", "measurement_type", "year", "measurement_value", 
+                                                              "country_code", "species_group_gta", "taxon", "species_name", 
+                                                              "gear_label", "fleet_label", "ocean_basin", "measurement_unit"),
+                                parameter_diff_value_or_percent = "Difference in value",
+                                parameter_fact = "catch", shape_without_geom = NULL, 
+                                species_group = NULL, child_header = "", 
+                                parameter_titre_dataset_1 = "Fishstat",
+                                parameter_titre_dataset_2 = "Nominal catch" )
+
+child_env_global <- new.env()
+list2env(parameters_child_global, child_env_global)
+
+source(purl(here("rmd/Comparison_NC_FS/Functions_markdown.Rmd")))
+rmarkdown::render(here("rmd/Comparison_NC_FS/comparison.Rmd"), 
+                  envir =  child_env_global, 
+                  output_dir = here("rmd/Comparison_NC_FS/figures"), output_file = "Recap_filtered.pdf")

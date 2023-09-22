@@ -77,25 +77,26 @@ cl_species_level0 <- read_csv(here("inputs/codelists/cl_species_level0.csv"))
 
 fishstatdataset_filtered <- semi_join(fishstatdataset, 
                                       cl_species_level0, by = c("SPECIES.ALPHA_3_CODE" = "code")) %>% 
-  inner_join(fishingfleet_FS %>% select(c(UN_Code, Name_En)), by =c ("COUNTRY.UN_CODE" = "UN_Code")) %>% 
-  dplyr::rename(country = Name_En, species = SPECIES.ALPHA_3_CODE, year = PERIOD, geographic_identifier = AREA.CODE,
+  inner_join(fishingfleet_FS %>% dplyr::select(c(UN_Code, Name_En)), by =c ("COUNTRY.UN_CODE" = "UN_Code")) %>% 
+  dplyr::rename(fleet_label = Name_En, species = SPECIES.ALPHA_3_CODE, year = PERIOD, geographic_identifier = AREA.CODE,
                 fishing_fleet = COUNTRY.UN_CODE, measurement_value= VALUE) %>% 
   dplyr::select(-c(STATUS, MEASURE)) %>% 
   mutate(measurement_unit = "t")
-fishstatdataset_groupped <- fishstatdataset_filtered %>% group_by(year, species) %>% summarise(measurement_value = sum(measurement_value))
+
+fishstatdataset_groupped_year <- fishstatdataset_filtered %>% group_by(year, species) %>% summarise(measurement_value = sum(measurement_value))
 
 #checking fishing_fleet 
-cl_country <- read_csv(here("inputs/codelists/cl_fishing_fleet_with_country.csv"))
+cl_country <- read_excel(here("inputs/codelists/cl_countries.xlsx"))
 codelist_mapping_fishing_fleet_country <- read_excel("~/GTA_NC_DataPaper/inputs/mappings/codelist_mapping_fishing_fleet_country.xlsx")
-NC_RAW_country <- NC_RAW %>% inner_join(cl_country %>% select(code, country), by = c("fishing_fleet" = "code")) %>% 
-  select(-fishing_fleet) 
-NC_RAW_country <- NC_RAW %>% inner_join(codelist_mapping_fishing_fleet_country %>% select( fishing_fleet = fleet_code, code = country_code), by = c("fishing_fleet" = "code")) %>% 
-  select(-fishing_fleet) 
+# NC_RAW_country <- NC_RAW %>% inner_join(cl_country %>% dplyr::select(CODE, LIST_NAME_EN), by = c("fishing_fleet" = "CODE")) %>% 
+  # dplyr::select(-fishing_fleet) 
+# NC_RAW_country <- NC_RAW %>% inner_join(codelist_mapping_fishing_fleet_country %>% dplyr::select( fishing_fleet = fleet_code, code = country_code), by = c("fishing_fleet" = "code")) %>% 
+#   dplyr::select(-fishing_fleet) 
 
 
 
-FS_not_in_NC <-setdiff(fishstatdataset_filtered$country,NC_RAW_country$country)
-NC_not_in_FS <-setdiff(NC_RAW_country$country,fishstatdataset_filtered$country)
+FS_not_in_NC <-setdiff(fishstatdataset_filtered$fleet_label,NC$fleet_label)
+NC_not_in_FS <-setdiff(NC$fleet_label,fishstatdataset_filtered$fleet_label)
 #many does not correspond
 
 #fixing_by_hand
@@ -104,7 +105,7 @@ NC_not_in_FS <-setdiff(NC_RAW_country$country,fishstatdataset_filtered$country)
 
 # to be handlded later, for now removed. 
 
-fishstatdataset_filtered <- fishstatdataset_filtered %>% dplyr::select(-c(country, fishing_fleet))
+# fishstatdataset_filtered <- fishstatdataset_filtered %>% dplyr::select(-c(country, fishing_fleet))
 
 #checking species
 
@@ -112,30 +113,37 @@ length(unique(fishstatdataset_filtered$species))
 
 length(unique(cl_species_level0$code))
 
+#### Comparison detailled
+
+fishstatdataset_filtered$gear_label <- "UNK"
+fishstatdataset_filtered = merge(fishstatdataset_filtered, 
+                                 SPECIES_ITIS[, .(species_group_gta = `Species group`, species_code_asfis = `ASFIS code`, taxon = `Scientific name`, species_aggregate = Aggregate, tsn = TSN)], by.x = "species", by.y = "species_code_asfis", all.x = TRUE)
+
 ## One species of level 0 is not in fishstatdataset
 
 ## Comparison to global nominal catch
+NC_to_comp <- NC
 
-NC_RAW <- NC_RAW %>% mutate(year = lubridate::year(time_start))
+NC_to_comp <- NC_to_comp %>% mutate(year = lubridate::year(time_start))
 
-NC_RAW_tidy_comp <- NC_RAW %>%
+NC_to_comp_tidy_comp <- NC_to_comp %>%
   dplyr::select(colnames(fishstatdataset_filtered))
 
-NC_RAW_tidy_comp$year <- as.Date(paste(NC_RAW_tidy_comp$year, "-01-01", sep = ""), format = "%Y-%m-%d")
+NC_to_comp_tidy_comp$year <- as.Date(paste(NC_to_comp_tidy_comp$year, "-01-01", sep = ""), format = "%Y-%m-%d")
 fishstatdataset_filtered$year <- as.Date(paste(fishstatdataset_filtered$year, "-01-01", sep = ""), format = "%Y-%m-%d")
 
 
-NC_RAW_groupped <- NC_RAW %>% group_by(species, year) %>%
+NC_to_comp_groupped <- NC_to_comp %>% group_by(species, year) %>%
   summarise(measurement_value = sum(measurement_value)) 
 
-NC_RAW_groupped <- NC_RAW_groupped %>% mutate(year = as.Date(year))
+NC_to_comp_groupped <- NC_to_comp_groupped %>% mutate(year = as.Date(year))
 
 
-NC_RAW_groupped$dataset <- "NC"
+NC_to_comp_groupped$dataset <- "NC"
 fishstatdataset_filtered$dataset <- "FishStat"
 
 
-comp_NC_FS <- rbind(NC_RAW_groupped, fishstatdataset_filtered)
+comp_NC_FS <- rbind(NC_to_comp_groupped, fishstatdataset_filtered)
 
 require(ggplot2)
 ggplot(comp_NC_FS) +
@@ -156,38 +164,37 @@ ggplot(comp_NC_FS) +
 
 
 
-#### Comparison detailled
+
+
+
+# cl_asfis_species <- read_csv(here("inputs/codelists/cl_asfis_species.csv"))
 
 
 
 dir.create(here("inputs/data/comparison_Fishstat_NC/Fishstat"), recursive = TRUE)
 dir.create(here("inputs/data/comparison_Fishstat_NC/NC"), recursive = TRUE)
 saveRDS(fishstatdataset_filtered , here("inputs/data/comparison_Fishstat_NC/Fishstat/rds.rds"))
-saveRDS(NC_RAW_tidy_comp, here("inputs/data/comparison_Fishstat_NC/NC/rds.rds"))
+saveRDS(NC_to_comp_tidy_comp, here("inputs/data/comparison_Fishstat_NC/NC/rds.rds"))
 
 ## Those files will be used in the comparison file
 
-dir.create(here("rmd/outputs/Comp_FS_NC/figures"), recursive = TRUE, showWarnings = FALSE)
+dir.create(here("rmd/Comparison_NC_FS/figures"), recursive = TRUE, showWarnings = FALSE)
 
 
-parameters_child_global <- list(fig.path = here("rmd/outputs/Comp_FS_NC/figures/"), 
-                                print_map = FALSE, time_dimension = "year", 
+parameters_child_global <- list(fig.path = "figures", 
+                                print_map = FALSE, parameter_time_dimension = "year", 
                                 unique_analyse = FALSE, 
                                 parameter_init =here("inputs/data/comparison_Fishstat_NC/Fishstat"), 
                                 parameter_final = here("inputs/data/comparison_Fishstat_NC/NC"), 
-                                parameter_colnames_to_keep =c(       "year",                 
-                                                                     "geographic_identifier","species",     
-                                                                     "measurement_unit",         
-                                                                     "measurement_value", "country_label", 
-                                                                     "gear_label",
-                                                                     "species_group_gta"), parameter_diff_value_or_percent = "Difference in value",
-                                parameter_fact = "catch")
+                                parameter_colnames_to_keep =colnames(CAPTURES_TO_COMPARE), parameter_diff_value_or_percent = "Difference in value",
+                                parameter_fact = "catch", shape_without_geom = NULL, 
+                                species_group = NULL, child_header = "")
 child_env_global = new.env()
 list2env(parameters_child_global, env = child_env_global)
 
 require(bookdown)
-
-rmarkdown::render(here("rmd/comparison.Rmd"), 
+source(purl(here("rmd/Comparison_NC_FS/Functions_markdown.Rmd")))
+rmarkdown::render(here("rmd/Comparison_NC_FS/comparison.Rmd"), 
                   envir =  child_env_global, 
                   output_dir = here("rmd/outputs/Comp_FS_NC"))
 

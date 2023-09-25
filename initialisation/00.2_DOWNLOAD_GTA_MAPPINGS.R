@@ -19,6 +19,8 @@ if(!file.exists(paste0("../inputs/mappings/codelist_mapping_flag_", i, "_fishing
   
   download.file(paste0("https://raw.githubusercontent.com/fdiwg/fdi-mappings/main/regional-to-global/", toupper(i), "/codelist_mapping_flag_", i, "_fishingfleet_firms.csv"), destfile = paste0("../inputs/mappings/codelist_mapping_flag_", i, "_fishingfleet_firms.csv"), mode = "wb")
 
+}
+  
 ## Species to species group mapping ####
 if(!file.exists("../inputs/mappings/codelist_mapping_species_asfis_speciesgroup_tunaatlas.csv"))
   

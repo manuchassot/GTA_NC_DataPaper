@@ -6,7 +6,6 @@ Possible content **may include**:
 
 -	experiments that support or validate the data-collection procedure(s) (e.g. negative controls, or an analysis of standards to confirm measurement linearity)
 -	statistical analyses of experimental error and variation
--	phenotypic or genotypic assessments of biological samples (e.g. confirming disease status, cell line identity, or the success of perturbations)
 -	general discussions of any procedures used to ensure reliable and unbiased data production, such as blinding and randomization, sample tracking systems, etc. 
 -	any other information needed for assessment of technical rigour by the referees
 
@@ -14,3 +13,176 @@ Generally, this **should not include**:
 -	follow-up experiments aimed at testing or supporting an interpretation of the data
 -	statistical hypothesis testing 
 -	exploratory computational analyses_
+
+The dataset is a version of what is been done by other organization such as FAO. A study of differences between the Nominal Catch dataset of the Global Tuna Atlas (Nominal Catch GTA) and the Fishstat data from FAO (Fishstat) has been performed. The mappind dataset to perform the harmonisation of the fishingfleet are available on : 
+
+The mapping for fishingfleet for FAO dataset is the one provided on fishingfleet_FS with minor changes for "Sudan (former)" aggregated with "Sudan" and "Channels Islands" aggregated with "UK": code to be found on ""
+
+The main outputs of this analysis is the difference between the final data. 
+
+
+```{r}
+table_comp <- read.csv(here("rmd/Comparison_NC_FS/figures/Diffstratas/Comparison.of.number.of.stratas.between.the.two.datasets.csv"))
+
+qflextable2(table_comp, columns_to_color  = c("Difference"))
+```
+
+```{r}
+# list_not_commun <-readRDS(here("inputs/data/comparison_Fishstat_NC/notcommuntime_species.rds"))
+
+min_year_not_commun <- lubridate::year(min(NC$year))
+max_year_not_commun <- lubridate::year(max(CAPTURE_TO_COMPARE$year))
+
+# species_name <- read.csv(here("inputs/codelists/cl_asfis_species.csv"))
+# 
+# species_name <- inner_join(list_not_commun$species, species_name, by = c("species" = "code")) %>% dplyr::select(label,code = species, measurement_value, onlyin )
+```
+
+## Time series differences
+
+
+For years from `r min_year_not_commun` to `r max_year_not_commun` , only Nominal Catch data contains declaration. 
+
+Although the Nominal Catch data encompasses an additional 32 years over Fishstat, the overlapping years indicate substantial higher record for Fishstat in reported values.
+
+
+```{r}
+
+knitr::include_graphics(here("rmd/Comparison_NC_FS/figures/Temporal/Evolutions.of.values.for.the.dimension.year.for.Fishstat.and.NC.dataset..png"))
+
+```
+
+## Fishing fleet
+
+However, even if they do have the same number of fishingfleet, they are not equivalent i.e. some fishingfleet are disappearing in one or the other. Here is the recap of the dimensions that are completely disappearing or appearing between the two datasets. 
+
+```{r}
+data <- read.csv(here("rmd/Comparison_NC_FS/figures/Diffstratas/Disappearing.or.appearing.strata.between.Fishstat.and.NC.csv")) %>% dplyr::select(-measurement_unit) %>% dplyr::rename("Difference in millions" = "Difference.in.millions") %>% filter(Dimension == "fleet_label")
+
+qflextable2(data, grouped_data = c("Dimension"), columns_to_color  = c("Difference in millions"))
+```
+
+Some fishing_fleet are not mapped the same way in both datasets creating the disappearing and appearing. 
+
+For the fishingfleet, NC does not provide data for some countries (with minor impact on the global data) that are `r unique((data %>% dplyr::filter(Loss...Gain == "Loss" & Dimension == "country_label")))$Precision`, however it provides data with aggregated fishingfleet (i.e nei).
+
+
+
+```{r fig.cap = 'Relatives percentage of catches by country for Fishstat and Nominal catches dataset'}
+
+knitr::include_graphics(here("rmd/Comparison_NC_FS/figures_filtered/Barplot/Distribution.in.value.for.the.dimension...fleet.label.png"))
+
+```
+
+The relative importance of countries seems to be close one from another, however the catches of China are much different. 
+
+## Species
+
+Most of the differences are in the **repartition** of the species and species group. 
+
+```{r fig.cap = 'Relatives percentage of catches by species (1) and species group (2) for Fishstat and Nominal catches dataset'}
+
+knitr::include_graphics(here("rmd/Comparison_NC_FS//figures/Piechartsdimensions/Distribution.in.value.for.the.dimension...species.group.gta.png"))
+
+knitr::include_graphics(here("rmd/Comparison_NC_FS//figures/Piechartsdimensions/Distribution.in.value.for.the.dimension...species.png"))
+
+
+
+
+```
+
+The Skipjack tuna, the most catched tuna has a relative importance very different between the two datasets. The major tuna Thunus Albacares, coded as ALB represents 6% of the data in the NC dataset but less that 1% in the Fishstat.
+
+
+```{r fig.cap = 'Captures of catches by species (1) and species group (2) for Fishstat and Nominal catches dataset'}
+
+knitr::include_graphics(here("rmd/Comparison_NC_FS/figures/Barplot/Distribution.in.value.for.the.dimension...species.group.gta.png"))
+
+knitr::include_graphics(here("rmd/Comparison_NC_FS/figures/Barplot/Distribution.in.value.for.the.dimension...species.png"))
+
+
+
+
+```
+
+## For the remaining, we only consider species, year and ocean bas
+
+```{r}
+
+`%notin%` <- Negate(`%in%`)
+
+diffstratas <- read.csv(here("rmd/Comparison_NC_FS/figures_filtered/Diffstratas/Difference.between.stratas.of.the.two.datasets.csv")) %>% dplyr::filter(Dimension %notin% c("year", "GRIDTYPE")) %>% dplyr::select(-measurement_unit) %>% dplyr::rename("Loss / Gain" = "Loss...Gain", "Difference in value" = "Difference.in.value")
+
+qflextable2(diffstratas, grouped_data = c("Dimension", "Loss / Gain"), columns_to_color = c("Difference in value"))
+
+```
+
+
+### Comparison on filtered data
+
+An analysis comparing only the year, ocean basin and species where both dataset provided data has been ran. The main outputs of this analysis are:
+
+```{r}
+data <- read.csv(here("rmd/Comparison_NC_FS/figures_filtered/Summary/Summary.of.the.difference.between.the.two.datasets.csv")) %>% dplyr::select(-measurement_unit) %>% dplyr::rename("Difference (in %)" = "Difference..in...")
+
+qflextable2(data, columns_to_color  = c("Difference (in %)", "Difference"))
+```
+
+
+### Ocean Basin
+
+Fishstats provide two geographic areas (i.e. Inland America , Meditarean and Black Sea) that are not provided in the NC data. 
+
+```{r fig.cap = 'Relatives percentage of catches by country for Fishstat and Nominal catches dataset'}
+
+knitr::include_graphics(here("rmd/Comparison_NC_FS/figures_filtered/Barplot/Distribution.in.value.for.the.dimension...ocean.basin.png"))
+
+```
+
+The major difference is for the 
+
+
+
+### Major tuna differences
+
+For half of the species, records are higher in the Fishstat dataset and for the other half the records are higher in the Nominal Catch dataset.
+
+
+For 5 out of 6 major tuna species :
+
+Albacore (Thunnus alalunga) **(ALB)**,  Bigeye (Thunnus obesus) **(BET)**, Bluefin (Thunnus thynnus) **(BFT)**, Thunnus orientalis **(PBF)**, Southern bluefin tuna Thunnus maccoyii **(SBF)**, Skipjack (Katsuwonus pelamis) **(SKJ)**, Yellowfin (Thunnus albacares) **(YFT)** , the records are higher in Nominal Catch. 
+
+They are higher in Fishstat for Skipjack.
+
+
+```{r}
+# Major tuna abbreviations and names for titles
+major_tunas <- list(
+  ALB = "Albacore (Thunnus alalunga)",
+  BET = "Bigeye (Thunnus obesus)",
+  BFT = "Bluefin (Thunnus thynnus)",
+  SBF = "Southern bluefin tuna (Thunnus maccoyii)",
+  SKJ = "Skipjack (Katsuwonus pelamis)",
+  YFT = "Yellowfin (Thunnus albacares)"
+)
+
+# Construct filenames
+file_paths <- paste0("~/GTA_NC_DataPaper/outputs/charts/comparison_FS_NC_time_by_species/", names(major_tunas), "_comparison_plot.png")
+
+# Function to plot each image with title
+plot_image_with_title <- function(file_path, title) {
+  if (file.exists(file_path)) {
+    img <- knitr::include_graphics(file_path)
+    img
+  }
+}
+```
+
+
+```{r}
+lapply(file_paths, plot_image_with_title) 
+```
+
+
+
+More complete analysis can be found in Annexe.

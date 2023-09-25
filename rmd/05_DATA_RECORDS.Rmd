@@ -4,8 +4,6 @@ _The Data Records section should be used to explain each data record associated 
 
 _Tables can be used to support the data records, specifying the data output resulting from each data-collection or analytical step and the names of the corresponding files should these form part of the archived record._
 
-## Data Records
-
 This study encompasses several data records detailing global nominal catch figures across various regions and timelines. Each record represents the aggregate catch, specified by fish species, geographic_identifier, gear_type, fishing_fleet, and respective time periods.
 
 
@@ -19,11 +17,11 @@ qflextable(datasets_links_processing)
 ```
 
 
+## Data Repository
 
-Data Repository
 All data associated with this study are deposited and made publicly accessible in the , a googledrive for fisheries data . The dataset is persistently available at DOI.
 
-The datasets used to create the data are available on a googledrive 
+The datasets used to create the data are stored in a google drive thanks to first pre-processing step. 
 
 ```{r}
 if(!(file.exists(here("inputs/Workflow/nominal_files_recap.csv")))){
@@ -65,11 +63,9 @@ The storage of the inputed files is done on the googledrive of firmstunaatlas, t
 
 The final dataset named : contains `r ifelse((length(colnames(NC)) == 24), length(colnames(NC)), FALSE)` columns. 11 of them corresponds to the CWP standards columns, the remaining 13 drift from an enrichment on the basis of the columns fishing_fleet, species, gear_type, geographic_identifier.
 
-
 ##### Storage
 
-This data is stocked on zenodo under the DOI:
-The geoflow package allows as well to store it in a googledrive, a database, a geoserver and a geonetwork catalogue.
+This data is stocked on zenodo under the DOI: 10.5281/zenodo.8034731
 
 ##### Other files used for the display of maps, enrichment or filtering.
 

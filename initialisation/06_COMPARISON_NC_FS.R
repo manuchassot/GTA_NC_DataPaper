@@ -144,14 +144,20 @@ rmarkdown::render(here("rmd/Comparison_NC_FS/comparison.Rmd"),
 
 
 
-## Comparison on filtered data
+## Comparison on filtered data species, year and ocean basin 
+NC_filtered <- NC
+CAPTURE_TO_COMPARE_filtered <- CAPTURE_TO_COMPARE
 
-NC_filtered <- NC %>% dplyr::filter(species %in% unique(CAPTURE_TO_COMPARE$species))
+NC_filtered <- NC_filtered %>% dplyr::filter(species %in% unique(CAPTURE_TO_COMPARE$species))
 CAPTURE_TO_COMPARE_filtered <- CAPTURE_TO_COMPARE %>% filter(species %in% unique(NC_filtered$species))
 
 
 NC_filtered <- NC_filtered %>% filter(year %in% unique(CAPTURE_TO_COMPARE_filtered$year))
 CAPTURE_TO_COMPARE_filtered <- CAPTURE_TO_COMPARE_filtered %>% filter(year %in% unique(NC_filtered$year))
+
+NC_filtered <- NC_filtered %>% filter(ocean_basin %in% unique(CAPTURE_TO_COMPARE_filtered$ocean_basin))
+CAPTURE_TO_COMPARE_filtered <- CAPTURE_TO_COMPARE_filtered %>% filter(ocean_basin %in% unique(NC_filtered$ocean_basin))
+
 
 dir.create(here("inputs/data/comparison_Fishstat_NC/Fishstat_filtered"), recursive = TRUE)
 dir.create(here("inputs/data/comparison_Fishstat_NC/NC_filtered"), recursive = TRUE)
@@ -161,11 +167,11 @@ saveRDS(NC_filtered, here("inputs/data/comparison_Fishstat_NC/NC_filtered/rds.rd
 
 
 
-parameters_child_global <- list(fig.path = "figures", 
+parameters_child_global <- list(fig.path = "figures_filtered", 
                                 print_map = FALSE, parameter_time_dimension = "year", 
                                 unique_analyse = FALSE, 
-                                parameter_init =here("inputs/data/comparison_Fishstat_NC/Fishstat"), 
-                                parameter_final = here("inputs/data/comparison_Fishstat_NC/NC"), 
+                                parameter_init =here("inputs/data/comparison_Fishstat_NC/Fishstat_filtered"), 
+                                parameter_final = here("inputs/data/comparison_Fishstat_NC/NC_filtered"), 
                                 parameter_colnames_to_keep =c("species", "measurement_type", "year", "measurement_value", 
                                                               "country_code", "species_group_gta", "taxon", "species_name", 
                                                               "gear_label", "fleet_label", "ocean_basin", "measurement_unit"),
@@ -181,4 +187,85 @@ list2env(parameters_child_global, child_env_global)
 source(purl(here("rmd/Comparison_NC_FS/Functions_markdown.Rmd")))
 rmarkdown::render(here("rmd/Comparison_NC_FS/comparison.Rmd"), 
                   envir =  child_env_global, 
-                  output_dir = here("rmd/Comparison_NC_FS/figures"), output_file = "Recap_filtered.pdf")
+                  output_dir = here("rmd/Comparison_NC_FS/figures_filtered"))
+
+
+# Temporal differences for each species FS/NC -----------------------------
+
+# First, we will reshape the datasets to a format suitable for comparison
+
+Fishstat <- CAPTURE_TO_COMPARE_filtered %>%
+  dplyr::select(species, year, measurement_value) %>%
+  group_by(species, year) %>%
+  summarise(total_value = sum(measurement_value, na.rm = TRUE))
+
+NominalCatch <- NC_filtered %>%
+  dplyr::select(species, year, measurement_value) %>%
+  group_by(species, year) %>%
+  summarise(total_value = sum(measurement_value, na.rm = TRUE))
+
+# Merging datasets based on species and year
+comparison <- left_join(Fishstat, NominalCatch, 
+                        by = c("species", "year"),
+                        suffix = c("_Fishstat", "_NC"))
+
+# Calculating differences
+comparison$difference <- comparison$total_value_NC - comparison$total_value_Fishstat
+
+# Generating the plot for each species
+species_list <- unique(comparison$species)
+
+if (!dir.exists(here("outputs", "charts", "comparison_FS_NC_time_by_species"))) {
+  dir.create(here("outputs", "charts", "comparison_FS_NC_time_by_species"), recursive = TRUE)
+}
+
+
+for(spec in species_list) {
+  tmp_data <- filter(comparison, species == spec)
+  
+  total_diff <- sum(tmp_data$difference, na.rm = TRUE)
+  higher <- ifelse(total_diff>0, "Nominal Catch", "Fishstat")
+  legend_title <- paste("Dataset with Higher Value is ",higher, "\nTotal Difference:", round(total_diff))
+  
+  p <- ggplot(tmp_data, aes(x = year, y = difference, fill = difference > 0)) +
+    geom_bar(stat="identity") +
+    scale_fill_manual(values=c("red", "blue"), 
+                      name=legend_title, 
+                      breaks=c(TRUE, FALSE), 
+                      labels=c("Nominal Catch", "Fishstat")) +
+    labs(title=paste("Difference in Measurement Value for", spec), 
+         y="Difference (Nominal Catch - Fishstat)", 
+         x="Measurement Type") +
+    theme_minimal() +
+    theme(legend.title = element_text(size=10))  # Adjust this size if necessary
+  
+  print(p)
+  
+  # Save the plot, adjusting dimensions to avoid truncation
+  ggsave(filename = here("outputs", "charts", "comparison_FS_NC_time_by_species", paste0(spec, "_comparison_plot.png")), 
+         plot = p, width=10, height=7)  # You can adjust width and height as needed
+}
+
+
+# Compute the sum of the difference for each species
+species_summary <- comparison %>%
+  group_by(species) %>%
+  summarise(total_difference = sum(difference, na.rm = TRUE))
+
+# Count how many species have a higher total value in each dataset
+Fishstat_higher <- sum(species_summary$total_difference < 0)
+NC_higher <- sum(species_summary$total_difference > 0)
+
+
+# Filter species with higher Fishstat values
+Fishstat_higher_species <- species_summary %>%
+  filter(total_difference < 0) %>%
+  dplyr::select(species)
+
+
+# Filter species with higher NominalCatch values
+NC_higher_species <- species_summary %>%
+  filter(total_difference > 0) %>%
+  dplyr::select(species)
+
+

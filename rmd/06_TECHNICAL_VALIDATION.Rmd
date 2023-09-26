@@ -16,7 +16,7 @@ Generally, this **should not include**:
 
 The dataset is a version of what is been done by other organization such as FAO. A study of differences between the Nominal Catch dataset of the Global Tuna Atlas (Nominal Catch GTA) and the Fishstat data from FAO (Fishstat) has been performed. The mappind dataset to perform the harmonisation of the fishingfleet are available on : 
 
-The mapping for fishingfleet for FAO dataset is the one provided on fishingfleet_FS with minor changes for "Sudan (former)" aggregated with "Sudan" and "Channels Islands" aggregated with "UK": code to be found on ""
+The mapping for fishingfleet for FAO dataset is the one provided on fishingfleet_FS. (CL_FI_COUNTRY_GROUPS). The fishing_fleet has been mapped thanks to the homemade mapping csv "inputs/mappings/Mapping_from_fsj_to_nc.csv" :. To make the comparison more comprehensive the countries has been mapped and not the fleet_label which means fleet_label have been aggregated to countries when possible (exemple Martinique and Saint Pierre et Miquelon to "France (EU)"). Please find the aggregation dataset here:
 
 The main outputs of this analysis is the difference between the final data. 
 

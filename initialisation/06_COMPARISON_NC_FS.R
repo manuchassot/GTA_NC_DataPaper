@@ -1,49 +1,3 @@
-CAPTURE_TO_COMPARE <- CAPTURE
-
-names(CAPTURE_TO_COMPARE)[names(CAPTURE_TO_COMPARE) %in% c("SPECIES.ALPHA_3_CODE", "MEASURE", 
-                                     "PERIOD", "VALUE", "COUNTRY_CODE", "COUNTRY", 
-                                     "SPECIES", "SPECIES_SCIENTIFIC", "ISSCAAP_NAME", 
-                                     "FISHING_GROUND", "MEASUREMENT_NAME")] <- 
-  c("species", "measurement_type", "year", "measurement_value", 
-    "country_code", "fleet_label", "species_name", "taxon", "species_group_gta", 
-    "ocean_basin", "measurement_unit")
-
-
-CAPTURE_TO_COMPARE <- CAPTURE_TO_COMPARE %>% dplyr::select(-c('STATUS'))
-
-CAPTURE_TO_COMPARE$measurement_unit <- "t"
-
-CAPTURE_TO_COMPARE$ocean_basin <- recode(CAPTURE_TO_COMPARE$ocean_basin,
-                              `America, South - Inland waters` = "America, South - Inland waters",
-                              `Atlantic, Northwest` = "Atlantic Ocean",
-                              `Atlantic, Northeast` = "Atlantic Ocean",
-                              `Atlantic, Western Central` = "Atlantic Ocean",
-                              `Atlantic, Eastern Central` = "Atlantic Ocean",
-                              `Mediterranean and Black Sea` = "Mediterranean and Black Sea",
-                              `Atlantic, Southwest` = "Atlantic Ocean",
-                              `Atlantic, Southeast` = "Atlantic Ocean",
-                              `Atlantic, Antarctic` = "Atlantic Ocean",
-                              `Indian Ocean, Western` = "Indian Ocean",
-                              `Indian Ocean, Eastern` = "Indian Ocean",
-                              `Indian Ocean, Antarctic` = "Indian Ocean",
-                              `Pacific, Northwest` = "Western-Central Pacific Ocean",
-                              `Pacific, Northeast` = "Western-Central Pacific Ocean",
-                              `Pacific, Western Central` = "Western-Central Pacific Ocean",
-                              `Pacific, Eastern Central` = "Eastern Pacific Ocean",
-                              `Pacific, Southwest` = "Western-Central Pacific Ocean",
-                              `Pacific, Southeast` = "Western-Central Pacific Ocean",
-                              `Pacific, Antarctic` = "Western-Central Pacific Ocean")
-
-
-
-dir.create(here("inputs/data/comparison_Fishstat_NC/Fishstat"), recursive = TRUE)
-dir.create(here("inputs/data/comparison_Fishstat_NC/NC"), recursive = TRUE)
-
-CAPTURE_TO_COMPARE$year <- as.Date(paste(CAPTURE_TO_COMPARE$year, "-01-01", sep = ""), format = "%Y-%m-%d")
-NC$year <- as.Date(paste(NC$year, "-01-01", sep = ""), format = "%Y-%m-%d")
-
-saveRDS(CAPTURE_TO_COMPARE , here("inputs/data/comparison_Fishstat_NC/Fishstat/rds.rds"))
-saveRDS(NC, here("inputs/data/comparison_Fishstat_NC/NC/rds.rds"))
 
 ## Those files will be used in the comparison file
 
@@ -116,6 +70,147 @@ c_all <- c(c_existing, c_child)
 lapply(c_all, copyrmd)
 
 
+
+
+# Tidying for comparison  -------------------------------------------------
+CAPTURE_TO_COMPARE <- CAPTURE
+
+
+NC_TO_COMPARE <- NC
+
+
+NC_TO_COMPARE <- NC_TO_COMPARE %>% left_join(MAPPING_FLEET_FSJ_COUNTRY, by = c("fishing_fleet"= "code")) %>% 
+  left_join(CL_COUNTRIES, by = c("fsj_country_code" = "COUNTRY_CODE"))
+
+NC_TO_COMPARE <- NC_TO_COMPARE %>% dplyr::select(-c(country_code, UN_CODE, fleet_label)) %>% 
+  dplyr::rename(country_code = fsj_country_code, fleet_label = COUNTRY)
+  
+
+
+
+
+# Diff label diff label ---------------------------------------------------
+
+unique(NC_TO_COMPARE %>% filter(fleet_label != label) %>% dplyr::select(fleet_label, label)%>% distinct())
+
+NC_not_FS <- setdiff(NC_TO_COMPARE$fleet_label, CAPTURE_TO_COMPARE$COUNTRY)
+FS_not_NC <- setdiff(CAPTURE_TO_COMPARE$COUNTRY, NC_TO_COMPARE$fleet_label)
+
+
+# CAPTURE_TO_COMPARE3 <- unique((CAPTURE_TO_COMPARE %>% filter(!is.na(COUNTRY_CODE) & is.na(code)))$COUNTRY)
+# print(CAPTURE_TO_COMPARE3)
+# No equivalent for country to map from JSF to other
+
+
+# "Territory/Country from First List","Equivalent Country from Second List"
+# "British Indian Ocean Ter","United Kingdom"
+# "US Virgin Islands","United States of America"
+# "Montenegro","Serbia and Montenegro"
+# "Sudan (former)","Sudan"
+# "French Guiana","France"
+# "Tokelau","New Zealand"
+# "Greenland","Greenland" maybe only since 2008?
+# "Isle of Man","United Kingdom"
+# "Northern Mariana Is.","United States of America"
+# "Guam","United States of America"
+# "Channel Islands","United Kingdom"
+# "Congo, Dem. Rep. of the","Congo"
+# "Guadeloupe","France"
+# "Martinique","France"
+# "American Samoa","United States of America"
+# "New Caledonia","France"
+# "Réunion","France"
+
+mapping_from_FSJ_to_NC <- read_csv(here("inputs/mappings/Mapping_from_fsj_to_nc.csv")) %>% 
+  dplyr::select(FSJ, NC)
+
+# Code_NC <- mapping_from_FSJ_to_NC %>% inner_join(NC_TO_COMPARE %>% 
+#                                                    dplyr::select(label, country_code), by = c("NC"="label"))
+
+CAPTURE_TO_COMPARE <- CAPTURE_TO_COMPARE %>% dplyr::left_join(mapping_from_FSJ_to_NC, 
+                                                        by = c("COUNTRY"="FSJ")) %>% 
+  mutate(COUNTRY = ifelse(is.na(NC), COUNTRY, NC)) %>% dplyr::select(-NC)
+
+NC_not_FS <- setdiff(NC_TO_COMPARE$fleet_label, CAPTURE_TO_COMPARE$COUNTRY)
+FS_not_NC <- setdiff(CAPTURE_TO_COMPARE$COUNTRY, NC_TO_COMPARE$fleet_label)
+
+
+
+
+names(CAPTURE_TO_COMPARE)[names(CAPTURE_TO_COMPARE) %in% c("SPECIES.ALPHA_3_CODE", "MEASURE", 
+                                     "PERIOD", "VALUE", "COUNTRY_CODE", "COUNTRY", 
+                                     "SPECIES", "SPECIES_SCIENTIFIC", "ISSCAAP_NAME", 
+                                     "FISHING_GROUND", "MEASUREMENT_NAME")] <- 
+  c("species", "measurement_type", "year", "measurement_value", 
+    "country_code", "fleet_label", "species_name", "taxon", "species_group_gta", 
+    "ocean_basin", "measurement_unit")
+
+
+CAPTURE_TO_COMPARE <- CAPTURE_TO_COMPARE %>% dplyr::select(-c('STATUS'))
+
+CAPTURE_TO_COMPARE$measurement_unit <- "t"
+
+CAPTURE_TO_COMPARE$ocean_basin <- recode(CAPTURE_TO_COMPARE$ocean_basin,
+                              `America, South - Inland waters` = "America, South - Inland waters",
+                              `Atlantic, Northwest` = "Atlantic Ocean",
+                              `Atlantic, Northeast` = "Atlantic Ocean",
+                              `Atlantic, Western Central` = "Atlantic Ocean",
+                              `Atlantic, Eastern Central` = "Atlantic Ocean",
+                              `Mediterranean and Black Sea` = "Mediterranean and Black Sea",
+                              `Atlantic, Southwest` = "Atlantic Ocean",
+                              `Atlantic, Southeast` = "Atlantic Ocean",
+                              `Atlantic, Antarctic` = "Atlantic Ocean",
+                              `Indian Ocean, Western` = "Indian Ocean",
+                              `Indian Ocean, Eastern` = "Indian Ocean",
+                              `Indian Ocean, Antarctic` = "Indian Ocean",
+                              `Pacific, Northwest` = "Western-Central Pacific Ocean",
+                              `Pacific, Northeast` = "Western-Central Pacific Ocean",
+                              `Pacific, Western Central` = "Western-Central Pacific Ocean",
+                              `Pacific, Eastern Central` = "Eastern Pacific Ocean",
+                              `Pacific, Southwest` = "Western-Central Pacific Ocean",
+                              `Pacific, Southeast` = "Western-Central Pacific Ocean",
+                              `Pacific, Antarctic` = "Western-Central Pacific Ocean")
+
+
+
+# Mapping for fishing_fleet -----------------------------------------------
+
+
+# Mapping fleet label to fleet label
+# Proposition
+
+
+# mapping <- read_csv(here("inputs/mappings/mapping_from_FSJ_to_NC.csv"))
+# 
+# CAPTURE_TO_COMPARE <- CAPTURE_TO_COMPARE %>% 
+#   dplyr::left_join(mapping, by = c("fleet_label"="Mapped Label")) %>% 
+#   mutate(`fleet_label` = ifelse(is.na(`Original Label`), fleet_label, `Original Label`)) %>% 
+#   dplyr::select(-c(`Original Label`, code))
+
+# Mapping country to country ----------------------------------------------
+
+
+
+
+
+
+
+
+dir.create(here("inputs/data/comparison_Fishstat_NC/Fishstat"), recursive = TRUE)
+dir.create(here("inputs/data/comparison_Fishstat_NC/NC"), recursive = TRUE)
+
+CAPTURE_TO_COMPARE$year <- as.Date(paste(CAPTURE_TO_COMPARE$year, "-01-01", sep = ""), format = "%Y-%m-%d")
+CAPTURE_TO_COMPARE$gear_label <- "UNK"
+CAPTURE_TO_COMPARE <- CAPTURE_TO_COMPARE %>% mutate(country_code = ifelse(fleet_label == "Other nei", "NEI", country_code))
+
+NC_TO_COMPARE$year <- as.Date(paste(NC_TO_COMPARE$year, "-01-01", sep = ""), format = "%Y-%m-%d")
+NC_TO_COMPARE <- NC_TO_COMPARE %>% mutate(fleet_label = ifelse(country_code == "NEI", "Other nei", fleet_label))
+
+saveRDS(CAPTURE_TO_COMPARE , here("inputs/data/comparison_Fishstat_NC/Fishstat/rds.rds"))
+saveRDS(NC_TO_COMPARE, here("inputs/data/comparison_Fishstat_NC/NC/rds.rds"))
+
+
+
 common_cols <- c("species", "measurement_type", "year", "measurement_value", 
                  "country_code", "species_group_gta", "taxon", "species_name", 
                  "gear_label", "fleet_label", "ocean_basin", "measurement_unit")
@@ -145,25 +240,25 @@ rmarkdown::render(here("rmd/Comparison_NC_FS/comparison.Rmd"),
 
 
 ## Comparison on filtered data species, year and ocean basin 
-NC_filtered <- NC
+NC_TO_COMPARE_filtered <- NC_TO_COMPARE
 CAPTURE_TO_COMPARE_filtered <- CAPTURE_TO_COMPARE
 
-NC_filtered <- NC_filtered %>% dplyr::filter(species %in% unique(CAPTURE_TO_COMPARE$species))
-CAPTURE_TO_COMPARE_filtered <- CAPTURE_TO_COMPARE %>% filter(species %in% unique(NC_filtered$species))
+NC_TO_COMPARE_filtered <- NC_TO_COMPARE_filtered %>% dplyr::filter(species %in% unique(CAPTURE_TO_COMPARE_filtered$species))
+CAPTURE_TO_COMPARE_filtered <- NC_TO_COMPARE_filtered %>% filter(species %in% unique(NC_TO_COMPARE_filtered$species))
 
 
-NC_filtered <- NC_filtered %>% filter(year %in% unique(CAPTURE_TO_COMPARE_filtered$year))
-CAPTURE_TO_COMPARE_filtered <- CAPTURE_TO_COMPARE_filtered %>% filter(year %in% unique(NC_filtered$year))
+NC_TO_COMPARE_filtered <- NC_TO_COMPARE_filtered %>% filter(year %in% unique(CAPTURE_TO_COMPARE_filtered$year))
+CAPTURE_TO_COMPARE_filtered <- CAPTURE_TO_COMPARE_filtered %>% filter(year %in% unique(NC_TO_COMPARE_filtered$year))
 
-NC_filtered <- NC_filtered %>% filter(ocean_basin %in% unique(CAPTURE_TO_COMPARE_filtered$ocean_basin))
-CAPTURE_TO_COMPARE_filtered <- CAPTURE_TO_COMPARE_filtered %>% filter(ocean_basin %in% unique(NC_filtered$ocean_basin))
+NC_TO_COMPARE_filtered <- NC_TO_COMPARE_filtered %>% filter(ocean_basin %in% unique(CAPTURE_TO_COMPARE_filtered$ocean_basin))
+CAPTURE_TO_COMPARE_filtered <- CAPTURE_TO_COMPARE_filtered %>% filter(ocean_basin %in% unique(NC_TO_COMPARE_filtered$ocean_basin))
 
 
 dir.create(here("inputs/data/comparison_Fishstat_NC/Fishstat_filtered"), recursive = TRUE)
 dir.create(here("inputs/data/comparison_Fishstat_NC/NC_filtered"), recursive = TRUE)
 
 saveRDS(CAPTURE_TO_COMPARE_filtered , here("inputs/data/comparison_Fishstat_NC/Fishstat_filtered/rds.rds"))
-saveRDS(NC_filtered, here("inputs/data/comparison_Fishstat_NC/NC_filtered/rds.rds"))
+saveRDS(NC_TO_COMPARE_filtered, here("inputs/data/comparison_Fishstat_NC/NC_filtered/rds.rds"))
 
 
 
@@ -199,7 +294,7 @@ Fishstat <- CAPTURE_TO_COMPARE_filtered %>%
   group_by(species, year) %>%
   summarise(total_value = sum(measurement_value, na.rm = TRUE))
 
-NominalCatch <- NC_filtered %>%
+NominalCatch <- NC_TO_COMPARE_filtered %>%
   dplyr::select(species, year, measurement_value) %>%
   group_by(species, year) %>%
   summarise(total_value = sum(measurement_value, na.rm = TRUE))
@@ -267,5 +362,8 @@ Fishstat_higher_species <- species_summary %>%
 NC_higher_species <- species_summary %>%
   filter(total_difference > 0) %>%
   dplyr::select(species)
+
+
+
 
 

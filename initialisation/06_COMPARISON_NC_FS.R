@@ -244,7 +244,7 @@ NC_TO_COMPARE_filtered <- NC_TO_COMPARE
 CAPTURE_TO_COMPARE_filtered <- CAPTURE_TO_COMPARE
 
 NC_TO_COMPARE_filtered <- NC_TO_COMPARE_filtered %>% dplyr::filter(species %in% unique(CAPTURE_TO_COMPARE_filtered$species))
-CAPTURE_TO_COMPARE_filtered <- NC_TO_COMPARE_filtered %>% filter(species %in% unique(NC_TO_COMPARE_filtered$species))
+CAPTURE_TO_COMPARE_filtered <- CAPTURE_TO_COMPARE_filtered %>% filter(species %in% unique(NC_TO_COMPARE_filtered$species))
 
 
 NC_TO_COMPARE_filtered <- NC_TO_COMPARE_filtered %>% filter(year %in% unique(CAPTURE_TO_COMPARE_filtered$year))

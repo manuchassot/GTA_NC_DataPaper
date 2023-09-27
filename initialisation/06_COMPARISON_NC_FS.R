@@ -58,17 +58,10 @@ if(!length(list.files(path = here("rmd/Comparison_NC_FS/"), pattern = ".Rmd")) >
 
 dir.create(here("rmd/Comparison_NC_FS/figures"), recursive = TRUE, showWarnings = FALSE)
 
-for (package in required_packages) {
-  if (!requireNamespace(package, quietly = TRUE)) {
-    install.packages(package, dependencies = TRUE)
-  }
-  library(package, character.only = TRUE)
-}
 
-
-
-
-
+if(!file.exists(here("inputs/data/comparison_Fishstat_NC/Fishstat/rds.rds")) | 
+  !file.exists(here("inputs/data/comparison_Fishstat_NC/NC/rds.rds"))){
+  
 
 # Tidying for comparison  -------------------------------------------------
 CAPTURE_TO_COMPARE <- CAPTURE
@@ -170,31 +163,6 @@ CAPTURE_TO_COMPARE$ocean_basin <- recode(CAPTURE_TO_COMPARE$ocean_basin,
                               `Pacific, Southeast` = "Western-Central Pacific Ocean",
                               `Pacific, Antarctic` = "Western-Central Pacific Ocean")
 
-
-
-# Mapping for fishing_fleet -----------------------------------------------
-
-
-# Mapping fleet label to fleet label
-# Proposition
-
-
-# mapping <- read_csv(here("inputs/mappings/mapping_from_FSJ_to_NC.csv"))
-# 
-# CAPTURE_TO_COMPARE <- CAPTURE_TO_COMPARE %>% 
-#   dplyr::left_join(mapping, by = c("fleet_label"="Mapped Label")) %>% 
-#   mutate(`fleet_label` = ifelse(is.na(`Original Label`), fleet_label, `Original Label`)) %>% 
-#   dplyr::select(-c(`Original Label`, code))
-
-# Mapping country to country ----------------------------------------------
-
-
-
-
-
-
-
-
 dir.create(here("inputs/data/comparison_Fishstat_NC/Fishstat"), recursive = TRUE)
 dir.create(here("inputs/data/comparison_Fishstat_NC/NC"), recursive = TRUE)
 
@@ -208,8 +176,8 @@ NC_TO_COMPARE <- NC_TO_COMPARE %>% mutate(fleet_label = ifelse(country_code == "
 saveRDS(CAPTURE_TO_COMPARE , here("inputs/data/comparison_Fishstat_NC/Fishstat/rds.rds"))
 saveRDS(NC_TO_COMPARE, here("inputs/data/comparison_Fishstat_NC/NC/rds.rds"))
 
-
-
+}
+if(!file.exists(here("rmd/Comparison_NC_FS/figures/comparison.pdf"))){
 common_cols <- c("species", "measurement_type", "year", "measurement_value", 
                  "country_code", "species_group_gta", "taxon", "species_name", 
                  "gear_label", "fleet_label", "ocean_basin", "measurement_unit")
@@ -235,9 +203,11 @@ source(purl(here("rmd/Comparison_NC_FS/Functions_markdown.Rmd")))
 rmarkdown::render(here("rmd/Comparison_NC_FS/comparison.Rmd"), 
                   envir =  child_env_global, 
                   output_dir = here("rmd/Comparison_NC_FS/figures"))
+}
 
-
-
+if(!file.exists(here("inputs/data/comparison_Fishstat_NC/Fishstat_filtered/rds.rds")) | 
+   !file.exists(here("inputs/data/comparison_Fishstat_NC/NC_filtered/rds.rds"))){
+  
 ## Comparison on filtered data species, year and ocean basin 
 NC_TO_COMPARE_filtered <- NC_TO_COMPARE
 CAPTURE_TO_COMPARE_filtered <- CAPTURE_TO_COMPARE
@@ -259,8 +229,13 @@ dir.create(here("inputs/data/comparison_Fishstat_NC/NC_filtered"), recursive = T
 saveRDS(CAPTURE_TO_COMPARE_filtered , here("inputs/data/comparison_Fishstat_NC/Fishstat_filtered/rds.rds"))
 saveRDS(NC_TO_COMPARE_filtered, here("inputs/data/comparison_Fishstat_NC/NC_filtered/rds.rds"))
 
+} else {
+  NC_TO_COMPARE_filtered <- readRDS(here("inputs/data/comparison_Fishstat_NC/NC_filtered/rds.rds"))
+  CAPTURE_TO_COMPARE_filtered <- readRDS(here("inputs/data/comparison_Fishstat_NC/Fishstat_filtered/rds.rds"))
+}
 
-
+if(!file.exists(here("rmd/Comparison_NC_FS/figures_filtered/comparison.pdf"))){
+  
 parameters_child_global <- list(fig.path = "figures_filtered", 
                                 print_map = FALSE, parameter_time_dimension = "year", 
                                 unique_analyse = FALSE, 
@@ -282,6 +257,7 @@ source(purl(here("rmd/Comparison_NC_FS/Functions_markdown.Rmd")))
 rmarkdown::render(here("rmd/Comparison_NC_FS/comparison.Rmd"), 
                   envir =  child_env_global, 
                   output_dir = here("rmd/Comparison_NC_FS/figures_filtered"))
+
 
 for (ocean in unique(NC_TO_COMPARE_filtered$ocean_basin)){
   
@@ -310,6 +286,7 @@ for (ocean in unique(NC_TO_COMPARE_filtered$ocean_basin)){
                     envir =  child_env_global, 
                     output_dir = here(paste0("rmd/Comparison_NC_FS/", ocean)))
 }
+}
 
 
 # Temporal differences for each species FS/NC -----------------------------
@@ -326,12 +303,28 @@ NominalCatch <- NC_TO_COMPARE_filtered %>%
   group_by(species, year, ocean_basin) %>%
   summarise(total_value = sum(measurement_value, na.rm = TRUE))
 
-# Merging datasets based on species and year
+# Merging datasets based on species and year and ocean
 comparison <- left_join(Fishstat, NominalCatch, 
                         by = c("species", "year", "ocean_basin"),
                         suffix = c("_Fishstat", "_NC"))
 
+# Merging datasets based on species and year
+Fishstat_groupped <- Fishstat %>%
+  group_by(species, year) %>%
+  summarise(total_value = sum(total_value, na.rm = TRUE))
+
+NominalCatch_groupped <- NominalCatch %>%
+  group_by(species, year) %>%
+  summarise(total_value = sum(total_value, na.rm = TRUE))
+
+# Merging datasets based on species and year
+comparison_groupped <- left_join(Fishstat_groupped, NominalCatch_groupped, 
+                        by = c("species", "year"),
+                        suffix = c("_Fishstat", "_NC"))
+
+
 # Calculating differences
+comparison_groupped$difference <- comparison_groupped$total_value_NC - comparison_groupped$total_value_Fishstat
 comparison$difference <- comparison$total_value_NC - comparison$total_value_Fishstat
 
 
@@ -347,7 +340,7 @@ ocean_basins <- unique(comparison$ocean_basin)
 for(spec in species_list) {
   
   # General plot for each species
-  tmp_data_general <- filter(comparison, species == spec)
+  tmp_data_general <- filter(comparison_groupped, species == spec)
   total_diff_general <- sum(tmp_data_general$difference, na.rm = TRUE)
   higher_general <- ifelse(total_diff_general>0, "Nominal Catch", "Fishstat")
   legend_title_general <- paste("Dataset with Higher Value is ", higher_general, "\nTotal Difference:", round(total_diff_general))
@@ -364,12 +357,13 @@ for(spec in species_list) {
     theme_minimal() +
     theme(legend.title = element_text(size=10))
   
-  print(p_general)
   
   # Save the general plot
   ggsave(filename = here("outputs", "charts", "comparison_FS_NC_time_by_species", paste0(spec, "_general_comparison_plot.png")), 
          plot = p_general, width=10, height=7)
+  gc()
   
+  if(spec == "SKJ"){
   # Ocean-specific plots
   for(ocean in ocean_basins) {
     tmp_data_ocean <- filter(comparison, species == spec & ocean_basin == ocean)
@@ -392,12 +386,13 @@ for(spec in species_list) {
         theme_minimal() +
         theme(legend.title = element_text(size=10))
       
-      print(p_ocean)
       
       # Save the ocean-specific plot
-      ggsave(filename = here("outputs", "charts", "comparison_FS_NC_time_by_species", paste0(spec, "_", ocean, "_comparison_plot.png")), 
+      ggsave(filename = here("outputs", "charts", "comparison_FS_NC_time_by_species/SKJ_by_ocean/" , paste0(spec, "_", ocean, "_comparison_plot.png")), 
              plot = p_ocean, width=10, height=7)
+      gc()
     }
+  }
   }
 }
 

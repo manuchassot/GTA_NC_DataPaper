@@ -22,6 +22,11 @@ if(!file.exists("../inputs/codelists/cl_isscfg_gear.csv"))
   
   download.file("https://raw.githubusercontent.com/fdiwg/fdi-codelists/main/global/cwp/cl_isscfg_gear.csv", destfile = "../inputs/codelists/cl_isscfg_gear.csv", mode = "wb")
 
+## GTA gear group
+if(!file.exists("../inputs/codelists/cl_geargroup.csv")) 
+  
+  download.file("https://raw.githubusercontent.com/fdiwg/fdi-codelists/main/global/firms/gta/cl_geargroup.csv", destfile = "../inputs/codelists/cl_geargroup.csv", mode = "wb")
+
 ## FIRMS fleets ####
 if (!file.exists("../inputs/codelists/cl_fishing_fleet.csv"))
   

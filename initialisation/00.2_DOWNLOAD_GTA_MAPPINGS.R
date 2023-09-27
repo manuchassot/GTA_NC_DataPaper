@@ -31,4 +31,9 @@ if(!file.exists("../inputs/mappings/codelist_mapping_source_authority_species.cs
   
   download.file("https://raw.githubusercontent.com/fdiwg/fdi-mappings/main/cross-term/codelist_mapping_source_authority_species.csv", destfile = "../inputs/mappings/codelist_mapping_source_authority_species.csv", mode = "wb")
 
+## Gear type to gear group mapping ####
+if(!file.exists("../inputs/mappings/codelist_mapping_isscfg_revision_1_geargroup_tunaatlas.csv"))
+  
+  download.file("https://raw.githubusercontent.com/fdiwg/fdi-mappings/main/global/firms/gta/codelist_mapping_isscfg_revision_1_geargroup_tunaatlas.csv", destfile = "../inputs/mappings/codelist_mapping_isscfg_revision_1_geargroup_tunaatlas.csv", mode = "wb")
+
 print("Mapping code lists of each tRFMO from the github repo downloaded!")

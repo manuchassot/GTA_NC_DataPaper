@@ -17,4 +17,10 @@ MAPPING_SP_SPG = fread("../inputs/mappings/codelist_mapping_species_asfis_specie
 # Add species group label
 MAPPING_SP_SPG = merge(MAPPING_SP_SPG, SPECIES_GROUP[, .(code, species_group_label = label)], by.x = "trg_code", by.y = "code")
 
+## GTA GEAR GROUP MAPPING ####
+MAPPING_GT_GG = fread("../inputs/mappings/codelist_mapping_isscfg_revision_1_geargroup_tunaatlas.csv", colClasses = "character", encoding = "UTF-8")
+
+# Add gear group label
+MAPPING_GT_GG = merge(MAPPING_GT_GG, GEAR_GROUPS, by.x = "trg_code", by.y = "code")
+
 print("Mapping files loaded!")

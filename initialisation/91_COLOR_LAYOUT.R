@@ -24,5 +24,13 @@ GTA_SPECIES_GROUP_COL = data.table(species_group_gta = factor(c("Billfishes",
                                    OUTLINE = rev(colorspace::darken(ggsci::pal_simpsons()(9), 0.2))
                                    )
 
+# GTA gear groups ####
+GTA_GEAR_GROUPS_COL = data.table(gear_group_gta = factor(c("Handlines and pole and lines", 
+                                                           "Longlines", 
+                                                           "Surrounding nets", 
+                                                           "Other gears"), ordered = TRUE), 
+                                 FILL = pal_futurama()(4), 
+                                 OUTLINE = colorspace::darken(pal_futurama()(4), 0.2)
+)
 
 print("Color layout defined!")

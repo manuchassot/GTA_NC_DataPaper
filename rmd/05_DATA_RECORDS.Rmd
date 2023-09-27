@@ -59,13 +59,44 @@ The storage of the inputed files is done on the googledrive of firmstunaatlas, t
 
 ##### Format
 
-The final dataset named : contains `r ifelse((length(colnames(NC)) == 24), length(colnames(NC)), FALSE)` columns. 11 of them corresponds to the CWP standards columns, the remaining 13 drift from an enrichment on the basis of the columns fishing_fleet, species, gear_type, geographic_identifier.
+The final dataset named : contains `r ifelse((length(colnames(NC)) == 25), length(colnames(NC)), FALSE)` columns. 11 of them corresponds to the CWP standards columns, the remaining 14 drift from an enrichment on the basis of the columns fishing_fleet, species, gear_type, geographic_identifier.
 
 ##### Storage
 
 This data is stocked on zenodo under the DOI: 10.5281/zenodo.8034731
 
 ##### Other files used for the display of maps, enrichment or filtering.
+
+###### Mapping files
+
+```{r}
+
+file_url <- "https://docs.google.com/spreadsheets/d/1xzXgIxjQm81Fg7PCgtdiwhkB9sgtPKk-NByQDRtAGrE/edit#gid=1158322074"
+download_link <- paste0("[Download CSV](<", file_url, ">)")
+
+
+
+```
+
+All the dataframes used for the mapping and the metadata (Dublin Core) included are the following (\@ref(tab:mapping-files)).
+
+```{r}
+
+if(!(file.exists(here("inputs/Workflow/mapping_files.csv")))){
+drive_auth()
+mapping_files <- read_sheet("https://docs.google.com/spreadsheets/d/1xzXgIxjQm81Fg7PCgtdiwhkB9sgtPKk-NByQDRtAGrE/edit#gid=1158322074", sheet = "2023")
+fwrite(mapping_files,here("inputs/Workflow/mapping_files.csv" ))
+} else {
+  mapping_files <- read_csv(here("inputs/Workflow/mapping_files.csv"))
+
+}
+
+```
+
+```{r mapping-files, results='asis'}
+qflextable2(mapping_files)
+```
+
 
 ###### Filtering files
 
@@ -82,7 +113,7 @@ The file used to filter species for the Nominal Catch dataset:
 `r download_link`
 
 
-```{r tab.cap = "Species retained in the final dataset by tRFMOs", eval = FALSE}
+```{r species-level-0, tab.cap = "Species retained in the final dataset by tRFMOs", eval = FALSE}
 
 cl_species_level0 <- readr::read_csv(file_url)
 ft <- flextable(as_grouped_data(cl_species_level0 %>% arrange(desc(species)) %>% dplyr::select(species, source_authority), groups = "species")) %>% 

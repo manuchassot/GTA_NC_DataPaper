@@ -288,7 +288,7 @@ for (ocean in unique(NC_TO_COMPARE_filtered$ocean_basin)){
 }
 }
 
-
+if(!dir.exists(here("outputs", "charts", "comparison_FS_NC_time_by_species"))){
 # Temporal differences for each species FS/NC -----------------------------
 
 # First, we will reshape the datasets to a format suitable for comparison
@@ -418,7 +418,7 @@ NC_higher_species <- species_summary %>%
   filter(total_difference > 0) %>%
   dplyr::select(species)
 
-
+}
 
 
 

@@ -114,9 +114,9 @@ The relative importance of countries seems to be close one from another, however
 
 
 ```{r}
-data <- read.csv(here("rmd/Comparison_NC_FS/figures_filtered/Diffstratas/Difference.between.stratas.of.the.two.datasets.csv")) %>% dplyr::select(-measurement_unit) %>% dplyr::rename("Difference in millions" = "Difference..in...") %>% filter(Dimension == "fleet_label")
+data <- read.csv(here("rmd/Comparison_NC_FS/figures_filtered/Diffstratas/Difference.between.stratas.of.the.two.datasets.csv")) %>% dplyr::select(-measurement_unit) %>% dplyr::rename("Difference in %" = "Difference..in...")%>% dplyr::rename("Difference in value" = "Difference.in.value") %>% filter(Dimension == "fleet_label")
 
-qflextable2(data, grouped_data = c("Dimension", "Loss...Gain"), columns_to_color  = c("Difference in millions"))
+qflextable2(data, grouped_data = c("Dimension", "Loss...Gain"), columns_to_color  = c("Difference in value"))
 ```
 
 For the fishingfleet, NC does not provide data for some countries (with minor impact on the global data) that are `r unique((data %>% dplyr::filter(Loss...Gain == "Loss" & Dimension == "country_label")))$Precision`, however it provides data with aggregated fishingfleet (i.e nei).
@@ -127,7 +127,7 @@ For the fishingfleet, NC does not provide data for some countries (with minor im
 
 `%notin%` <- Negate(`%in%`)
 
-diffstratas <- read.csv(here("rmd/Comparison_NC_FS/figures_filtered/Diffstratas/Difference.between.stratas.of.the.two.datasets.csv")) %>% dplyr::filter(Dimension %notin% c("year", "GRIDTYPE")) %>% dplyr::select(-measurement_unit) %>% dplyr::rename("Loss / Gain" = "Loss...Gain", "Difference in value" = "Difference.in.value") %>% filter(Dimension == "ocean_basin")
+diffstratas <- read.csv(here("rmd/Comparison_NC_FS/figures_filtered/Diffstratas/Difference.between.stratas.of.the.two.datasets.csv")) %>% dplyr::filter(Dimension %notin% c("year", "GRIDTYPE")) %>% dplyr::select(-measurement_unit) %>% dplyr::rename("Loss / Gain" = "Loss...Gain", "Difference in value" = "Difference.in.value")%>% dplyr::rename("Difference in %" = "Difference..in...") %>% filter(Dimension == "ocean_basin")
 
 qflextable2(diffstratas, grouped_data = c("Dimension", "Loss / Gain"), columns_to_color = c("Difference in value"))
 

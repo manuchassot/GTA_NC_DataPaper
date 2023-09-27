@@ -1,73 +1,73 @@
-# 
-# ## Those files will be used in the comparison file
-# 
-# dir.create(here("rmd/Comparison_NC_FS/figures"), recursive = TRUE, showWarnings = FALSE)
-# required_packages <- c("webshot",
-#                        "here", "usethis","ows4R","sp", "data.table", "flextable", "readtext", "sf", "dplyr", "stringr", "tibble",
-#                        "bookdown", "knitr", "purrr", "readxl", "base", "remotes", "utils", "DBI", 
-#                        "odbc", "rlang", "kableExtra", "readr", "tidyr", "ggplot2", "stats", "RColorBrewer", 
-#                        "cowplot", "RPostgreSQL", "curl", "officer", "gdata", "tidyr", "knitr", "tmap"
-# )
-# 
-# for (package in required_packages) {
-#   if (!requireNamespace(package, quietly = TRUE)) {
-#     install.packages(package, dependencies = TRUE)
-#   }
-#   library(package, character.only = TRUE)
-# }
-# 
-# 
-# last_path = function(y){tail(str_split(y,"/")[[1]],n=1)}
-# 
-# url_analysis_markdown <- "https://raw.githubusercontent.com/firms-gta/geoflow-tunaatlas/master/Analysis_markdown/"
-# target_dir <- here("rmd/Comparison_NC_FS")  # Current working directory
-# 
-# copyrmd <- function(x, url_path = url_analysis_markdown) {
-#   target_file <- file.path(target_dir, last_path(x))
-#   
-#   if (!file.exists(target_file)) {
-#     download_url <- paste0(url_path, x)
-#     download.file(url = download_url, destfile = target_file, mode = "wb")
-#   }
-# }
-# 
-# # Existing files
-# c_existing <- c(
-#   "tableau_recap_global_action_effort.Rmd", 
-#   "comparison.Rmd", 
-#   "strata_conversion_factor_gihtub.Rmd", 
-#   "template.tex",
-#   "dmk-format.csl", 
-#   "setup_markdown.Rmd", 
-#   "strata_in_georef_but_no_nominal.Rmd"
-# )
-# 
-# # Child Rmd files you want to include
-# c_child <- c(
-#   "Setup_markdown.Rmd",
-#   "Parameters_settings.Rmd",
-#   "file_formatting.Rmd",
-#   "Explenation.Rmd",
-#   "Filtering_data.Rmd",
-#   "Groupping_differences.Rmd",
-#   "Strataloss.Rmd",
-#   "Summarydifferences.Rmd",
-#   "Compnumberstratas.Rmd",
-#   "Timecoverage.Rmd",
-#   "Spatialcoverage.Rmd",
-#   "Otherdimensions.Rmd",
-#   "Timediff.Rmd",
-#   "Geographicdiff.Rmd",
-#   "Differences_for_each_dimensions.Rmd",
-#   "Recap_without_mapping.Rmd",
-#   "Annexe.Rmd", "Functions_markdown.Rmd"
-# )
-# 
-# # Combine existing and child Rmd files
-# c_all <- c(c_existing, c_child)
-# 
-# # Download all files
-# lapply(c_all, copyrmd)
+
+## Those files will be used in the comparison file
+
+dir.create(here("rmd/Comparison_NC_FS/figures"), recursive = TRUE, showWarnings = FALSE)
+required_packages <- c("webshot",
+                       "here", "usethis","ows4R","sp", "data.table", "flextable", "readtext", "sf", "dplyr", "stringr", "tibble",
+                       "bookdown", "knitr", "purrr", "readxl", "base", "remotes", "utils", "DBI",
+                       "odbc", "rlang", "kableExtra", "readr", "tidyr", "ggplot2", "stats", "RColorBrewer",
+                       "cowplot", "RPostgreSQL", "curl", "officer", "gdata", "tidyr", "knitr", "tmap"
+)
+
+for (package in required_packages) {
+  if (!requireNamespace(package, quietly = TRUE)) {
+    install.packages(package, dependencies = TRUE)
+  }
+  library(package, character.only = TRUE)
+}
+
+
+last_path = function(y){tail(str_split(y,"/")[[1]],n=1)}
+
+url_analysis_markdown <- "https://raw.githubusercontent.com/firms-gta/geoflow-tunaatlas/master/Analysis_markdown/"
+target_dir <- here("rmd/Comparison_NC_FS")  # Current working directory
+
+copyrmd <- function(x, url_path = url_analysis_markdown) {
+  target_file <- file.path(target_dir, last_path(x))
+
+  if (!file.exists(target_file)) {
+    download_url <- paste0(url_path, x)
+    download.file(url = download_url, destfile = target_file, mode = "wb")
+  }
+}
+
+# Existing files
+c_existing <- c(
+  "tableau_recap_global_action_effort.Rmd",
+  "comparison.Rmd",
+  "strata_conversion_factor_gihtub.Rmd",
+  "template.tex",
+  "dmk-format.csl",
+  "setup_markdown.Rmd",
+  "strata_in_georef_but_no_nominal.Rmd"
+)
+
+# Child Rmd files you want to include
+c_child <- c(
+  "Setup_markdown.Rmd",
+  "Parameters_settings.Rmd",
+  "file_formatting.Rmd",
+  "Explenation.Rmd",
+  "Filtering_data.Rmd",
+  "Groupping_differences.Rmd",
+  "Strataloss.Rmd",
+  "Summarydifferences.Rmd",
+  "Compnumberstratas.Rmd",
+  "Timecoverage.Rmd",
+  "Spatialcoverage.Rmd",
+  "Otherdimensions.Rmd",
+  "Timediff.Rmd",
+  "Geographicdiff.Rmd",
+  "Differences_for_each_dimensions.Rmd",
+  "Recap_without_mapping.Rmd",
+  "Annexe.Rmd", "Functions_markdown.Rmd"
+)
+
+# Combine existing and child Rmd files
+c_all <- c(c_existing, c_child)
+
+# Download all files
+lapply(c_all, copyrmd)
 
 
 

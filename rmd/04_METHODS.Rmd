@@ -21,24 +21,20 @@ Fisheries data sets managed by tRFMOs are generally updated on an annual basis a
 #### The CWP Data Exchange Format
 
 For effective amalgamation of multiple datasets, a unified data exchange format has been crafted. Central to this format is the inclusion of:
+  
+- **Digital Format Standardization:** The Comma-Separated-Value (CSV) format, adhering to the RFC 4180 standard, has been endorsed.
+- **File Encoding Protocol:** Whether in CSV or JSON format, encoding is standardized to UTF-8.
+- **Data Dictionary:** A robust data dictionary has been established to guide the structure and semantics of the fisheries data exchange format. This repository, containing terms for column headers and their definitive explanations, is accessible at [FDI Terms on GitHub](https://github.com/fdiwg/fdi-terms). Notably, a specific fisheries term isn't rigidly bound to a single reference code list but varies based on its application context.
 
--   Digital Format Standardization:
+In context-specific scenarios, like the Global Tuna Atlas, associations with particular code lists can be found at [this link](https://github.com/fdiwg/fdi-mappings/tree/main/global/firms/gta).
 
-The Comma-Separated-Value (CSV) format, adhering to the RFC 4180 standard, has been endorsed.
+The Global Tuna Atlas has adopted the Generic (measurement-independent) data structure for its operations (\@ref(tab:cwpformat))
 
--   File Encoding Protocol:
-
-Whether in CSV or JSON format, encoding is standardized to UTF-8.
-
--   Data Dictionary:
-
-A robust data dictionary has been established to guide the structure and semantics of the fisheries data exchange format. This repository, containing terms for column headers and their definitive explanations, is accessible at FDI Terms on GitHub. <https://github.com/fdiwg/fdi-terms> Notably, a specific fisheries term isn't rigidly bound to a single reference code list but varies based on its application context.
-
-In context-specific scenarios, like the Global Tuna Atlas, associations with particular code lists : <https://github.com/fdiwg/fdi-mappings/tree/main/global/firms/gta>
-
-The Global Tuna Atlas has adopted the Generic (measurement-independent) data structure for its operations. \ref table
-
-This section describes the steps and procedures used to create the global nominal catch dataset from the data available within each tRFMO.
+```{r cwpformat, results='asis'}
+CWP_format <- read_delim(here("inputs/CWP_format.csv"), 
+    delim = ";", escape_double = FALSE, trim_ws = TRUE)
+qflextable(CWP_format)
+```
 
 ### Exchange format & mapping
 
@@ -47,28 +43,27 @@ This section describes the steps and procedures used to create the global nomina
 
 ### Creation of the global dataset
 
+This section describes the steps and procedures used to create the global nominal catch dataset from the data available within each tRFMO.
+
 #### Data pre-processing
 
-Before combining the datasets, a pre-processing step is applied to three out of the five datasets to restructure their shape to follow the CWP standards. This restructuring ensures uniformity in the format of the data, facilitating the subsequent integration process. Below is a table listing the links to the datasets provided by each tRFMO:
+Before combining the datasets, a pre-processing step is applied to three out of the five datasets to restructure their shape to follow the CWP standards (see \@ref(tab:preprocess)). This restructuring ensures uniformity in the format of the data, facilitating the subsequent integration process.
+
 
 ```{r, warning == FALSE, message = FALSE}
 datasets_links_processing <- read_delim(here("inputs/Workflow/datasets_links_processing.csv"),
     delim = ";", escape_double = FALSE, col_types = cols(`Dataset;RFMO;Link to downolad;Pre-processing function;Comments` = col_character()), trim_ws = TRUE)
 ```
 
-```{r tab.cap = "Datasets and pre-processing functions used in the creation of the final dataset"}
+```{r preprocess, tab.cap = "Datasets and pre-processing functions used in the creation of the final dataset"}
 qflextable(datasets_links_processing)
 ```
 
-```{r results='asis'}
-CWP_format <- read_delim(here("inputs/CWP_format.csv"), 
-    delim = ";", escape_double = FALSE, trim_ws = TRUE)
-qflextable(CWP_format)
-```
+#### Mapping the data
 
-#### Data Mapping the data
+Additionally, to ensure consistency and comparability across datasets, a harmonization process is performed to standardize the code lists for datasets not having be mapped yet. The harmonized datasets allow for seamless data integration and accurate analysis across different tRFMOs. 
 
-Additionally, to ensure consistency and comparability across datasets, a harmonization process is performed to standardize the code lists for datasets not having be mapped yet. The harmonized datasets allow for seamless data integration and accurate analysis across different tRFMOs. The recap of the mapping can be found in table \ref table
+#### Gathering data
 
 Upon completing the pre-processing and harmonization steps, the global nominal catch dataset is constructed by binding and filtering the data.
 
@@ -100,7 +95,6 @@ qflextable2(tidy, columns_to_color = "Difference")
 
 This step involves filtering the data to retain only the information pertaining to species under the mandate of the tRFMOs. The retained species are selected to align with the specific conservation and management goals of each tRFMO.`r SPECIES_ITIS[Aggregate == FALSE, length(unique(TSN))]` are selected.
 
-
 To be noted, catches of one of the main tuna i.e. Southern Bluefin Tuna is impacted by this treatment. As CCSBT possesses expertise in managing and overseeing data related to this species, their dataset is selected as the primary source for Southern Bluefin Tuna information. The impact is 4.3% of the global value for this species. 
 
 3. Enriching data
@@ -117,20 +111,40 @@ Geoflow offers a mechanism that simplifies the coordination and performance of w
 
 To create the Nominal catch dataset the workflow relies on several steps creating a complete database allowing storage and preserving the integrity of the data. The inputs datasets are stored as well in a googledrive that allows reusing of the processed data. This googledrive storage allows cooperation between the instances. 
 
-For each step, a sheet is associated that recapitulate the inputs, the ouptputs and provide metadata in dublin core format. 
+For each step, a json is provided containing several sheets among which one recapitulate the inputs, the ouptputs and provide metadata in dublin core format. 
 
 The steps are the following: 
 
-Step 1: Creation of the Database model and loading of shapefiles and codelist.
-https://docs.google.com/spreadsheets/d/12zi49c5wd9Nc7N1anv3lCM4f66L-5x3-Xsh6ZGGc-ns/edit#gid=1316104870
+Step 1: Creation of the Database model and loading of shapefiles and codelist. 
 
-Step 2: Loading of the mapping. https://docs.google.com/spreadsheets/d/1xzXgIxjQm81Fg7PCgtdiwhkB9sgtPKk-NByQDRtAGrE/edit#gid=1158322074
+- Associated json: https://raw.githubusercontent.com/firms-gta/geoflow-tunaatlas/master/tunaatlas_qa_dbmodel%2Bcodelists.json
 
-Step 3: Loading and Pre-processing of the dataset provided by CCSBT, IATTC, ICCAT, IOTC, WCPFC. (presented earlier see tab)
+- Entities: https://docs.google.com/spreadsheets/d/12zi49c5wd9Nc7N1anv3lCM4f66L-5x3-Xsh6ZGGc-ns/edit#gid=1316104870
 
-Step 4: Creation of the Nominal dataset
+Step 2: Loading of the mapping
 
-The Step 8 is the only to display data in zenodo.
+- Associated json: https://raw.githubusercontent.com/firms-gta/geoflow-tunaatlas/master/tunaatlas_qa_mappings.json
+
+- Entities :https://docs.google.com/spreadsheets/d/1xzXgIxjQm81Fg7PCgtdiwhkB9sgtPKk-NByQDRtAGrE/edit#gid=1158322074
+
+Step 3: Loading and Pre-processing of the dataset provided by CCSBT, IATTC, ICCAT, IOTC, WCPFC. 
+
+Associated json: 
+- https://raw.githubusercontent.com/firms-gta/geoflow-tunaatlas/master/gta_datasets_catch_ccsbt.json
+- https://raw.githubusercontent.com/firms-gta/geoflow-tunaatlas/master/gta_datasets_catch_iattc.json
+- https://raw.githubusercontent.com/firms-gta/geoflow-tunaatlas/master/gta_datasets_catch_iccat.json
+- https://raw.githubusercontent.com/firms-gta/geoflow-tunaatlas/master/gta_datasets_catch_iotc.json
+- https://raw.githubusercontent.com/firms-gta/geoflow-tunaatlas/master/gta_datasets_catch_wcpfc.json
+
+Entities: Presented earlier see \@ref(tab:preprocess) lines 1 to 5)
+
+Step 4: Creation of the Nominal dataset 
+
+Associated json: https://raw.githubusercontent.com/firms-gta/geoflow-tunaatlas/master/tunaatlas_qa_global_datasets_catch.json
+
+Entities presented earlier see \@ref(tab:preprocess) line 6)
+
+The Step 4 is the only to display data in zenodo.
 
 
 

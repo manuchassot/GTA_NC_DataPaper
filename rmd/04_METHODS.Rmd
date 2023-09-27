@@ -114,3 +114,24 @@ The code used to perform this workflow is available on: [https://raw.githubuserc
 The workflow of creation and the dissemination of the Nominal catch is using the geoflow package <https://github.com/r-geoflow/geoflow>.
 
 Geoflow offers a mechanism that simplifies the coordination and performance of workflows centered on metadata, aligning with the FAIR (Findable, Accessible, Interoperable, and Reusable) principles of data management.
+
+To create the Nominal catch dataset the workflow relies on several steps creating a complete database allowing storage and preserving the integrity of the data. The inputs datasets are stored as well in a googledrive that allows reusing of the processed data. This googledrive storage allows cooperation between the instances. 
+
+For each step, a sheet is associated that recapitulate the inputs, the ouptputs and provide metadata in dublin core format. 
+
+The steps are the following: 
+
+Step 1: Creation of the Database model and loading of shapefiles and codelist.
+https://docs.google.com/spreadsheets/d/12zi49c5wd9Nc7N1anv3lCM4f66L-5x3-Xsh6ZGGc-ns/edit#gid=1316104870
+
+Step 2: Loading of the mapping. https://docs.google.com/spreadsheets/d/1xzXgIxjQm81Fg7PCgtdiwhkB9sgtPKk-NByQDRtAGrE/edit#gid=1158322074
+
+Step 3: Loading and Pre-processing of the dataset provided by CCSBT, IATTC, ICCAT, IOTC, WCPFC. (presented earlier see tab)
+
+Step 4: Creation of the Nominal dataset
+
+The Step 8 is the only to display data in zenodo.
+
+
+
+

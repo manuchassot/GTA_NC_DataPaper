@@ -1,13 +1,62 @@
 
 ## Those files will be used in the comparison file
 
+if(!length(list.files(path = here("rmd/Comparison_NC_FS/"), pattern = ".Rmd")) >= 23){
+  last_path = function(y){tail(str_split(y,"/")[[1]],n=1)}
+  
+  url_analysis_markdown <- "https://raw.githubusercontent.com/firms-gta/geoflow-tunaatlas/master/Analysis_markdown/"
+  target_dir <- here("rmd/Comparison_NC_FS")  # Current working directory
+  
+  copyrmd <- function(x, url_path = url_analysis_markdown) {
+    target_file <- file.path(target_dir, last_path(x))
+    
+    if (!file.exists(target_file)) {
+      download_url <- paste0(url_path, x)
+      download.file(url = download_url, destfile = target_file, mode = "wb")
+    }
+  }
+  
+  # Existing files
+  c_existing <- c(
+    "tableau_recap_global_action_effort.Rmd",
+    "comparison.Rmd",
+    "strata_conversion_factor_gihtub.Rmd",
+    "template.tex",
+    "dmk-format.csl",
+    "setup_markdown.Rmd",
+    "strata_in_georef_but_no_nominal.Rmd"
+  )
+  
+  # Child Rmd files you want to include
+  c_child <- c(
+    "Setup_markdown.Rmd",
+    "Parameters_settings.Rmd",
+    "file_formatting.Rmd",
+    "Explenation.Rmd",
+    "Filtering_data.Rmd",
+    "Groupping_differences.Rmd",
+    "Strataloss.Rmd",
+    "Summarydifferences.Rmd",
+    "Compnumberstratas.Rmd",
+    "Timecoverage.Rmd",
+    "Spatialcoverage.Rmd",
+    "Otherdimensions.Rmd",
+    "Timediff.Rmd",
+    "Geographicdiff.Rmd",
+    "Differences_for_each_dimensions.Rmd",
+    "Recap_without_mapping.Rmd",
+    "Annexe.Rmd", "Functions_markdown.Rmd"
+  )
+  
+  # Combine existing and child Rmd files
+  c_all <- c(c_existing, c_child)
+  
+  # Download all files
+  lapply(c_all, copyrmd)
+  
+}
+
 dir.create(here("rmd/Comparison_NC_FS/figures"), recursive = TRUE, showWarnings = FALSE)
-required_packages <- c("webshot",
-                       "here", "usethis","ows4R","sp", "data.table", "flextable", "readtext", "sf", "dplyr", "stringr", "tibble",
-                       "bookdown", "knitr", "purrr", "readxl", "base", "remotes", "utils", "DBI",
-                       "odbc", "rlang", "kableExtra", "readr", "tidyr", "ggplot2", "stats", "RColorBrewer",
-                       "cowplot", "RPostgreSQL", "curl", "officer", "gdata", "tidyr", "knitr", "tmap"
-)
 
 for (package in required_packages) {
   if (!requireNamespace(package, quietly = TRUE)) {
@@ -17,57 +66,6 @@ for (package in required_packages) {
 }
 
 
-last_path = function(y){tail(str_split(y,"/")[[1]],n=1)}
-
-url_analysis_markdown <- "https://raw.githubusercontent.com/firms-gta/geoflow-tunaatlas/master/Analysis_markdown/"
-target_dir <- here("rmd/Comparison_NC_FS")  # Current working directory
-
-copyrmd <- function(x, url_path = url_analysis_markdown) {
-  target_file <- file.path(target_dir, last_path(x))
-
-  if (!file.exists(target_file)) {
-    download_url <- paste0(url_path, x)
-    download.file(url = download_url, destfile = target_file, mode = "wb")
-  }
-}
-
-# Existing files
-c_existing <- c(
-  "tableau_recap_global_action_effort.Rmd",
-  "comparison.Rmd",
-  "strata_conversion_factor_gihtub.Rmd",
-  "template.tex",
-  "dmk-format.csl",
-  "setup_markdown.Rmd",
-  "strata_in_georef_but_no_nominal.Rmd"
-)
-
-# Child Rmd files you want to include
-c_child <- c(
-  "Setup_markdown.Rmd",
-  "Parameters_settings.Rmd",
-  "file_formatting.Rmd",
-  "Explenation.Rmd",
-  "Filtering_data.Rmd",
-  "Groupping_differences.Rmd",
-  "Strataloss.Rmd",
-  "Summarydifferences.Rmd",
-  "Compnumberstratas.Rmd",
-  "Timecoverage.Rmd",
-  "Spatialcoverage.Rmd",
-  "Otherdimensions.Rmd",
-  "Timediff.Rmd",
-  "Geographicdiff.Rmd",
-  "Differences_for_each_dimensions.Rmd",
-  "Recap_without_mapping.Rmd",
-  "Annexe.Rmd", "Functions_markdown.Rmd"
-)
-
-# Combine existing and child Rmd files
-c_all <- c(c_existing, c_child)
-
-# Download all files
-lapply(c_all, copyrmd)
 
 
 
@@ -319,55 +317,88 @@ for (ocean in unique(NC_TO_COMPARE_filtered$ocean_basin)){
 # First, we will reshape the datasets to a format suitable for comparison
 
 Fishstat <- CAPTURE_TO_COMPARE_filtered %>%
-  dplyr::select(species, year, measurement_value) %>%
-  group_by(species, year) %>%
+  dplyr::select(species, year, measurement_value, ocean_basin) %>%
+  group_by(species, year, ocean_basin) %>%
   summarise(total_value = sum(measurement_value, na.rm = TRUE))
 
 NominalCatch <- NC_TO_COMPARE_filtered %>%
-  dplyr::select(species, year, measurement_value) %>%
-  group_by(species, year) %>%
+  dplyr::select(species, year, measurement_value, ocean_basin) %>%
+  group_by(species, year, ocean_basin) %>%
   summarise(total_value = sum(measurement_value, na.rm = TRUE))
 
 # Merging datasets based on species and year
 comparison <- left_join(Fishstat, NominalCatch, 
-                        by = c("species", "year"),
+                        by = c("species", "year", "ocean_basin"),
                         suffix = c("_Fishstat", "_NC"))
 
 # Calculating differences
 comparison$difference <- comparison$total_value_NC - comparison$total_value_Fishstat
 
-# Generating the plot for each species
-species_list <- unique(comparison$species)
 
 if (!dir.exists(here("outputs", "charts", "comparison_FS_NC_time_by_species"))) {
   dir.create(here("outputs", "charts", "comparison_FS_NC_time_by_species"), recursive = TRUE)
 }
 
 
+# Generating the plot for each species
+species_list <- unique(comparison$species)
+ocean_basins <- unique(comparison$ocean_basin) 
+
 for(spec in species_list) {
-  tmp_data <- filter(comparison, species == spec)
   
-  total_diff <- sum(tmp_data$difference, na.rm = TRUE)
-  higher <- ifelse(total_diff>0, "Nominal Catch", "Fishstat")
-  legend_title <- paste("Dataset with Higher Value is ",higher, "\nTotal Difference:", round(total_diff))
+  # General plot for each species
+  tmp_data_general <- filter(comparison, species == spec)
+  total_diff_general <- sum(tmp_data_general$difference, na.rm = TRUE)
+  higher_general <- ifelse(total_diff_general>0, "Nominal Catch", "Fishstat")
+  legend_title_general <- paste("Dataset with Higher Value is ", higher_general, "\nTotal Difference:", round(total_diff_general))
   
-  p <- ggplot(tmp_data, aes(x = year, y = difference, fill = difference > 0)) +
+  p_general <- ggplot(tmp_data_general, aes(x = year, y = difference, fill = difference > 0)) +
     geom_bar(stat="identity") +
     scale_fill_manual(values=c("red", "blue"), 
-                      name=legend_title, 
+                      name=legend_title_general, 
                       breaks=c(TRUE, FALSE), 
                       labels=c("Nominal Catch", "Fishstat")) +
     labs(title=paste("Difference in Measurement Value for", spec), 
          y="Difference (Nominal Catch - Fishstat)", 
          x="Measurement Type") +
     theme_minimal() +
-    theme(legend.title = element_text(size=10))  # Adjust this size if necessary
+    theme(legend.title = element_text(size=10))
   
-  print(p)
+  print(p_general)
   
-  # Save the plot, adjusting dimensions to avoid truncation
-  ggsave(filename = here("outputs", "charts", "comparison_FS_NC_time_by_species", paste0(spec, "_comparison_plot.png")), 
-         plot = p, width=10, height=7)  # You can adjust width and height as needed
+  # Save the general plot
+  ggsave(filename = here("outputs", "charts", "comparison_FS_NC_time_by_species", paste0(spec, "_general_comparison_plot.png")), 
+         plot = p_general, width=10, height=7)
+  
+  # Ocean-specific plots
+  for(ocean in ocean_basins) {
+    tmp_data_ocean <- filter(comparison, species == spec & ocean_basin == ocean)
+    
+    if(nrow(tmp_data_ocean) > 0) { 
+      total_diff_ocean <- sum(tmp_data_ocean$difference, na.rm = TRUE)
+      higher_ocean <- ifelse(total_diff_ocean>0, "Nominal Catch", "Fishstat")
+      legend_title_ocean <- paste("Dataset with Higher Value is ", higher_ocean, "\nTotal Difference:", round(total_diff_ocean))
+      
+      p_ocean <- ggplot(tmp_data_ocean, aes(x = year, y = difference, fill = difference > 0)) +
+        geom_bar(stat="identity") +
+        scale_fill_manual(values=c("red", "blue"), 
+                          name=legend_title_ocean, 
+                          breaks=c(TRUE, FALSE), 
+                          labels=c("Nominal Catch", "Fishstat")) +
+        labs(title=paste("Difference in Measurement Value for", spec, "in", ocean), 
+             y="Difference (Nominal Catch - Fishstat)", 
+             x="Measurement Type") +
+        facet_wrap(~ ocean_basin) + 
+        theme_minimal() +
+        theme(legend.title = element_text(size=10))
+      
+      print(p_ocean)
+      
+      # Save the ocean-specific plot
+      ggsave(filename = here("outputs", "charts", "comparison_FS_NC_time_by_species", paste0(spec, "_", ocean, "_comparison_plot.png")), 
+             plot = p_ocean, width=10, height=7)
+    }
+  }
 }
 
 

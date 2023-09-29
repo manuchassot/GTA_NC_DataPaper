@@ -176,6 +176,9 @@ NC_TO_COMPARE <- NC_TO_COMPARE %>% mutate(fleet_label = ifelse(country_code == "
 saveRDS(CAPTURE_TO_COMPARE , here("inputs/data/comparison_Fishstat_NC/Fishstat/rds.rds"))
 saveRDS(NC_TO_COMPARE, here("inputs/data/comparison_Fishstat_NC/NC/rds.rds"))
 
+} else {
+  NC_TO_COMPARE <- readRDS(here("inputs/data/comparison_Fishstat_NC/NC/rds.rds"))
+  CAPTURE_TO_COMPARE <- readRDS(here("inputs/data/comparison_Fishstat_NC/Fishstat/rds.rds"))
 }
 if(!file.exists(here("rmd/Comparison_NC_FS/figures/comparison.pdf"))){
 common_cols <- c("species", "measurement_type", "year", "measurement_value", 
@@ -192,14 +195,14 @@ parameters_child_global <- list(fig.path = "figures",
                                                               "gear_label", "fleet_label", "ocean_basin", "measurement_unit"),
                                 parameter_diff_value_or_percent = "Difference in value",
                                 parameter_fact = "catch", shape_without_geom = NULL, 
-                                species_group = NULL, child_header = "", 
+                                species_group = NULL,  
                                 parameter_titre_dataset_1 = "Fishstat",
 parameter_titre_dataset_2 = "Nominal catch" )
 
 child_env_global <- new.env()
 list2env(parameters_child_global, child_env_global)
 
-source(purl(here("rmd/Comparison_NC_FS/Functions_markdown.Rmd")))
+source(purl(here("rmd/Comparison_NC_FS/Functions_markdown.Rmd"), output = here("rmd/Comparison_NC_FS/Functions_markdown.R")), local = child_env_global)  
 rmarkdown::render(here("rmd/Comparison_NC_FS/comparison.Rmd"), 
                   envir =  child_env_global, 
                   output_dir = here("rmd/Comparison_NC_FS/figures"))
@@ -246,14 +249,14 @@ parameters_child_global <- list(fig.path = "figures_filtered",
                                                               "gear_label", "fleet_label", "ocean_basin", "measurement_unit"),
                                 parameter_diff_value_or_percent = "Difference in value",
                                 parameter_fact = "catch", shape_without_geom = NULL, 
-                                species_group = NULL, child_header = "", 
+                                species_group = NULL,  
                                 parameter_titre_dataset_1 = "Fishstat",
                                 parameter_titre_dataset_2 = "Nominal catch" )
 
 child_env_global <- new.env()
 list2env(parameters_child_global, child_env_global)
 
-source(purl(here("rmd/Comparison_NC_FS/Functions_markdown.Rmd")))
+source(purl(here("rmd/Comparison_NC_FS/Functions_markdown.Rmd"), output = here("rmd/Comparison_NC_FS/Functions_markdown.R")), local = child_env_global)  
 rmarkdown::render(here("rmd/Comparison_NC_FS/comparison.Rmd"), 
                   envir =  child_env_global, 
                   output_dir = here("rmd/Comparison_NC_FS/figures_filtered"))
@@ -276,12 +279,13 @@ for (ocean in unique(NC_TO_COMPARE_filtered$ocean_basin)){
                                   parameter_fact = "catch", shape_without_geom = NULL, 
                                   species_group = NULL, child_header = "", 
                                   parameter_titre_dataset_1 = "Fishstat",
+                                  
                                   parameter_titre_dataset_2 = "Nominal catch" )
   
   child_env_global <- new.env()
   list2env(parameters_child_global, child_env_global)
   
-  source(purl(here("rmd/Comparison_NC_FS/Functions_markdown.Rmd")))
+source(purl(here("rmd/Comparison_NC_FS/Functions_markdown.Rmd"), output = here("rmd/Comparison_NC_FS/Functions_markdown.R")), local = child_env_global)  
   rmarkdown::render(here("rmd/Comparison_NC_FS/comparison.Rmd"), 
                     envir =  child_env_global, 
                     output_dir = here(paste0("rmd/Comparison_NC_FS/", ocean)))

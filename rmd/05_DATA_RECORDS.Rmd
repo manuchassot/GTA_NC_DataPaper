@@ -6,8 +6,14 @@ _Tables can be used to support the data records, specifying the data output resu
 
 This study encompasses several data records detailing global nominal catch figures across various regions and timelines. Each record represents the aggregate catch, specified by fish species, geographic_identifier, gear_type, fishing_fleet, and respective time periods.
 
+```{r sourcingfunctionsmarkdown, include=FALSE}
 
-```{r, warning == FALSE, message = FALSE}
+source(here("rmd/Comparison_NC_FS/Functions_markdown.R"), local = TRUE)
+
+```
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
 datasets_links_processing <- read_delim(here("inputs/Workflow/datasets_links_processing.csv"),
     delim = ";", escape_double = FALSE, col_types = cols(`Dataset;RFMO;Link to downolad;Pre-processing function;Comments` = col_character()), trim_ws = TRUE)
 ```
@@ -19,14 +25,18 @@ qflextable(datasets_links_processing)
 
 ## Data Repository
 
-All data associated with this study are deposited and made publicly accessible in the , a googledrive for fisheries data . The dataset is persistently available at DOI.
+All data associated with this study are deposited and made publicly accessible in the , a googledrive for fisheries data . 
 
-The datasets used to create the data are stored in a google drive thanks to first pre-processing step. 
+The datasets used to create the data are stored in a google drive, geoflow also allows to store in and use data from local environement or database.
 
-```{r}
+```{r include=FALSE}
+
+nominal_files_url <- "https://docs.google.com/spreadsheets/d/13SJB2PYkCCdrzw8HNJMPFg0yXs0OSYY2mUOAl5dagUc/edit#gid=374572086"
+
 if(!(file.exists(here("inputs/Workflow/nominal_files_recap.csv")))){
 drive_auth()
-nominal_files_recap <- read_sheet("https://docs.google.com/spreadsheets/d/13SJB2PYkCCdrzw8HNJMPFg0yXs0OSYY2mUOAl5dagUc/edit#gid=374572086", sheet = "Nominal catches")
+  
+nominal_files_recap <- read_sheet(nominal_files_url, sheet = "Nominal catches")
 fwrite(nominal_files_recap,here("inputs/Workflow/nominal_files_recap.csv" ))
 } else {
   nominal_files_recap <- read_csv(here("inputs/Workflow/nominal_files_recap.csv"))
@@ -35,11 +45,13 @@ fwrite(nominal_files_recap,here("inputs/Workflow/nominal_files_recap.csv" ))
 ```
 
 
-```{r tab.cap = "Recap of the files and their associated process used for the creation of the final output 'global_nominal_catch_firms_level0'"}
-qflextable(nominal_files_recap)
+```{r nominal-files-recap, tab.cap = "Recap of the files and their associated process used for the creation of the final output 'global_nominal_catch_firms_level0'", results='asis', eval=FALSE}
+
+qflextable2(nominal_files_recap)
+
 ```
 
-This sheet is the input of the workflow through a json processed by the geoflow package. The first 3 lines concerned dataset being processed after receiving. The following two lines concerned data having minor processes has the format is already CWP. The last lines uses the 5 precedents outputs to create the final dataset. 
+This sheet `r nominal_files_url` (table in annexe) is the input of the workflow through a json processed by the geoflow package. The first 3 lines concerned dataset being processed after receiving. The following two lines concerned data having minor processes has the format is already CWP. The last lines uses the 5 precedents outputs to create the final dataset. 
 
 The codelist datasets make the link between mappings dataset and dimension of the initial dataset. 
 
@@ -61,6 +73,13 @@ The storage of the inputed files is done on the googledrive of firmstunaatlas, t
 
 The final dataset named : contains `r ifelse((length(colnames(NC)) == 25), length(colnames(NC)), FALSE)` columns. 11 of them corresponds to the CWP standards columns, the remaining 14 drift from an enrichment on the basis of the columns fishing_fleet, species, gear_type, geographic_identifier.
 
+The CWP standards columns are the following **`r (colnames(NC))`**. 
+
+- The data is provided by year, from `r lubridate::year(min(NC$year))` to `r lubridate::year(max(NC$year))`.
+
+- 
+
+
 ##### Storage
 
 This data is stocked on zenodo under the DOI: 10.5281/zenodo.8034731
@@ -68,6 +87,13 @@ This data is stocked on zenodo under the DOI: 10.5281/zenodo.8034731
 ##### Other files used for the display of maps, enrichment or filtering.
 
 ###### Mapping files
+
+The workflow uses the ASFIS mapping for species and the ISSCFG mapping for gear_type.
+
+To perform the mapping of the Nominal Catch dataset we built the specific GTA FIRMS fishing fleet code list. For each tRFMOs, the mapping of species and gear_type has been made. 
+
+
+
 
 ```{r}
 
@@ -78,13 +104,12 @@ download_link <- paste0("[Download CSV](<", file_url, ">)")
 
 ```
 
-All the dataframes used for the mapping and the metadata (Dublin Core) included are the following (\@ref(tab:mapping-files)).
-
-```{r}
-
+```{r include=FALSE}
+link_for_mapping_files <- "https://docs.google.com/spreadsheets/d/1xzXgIxjQm81Fg7PCgtdiwhkB9sgtPKk-NByQDRtAGrE/edit#gid=1158322074"
 if(!(file.exists(here("inputs/Workflow/mapping_files.csv")))){
 drive_auth()
-mapping_files <- read_sheet("https://docs.google.com/spreadsheets/d/1xzXgIxjQm81Fg7PCgtdiwhkB9sgtPKk-NByQDRtAGrE/edit#gid=1158322074", sheet = "2023")
+  
+mapping_files <- read_sheet(link_for_mapping_files, sheet = "2023")
 fwrite(mapping_files,here("inputs/Workflow/mapping_files.csv" ))
 } else {
   mapping_files <- read_csv(here("inputs/Workflow/mapping_files.csv"))
@@ -93,10 +118,18 @@ fwrite(mapping_files,here("inputs/Workflow/mapping_files.csv" ))
 
 ```
 
-```{r mapping-files, results='asis'}
-qflextable2(mapping_files)
-```
 
+All the dataframes used for the mapping and the metadata (Dublin Core) included are to find in this link `r link_for_mapping_files`. 
+
+
+Long table to find in annexe (\@ref(tab:mapping-files)).
+
+
+```{r mapping-files, eval=FALSE, include=FALSE, results='asis'}
+
+qflextable2(mapping_files)
+
+```
 
 ###### Filtering files
 

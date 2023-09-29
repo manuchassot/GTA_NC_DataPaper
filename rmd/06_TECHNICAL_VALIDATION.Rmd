@@ -26,12 +26,16 @@ The ensuing assessment drew several pivotal observations:
 ## Overall comparison
 
 ```{r}
-table_comp <- read.csv(here("rmd/Comparison_NC_FS/figures/Diffstratas/Comparison.of.number.of.stratas.between.the.two.datasets.csv"))
+table_comp <- read.csv(here("rmd/Comparison_NC_FS/figures/Diffstratas/Comparison.of.number.of.stratas.between.the.two.datasets.csv")) %>% rename("Nominal Catch" = "Nominal.catch", " " = X)
+```
 
+
+```{r tablecompNCFS, tab.cap = "Comparison"}
 qflextable2(table_comp, columns_to_color  = c("Difference"))
 ```
 
-```{r temporal_analysis}
+```{r temporal-analysis, include=FALSE}
+
 min_year_not_commun <- lubridate::year(min(NC$year))
 max_year_not_commun <- lubridate::year(min(CAPTURE_TO_COMPARE$year))
 
@@ -52,7 +56,8 @@ For the remaining of the analyis, both datasets are filtered on the commun year,
 
 ## Comparison on reduced datasets
 
-```{r}
+```{r tablecompNCFSfiltered , tab.cap = "Comparison of the main dimensions for FishstatJ and Nominal Catch"}
+
 table_comp <- read.csv(here("rmd/Comparison_NC_FS/figures_filtered/Diffstratas/Comparison.of.number.of.stratas.between.the.two.datasets.csv"))
 
 qflextable2(table_comp, columns_to_color  = c("Difference"))
@@ -60,15 +65,20 @@ qflextable2(table_comp, columns_to_color  = c("Difference"))
 
 ### 1. Temporal Analysis
 
-```{r}
+```{r value-on-time, fig.cap="Recorded value of catches from 1918 to 2021 for FishstatJ and Nominal Catch datasets"}
 
 knitr::include_graphics(here("rmd/Comparison_NC_FS/figures_filtered/Temporal/Evolutions.of.values.for.the.dimension.year.for.Fishstat.and.Nominal.catch.dataset..png"))
+
+```
+
+
+```{r graphdiffvaluetime, fig.cap="Relative differences in value of the recorded catches between FishstatJ dataset and Nominal Catch"}
 
 knitr::include_graphics(here("rmd/Comparison_NC_FS/figures_filtered/Temporaldiff/Differences.in.percent.of.value.for.temporal.dimension....year.between.Fishstat.and.Nominal.catch.dataset..png"))
 
 ```
 
-Fishstat recorded higher values for most of the years declared (from 1950 to 1965 and from 1972-2021)
+Fishstat recorded higher values for most of the years declared (from 1950 to 1965 and from 1972-2021).
 
 
 ## 2. Species Distribution
@@ -86,14 +96,14 @@ knitr::include_graphics(here("rmd/Comparison_NC_FS/figures_filtered/Piechartsdim
 
 ```
 
-```{r fig.cap = 'Relatives percentage of catches by species (1) and species group (2) for Fishstat and Nominal catches dataset', eval=FALSE}
-
+```{r fig.cap = 'Relatives percentage of catches by species for Fishstat and Nominal catches dataset', eval=TRUE}
 knitr::include_graphics(here("rmd/Comparison_NC_FS/figures_filtered/Barplot/Distribution.in.value.for.the.dimension...species.group.gta.png"))
+```
+
+
+```{r fig.cap = 'Relatives percentage of catches by species group for Fishstat and Nominal catches dataset', eval=TRUE}
 
 knitr::include_graphics(here("rmd/Comparison_NC_FS/figures_filtered/Barplot/Distribution.in.value.for.the.dimension...species.png"))
-
-
-
 
 ```
 
@@ -104,7 +114,7 @@ knitr::include_graphics(here("rmd/Comparison_NC_FS/figures_filtered/Barplot/Dist
 Both datasets showed equal counts of fishing fleets but exhibited discrepancies in fleet identities. The GTA dataset lacked data for some countries, but offered aggregated fleet data.
 
 
-```{r fig.cap = 'Relatives percentage of catches by country for Fishstat and Nominal catches dataset'}
+```{r barplot-fleet-label, fig.cap = 'Relatives percentage of catches by country for Fishstat and Nominal catches dataset'}
 
 knitr::include_graphics(here("rmd/Comparison_NC_FS/figures_filtered/Barplot/Distribution.in.value.for.the.dimension...fleet.label.png"))
 
@@ -137,7 +147,7 @@ qflextable2(diffstratas, grouped_data = c("Dimension", "Loss / Gain"), columns_t
 
 For five out of the six major tuna species (Albacore (Thunnus alalunga) **(ALB)**,  Bigeye (Thunnus obesus) **(BET)**, Bluefin (Thunnus thynnus) **(BFT)**, Thunnus orientalis **(PBF)**, Southern bluefin tuna Thunnus maccoyii **(SBF)**, Yellowfin (Thunnus albacares) **(YFT)**), records in the NC dataset surpassed those in Fishstat. 
 
-```{r}
+```{r include=FALSE}
 # Major tuna abbreviations and names for titles
 major_tunas <- list(
   ALB = "Albacore (Thunnus alalunga)",
@@ -151,29 +161,35 @@ major_tunas <- list(
 # Construct filenames
 file_paths <- paste0("outputs/charts/comparison_FS_NC_time_by_species/", names(major_tunas), "_general_comparison_plot.png")
 
-# Function to plot each image with title
-plot_image_with_title <- function(file_path) {
-  if (file.exists(here(file_path))) {
-    img <- knitr::include_graphics(here(file_path))
-    img
+# # Function to plot each image with title
+# 
+# # plot_image_with_title <- function(file_path) {
+# #   if (file.exists(here(file_path))) {
+# #     knitr::include_graphics(here(file_path))
+# # 
+# #   }
+# # }
 
-  }
-}
 ```
 
 
-```{r}
-lapply(file_paths, plot_image_with_title) 
+```{r echo=FALSE, results='asis'}
+
+for(i in file_paths){
+  knitr::include_graphics(i)
+}
+
 ```
 
 
 However, the Skipjack tuna (Katsuwonus pelamis **(SKJ)**) in Fishstat recorded higher, predominantly due to discrepancies in the Western Central Pacific Ocean.
 
-```{r}
+```{r echo=FALSE, results='asis'}
 
 file_paths <- list.files(here("outputs", "charts", "comparison_FS_NC_time_by_species/SKJ_by_ocean"), full.names = TRUE)
 
 lapply(file_paths, plot_image_with_title) 
+
 ```
 
 

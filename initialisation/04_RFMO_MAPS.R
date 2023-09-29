@@ -1,10 +1,10 @@
 # PACIFIC-CENTERED MAP ####
 
 # Source function used for cleaning the projection on the Pacific
-source("92_MAP_PACIFIC_PROJECTION_FUNCTION.R")
+source(here("initialisation/92_MAP_PACIFIC_PROJECTION_FUNCTION.R"))
 
 # Addition for plotting the Pacific-centred maps
-load(url("https://github.com/valentinitnelav/RandomScripts/blob/master/NaturalEarth.RData?raw=true"))
+try(load(url("https://github.com/valentinitnelav/RandomScripts/blob/master/NaturalEarth.RData?raw=true")))
 
 # Do not use the spherical geometryc package
 sf::sf_use_s2(FALSE)

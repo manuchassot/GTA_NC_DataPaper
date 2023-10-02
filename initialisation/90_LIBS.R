@@ -25,7 +25,7 @@ required_packages <- c("tidyverse", "ggpubr", "openxlsx", "data.table",
                        "utils", "DBI", "odbc", "rlang", "kableExtra", 
                        "readr", "tidyr", "ggplot2", "stats", "RColorBrewer", 
                        "cowplot", "RPostgreSQL", "curl", "officer", "gdata", 
-                       "tidyr", "knitr", "tmap")
+                       "tidyr", "knitr", "tmap", "googledrive", "googlesheets4")
 
 # Use pacman to load and install if not present
 pacman::p_load(char = required_packages)

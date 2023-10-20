@@ -1,4 +1,4 @@
-## ----libraries,message=FALSE, warning=FALSE, include=FALSE--------------
+## ----libraries,message=FALSE, warning=FALSE, include=FALSE----------------------------------------------
 
 
 
@@ -26,7 +26,7 @@ for (package in required_packages) {
 
 
 
-## ----utilityfunctions, include=FALSE------------------------------------
+## ----utilityfunctions, include=FALSE--------------------------------------------------------------------
 
 
 `%notin%` <- Negate(`%in%`)
@@ -55,7 +55,7 @@ cat_title = function(x, child_headerinside = ifelse(exists("child_header"), chil
 
 
 
-## ----GTAMARKDOWNFUNCTIONS-----------------------------------------------
+## ----GTAMARKDOWNFUNCTIONS-------------------------------------------------------------------------------
 
 fSpatPlan_Convert2PacificRobinson = function(df, buff = 0){
   
@@ -430,7 +430,7 @@ function_knitting = function(x, titre_init = titre_1, titre_final = titre_2, fin
 
 
 
-## -----------------------------------------------------------------------
+## -------------------------------------------------------------------------------------------------------
 pie_chart_2_default = function (dimension, first, second = NULL, topn = 10, titre_1 = "first", 
   titre_2 = "second", title_yes_no = TRUE, dataframe = FALSE) 
 {
@@ -638,7 +638,7 @@ pie_chart_2_default = function (dimension, first, second = NULL, topn = 10, titr
 }
 
 
-## ----functionprintingmaps-----------------------------------------------
+## ----functionprintingmaps-------------------------------------------------------------------------------
 
 fonction_empreinte_spatiale = function(variable_affichee, initial_dataset = init, final_dataset = final, titre_1 = "Dataset 1", titre_2 = "Dataset 2"){
   selection = function(x){x %>% dplyr::ungroup() %>% dplyr::select(geographic_identifier, measurement_value, GRIDTYPE, measurement_unit)}

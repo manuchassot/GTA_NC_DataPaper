@@ -1,45 +1,51 @@
 # History files
 .Rhistory
 .Rapp.history
-
 # Session Data files
 .RData
 .RDataTmp
-
 # User-specific files
 .Ruserdata
-
 # Example code in package build process
 *-Ex.R
-
 # Output files from R CMD build
 /*.tar.gz
-
 # Output files from R CMD check
 /*.Rcheck/
-
 # RStudio files
 .Rproj.user/
-
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
-
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
 .httr-oauth
-
 # knitr and R markdown default cache directories
 *_cache/
 /cache/
-
 # Temporary files created by R markdown
 *.utf8.md
 *.knit.md
-
 # R Environment Variables
 .Renviron
-
 *.png
 *.docx
 *.html
 *.pdf
+codelist_mapping_flag_ccsbt_fishingfleet_firms.csv
+codelist_mapping_flag_iattc_fishingfleet_firms.csv
+codelist_mapping_flag_iccat_fishingfleet_firms.csv
+codelist_mapping_flag_iotc_fishingfleet_firms.csv
+codelist_mapping_flag_wcpfc_fishingfleet_firms.csv
+codelist_mapping_gear_ccsbt_isscfg_revision_1.csv
+codelist_mapping_gear_iattc_isscfg_revision_1.csv
+codelist_mapping_gear_iccat_isscfg_revision_1.csv
+codelist_mapping_gear_iotc_isscfg_revision_1.csv
+codelist_mapping_gear_wcpfc_isscfg_revision_1.csv
+codelist_mapping_isscfg_revision_1_geargroup_tunaatlas.csv
+codelist_mapping_source_authority_species.csv
+codelist_mapping_species_asfis_speciesgroup_tunaatlas.csv
+codelist_mapping_species_ccsbt_species_asfis.csv
+codelist_mapping_species_iattc_species_asfis.csv
+codelist_mapping_species_iccat_species_asfis.csv
+codelist_mapping_species_iotc_species_asfis.csv
+codelist_mapping_species_wcpfc_species_asfis.csv

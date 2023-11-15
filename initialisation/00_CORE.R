@@ -42,10 +42,10 @@ source("03.2_LOAD_FSJ_DATA.R")
 source("03.3_LOAD_FSJ_MAPPINGS.R")
 
 # Describe the data
-# source(here("initialisation/04_RFMO_MAPS.R"))
+source(here("initialisation/04_RFMO_MAPS.R"))
 source(here("initialisation/05_NC_CHARTS.R"))
-source(here("initialisation/06_COMPARISON_NC_FS.R"))
-source(here("initialisation/07_FSJ_CHARTS.R"))
-source(here("initialisation/08_CAPTURES_MAP_COUNTRY.R"))
+# source(here("initialisation/06_COMPARISON_NC_FS.R"))
+# source(here("initialisation/07_FSJ_CHARTS.R"))
+# source(here("initialisation/08_CAPTURES_MAP_COUNTRY.R"))
 
 

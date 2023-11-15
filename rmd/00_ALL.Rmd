@@ -27,6 +27,9 @@ knitr::opts_chunk$set(echo = FALSE,
                       fig.cap.style = "Caption label",
                       dpi = 300
                       )
+
+source("https://raw.githubusercontent.com/firms-gta/geoflow-tunaatlas/Developement/Analysis_markdown/functions/Functions_markdown.R", local = TRUE)
+
 ```
 
 ```{r HeaderTest, echo = FALSE}
@@ -70,8 +73,10 @@ ft = fp_text(shading.color='#EFEFEF', bold = TRUE)
 ```{r child = "05_DATA_RECORDS.Rmd"}
 ```
 
-```{r child = "06_TECHNICAL_VALIDATION.Rmd"}
-```
+
+<!-- ```{r child = "06_TECHNICAL_VALIDATION.Rmd"} -->
+<!-- ``` -->
+
 
 ```{r child = "07_USAGE_NOTES.Rmd"}
 ```

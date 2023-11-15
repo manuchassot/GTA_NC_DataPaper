@@ -6,13 +6,6 @@ _Tables can be used to support the data records, specifying the data output resu
 
 This study encompasses several data records detailing global nominal catch figures across various regions and timelines. Each record represents the aggregate catch, specified by fish species, geographic_identifier, gear_type, fishing_fleet, and respective time periods.
 
-```{r sourcingfunctionsmarkdown, include=FALSE}
-
-source(here("rmd/Comparison_NC_FS/Functions_markdown.R"), local = TRUE)
-
-```
-
-
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 datasets_links_processing <- read_delim(here("inputs/Workflow/datasets_links_processing.csv"),
     delim = ";", escape_double = FALSE, col_types = cols(`Dataset;RFMO;Link to downolad;Pre-processing function;Comments` = col_character()), trim_ws = TRUE)

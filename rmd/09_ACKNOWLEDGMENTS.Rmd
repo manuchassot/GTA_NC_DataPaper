@@ -1,4 +1,0 @@
-# Acknowledgments
-
-We extend our sincere appreciation to FIRMS steering committee for their instrumental role in implementing the CWP standard exchange format. Additionally, we acknowledge the financial support from Blue Cloud 2026 European project.
-

@@ -1,0 +1,16 @@
+# Technical validation
+
+_The Technical Validation section should present any experiments or analyses that are needed to support the technical quality of the dataset. This section may be supported by figures and tables, as needed. This is a required section; authors must provide information to justify the reliability of their data._
+
+_Possible content **may include**:_
+
+_-	experiments that support or validate the data-collection procedure(s) (e.g. negative controls, or an analysis of standards to confirm measurement linearity)
+-	statistical analyses of experimental error and variation
+-	phenotypic or genotypic assessments of biological samples (e.g. confirming disease status, cell line identity, or the success of perturbations)
+-	general discussions of any procedures used to ensure reliable and unbiased data production, such as blinding and randomization, sample tracking systems, etc. 
+-	any other information needed for assessment of technical rigour by the referees._
+
+_Generally, this **should not include**:_
+_-	follow-up experiments aimed at testing or supporting an interpretation of the data
+-	statistical hypothesis testing 
+-	exploratory computational analyses_

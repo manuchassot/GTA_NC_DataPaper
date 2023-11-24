@@ -1,0 +1,5 @@
+# Data Records
+
+_The Data Records section should be used to explain each data record associated with this work, including the repository where this information is stored, and to provide an overview of the data files and their formats. Each external data record should be cited as described below. A data citation should also be placed in the subsection of the Methods containing the data-collection or procedure(s) used to derive the corresponding record._
+
+_Tables can be used to support the data records, specifying the data output resulting from each data-collection or analytical step and the names of the corresponding files should these form part of the archived record._

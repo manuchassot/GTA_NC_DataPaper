@@ -1,0 +1,80 @@
+# Methods
+
+<!-- The Methods should include detailed text describing any steps or procedures used in producing the data, including full descriptions of the experimental design, data acquisition and any computational processing. See [the detailed section in our submission guidelines](https://www.nature.com/sdata/publish/submission-guidelines#sec-5) for advice on writing a transparent and reproducible methods section. Related methods should be grouped under corresponding subheadings where possible, and methods should be described in enough detail to allow other researchers to interpret and repeat, if required, the full study. Specific data outputs should be explicitly referenced via data citation (see Data Records and Citing Data, below). -->
+
+<!-- Authors should cite previous descriptions of the methods under use, but ideally the method descriptions should be complete enough for others to understand and reproduce the methods and processing steps without referring to associated publications. There is no limit to the length of the Methods section. -->
+
+This section provides a comprehensive description of the steps and procedures used to create the Nominal catch dataset from the different datasets provided by tRFMOs (tuna Regional Fisheries Management Organization).
+
+## Data origin
+
+### Gathering of the data by tRFMOs:
+
+Each tRFMOs has different exchange formats to gather data from fishboats/countries or fisheries. to be continued
+
+### Gathering for Nominal catch dataset:
+
+#### Data calls
+
+Fisheries data sets managed by tRFMOs are generally updated on an annual basis according to their respective data submission cycle. Some revisions may also be performed on an irregular basis following corrections and improvements made to historical data. Each year, an official data call is made by the Steering Committee of the FAO Fisheries Resources Monitoring System (FIRMS) to get the most up-to-date versions of the nominal catch data set built by each Secretariat. It takes place around June to ensure that the data will include catches up to the year preceding the call.
+
+#### The CWP Data Exchange Format
+
+For effective amalgamation of multiple datasets, a unified data exchange format has been crafted. Central to this format is the inclusion of:
+
+-   Digital Format Standardization:
+
+The Comma-Separated-Value (CSV) format, adhering to the RFC 4180 standard, has been endorsed.
+
+-   File Encoding Protocol:
+
+Whether in CSV or JSON format, encoding is standardized to UTF-8.
+
+-   Data Dictionary:
+
+A robust data dictionary has been established to guide the structure and semantics of the fisheries data exchange format. This repository, containing terms for column headers and their definitive explanations, is accessible at FDI Terms on GitHub. <https://github.com/fdiwg/fdi-terms> Notably, a specific fisheries term isn't rigidly bound to a single reference code list but varies based on its application context.
+
+In context-specific scenarios, like the Global Tuna Atlas, associations with particular code lists : <https://github.com/fdiwg/fdi-mappings/tree/main/global/firms/gta>
+
+The Global Tuna Atlas has adopted the Generic (measurement-independent) data structure for its operations. \ref table
+
+This section describes the steps and procedures used to create the global nominal catch dataset from the data available within each tRFMO.
+
+### Exchange format & mapping
+
+-   Building of the specific GTA FIRMS fishing fleet code list
+-   Mapping with ASFIS/ISSCFG/FIRMS fleets
+
+### Creation of the global dataset
+
+#### Data pre-processing
+
+Before combining the datasets, a pre-processing step is applied to three out of the five datasets to restructure their shape to follow the CWP standards. This restructuring ensures uniformity in the format of the data, facilitating the subsequent integration process. Below is a table listing the links to the datasets provided by each tRFMO:
+
+#### Data mapping
+
+Additionally, to ensure consistency and comparability across datasets, a harmonization process is performed to standardize the code lists for datasets not having be mapped yet. The harmonized datasets allow for seamless data integration and accurate analysis across different tRFMOs. The recap of the mapping can be found in table \ref table
+
+Upon completing the pre-processing and harmonization steps, the global nominal catch dataset is constructed by binding and filtering the data.
+
+1.  Binding of datasets for each Ocean Region:
+
+All the individual tRFMO datasets, representing different ocean regions, are combined through a data-binding process.
+
+2.  Filtering on species under mandate by the tRFMOs:
+
+This step involves filtering the data to retain only the information pertaining to species under the mandate of the tRFMOs. The retained species are selected to align with the specific conservation and management goals of each tRFMO.`r SPECIES_ITIS[Aggregate == FALSE, length(unique(TSN))]` are selected.
+
+To be noted, catches of one of the main tuna i.e., southern bluefin tuna is impacted by this treatment. As CCSBT possesses expertise in managing and overseeing data related to this species, their dataset is selected as the primary source for southern bluefin Tuna information. The impact is 4.3% of the global value for this species.
+
+3. Enriching data
+
+To enhance the comprehensibility and usability of the dataset, additional temporal and grouping information is enriched in the data, categorizing species and fishing gear types using mapping of the Data Dictionary.
+
+The code used to perform this workflow is available on: [https://raw.githubusercontent.com/eblondel/geoflow-tunaatlas/master/tunaatlas_scripts/generation/create_global_tuna_atlas_nominal_catch.R](#0){.uri}
+
+## Geoflow workflow and database model?
+
+The workflow of creation and the dissemination of the Nominal catch is using the geoflow package <https://github.com/r-geoflow/geoflow>.
+
+Geoflow offers a mechanism that simplifies the coordination and performance of workflows centered on metadata, aligning with the FAIR (Findable, Accessible, Interoperable, and Reusable) principles of data management.

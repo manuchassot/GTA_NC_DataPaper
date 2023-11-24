@@ -1,0 +1,7 @@
+# Tables
+
+_Tables in the manuscript should generally not be used to present primary data (i.e. measurements). Tables containing primary data should be submitted to an appropriate data repository.
+
+Authors may provide tables within the Word document or as separate files (tab-delimited text or Excel files). Legends, where needed, should be included in the Word document. Tables may be of any size, but only tables that fit onto a single printed page will be included in the PDF version of the article (up to a maximum of three).
+
+Due to typesetting constraints, tables that cannot be fit onto a single A4 page cannot be included in the PDF version of the article and will be hosted as Supplementary Tables. Any such tables must be labelled in the text as ‘Supplementary' tables and numbered separately from the main table list e.g. ‘Table 1, Table 2, Supplementary Table 1' etc. Please note bibliographic references cannot be included within Supplementary Tables and should not be listed in the reference list, which only refers to references used in the main article file. If you do wish to formally cite information used in any supplementary file, please find a means of mentioning these references on the main text. Finally, please note it may be preferable to host large tables within your repository-deposited dataset, as highlighted above._

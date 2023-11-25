@@ -30,7 +30,7 @@ download.file("https://raw.githubusercontent.com/fdiwg/fdi-codelists/main/global
 ## Countries ####
 if(!file.exists("../inputs/codelists/cl_countries.csv"))
   
-  download.file("https://raw.githubusercontent.com/fdiwg/fdi-codelists/main/global/cwp/cl_flagstate_iso3.csv", destfile = "../inputs/codelists/cl_countries.csv", mode = "wb")
+  download.file("https://raw.githubusercontent.com/fdiwg/fdi-codelists/main/global/cwp/cl_country_and_territory_iso3.csv", destfile = "../inputs/codelists/cl_countries.csv", mode = "wb")
 
 # FILTERINGS ####
 

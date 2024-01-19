@@ -1,7 +1,7 @@
 # Figures
 
-_Figure images should be provided as separate files and should be referred to using a consistent numbering scheme through the entire Data Descriptor. We discourage the inclusion of figures in the Supplementary Information - all key figures should be included here in the main Figure section.
+_Figure images should be provided as separate files and should be referred to using a consistent numbering scheme through the entire Data Descriptor. We discourage the inclusion of figures in the Supplementary Information - all key figures should be included here in the main Figure section._
 
-For initial submissions, authors may choose to supply a single PDF with embedded figures. You will later be asked for separate files closer to publication.
+_For initial submissions, authors may choose to supply a single PDF with embedded figures. You will later be asked for separate files closer to publication._
 
-Authors are encouraged to consider creating a figure that outlines the experimental workflow(s) used to generate and analyse the data output(s)._
+_Authors are encouraged to consider creating a figure that outlines the experimental workflow(s) used to generate and analyse the data output(s)._

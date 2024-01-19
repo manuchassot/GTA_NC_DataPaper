@@ -40,6 +40,5 @@ vignettes/*.pdf
 .Renviron
 
 *.png
-*.docx
 *.html
 *.pdf

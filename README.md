@@ -4,4 +4,5 @@ The paper aims to provide a comprehensive description of the global data set of 
 
 - The full paper can be generated from the script generate_all.R.
 - The data set is contained in the zipped file inputs/data/global_nominal_catch_firms_level0.zip.
+- The script 00_CORE.R includes the succession of R scripts which are sourced. 
 - All code lists and mappings are downloaded from the repository of the Fisheries Data Interoperability (FDI) working group.

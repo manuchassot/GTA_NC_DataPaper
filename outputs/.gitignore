@@ -47,5 +47,3 @@ vignettes/*.pdf
 *.csv
 *.xlsx
 
-# File for IOTC internal use
-NC_GTA_YEAR_RFMO_BILLFISH_SPECIES.csv

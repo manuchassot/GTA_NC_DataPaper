@@ -1,7 +1,7 @@
 print("Reading tRFMO nominal catches...")
 
 # Nominal catches ####
-NC_RAW = fread("../inputs/data/GTA/global_nominal_catch_firms_level0.csv", colClasses = c(gear_type = "character"))
+NC_RAW = fread("../inputs/data/GTA/global_nominal_catch_firms_level0_harmonized.csv", colClasses = c(gear_type = "character"))
 
 # Append taxonomic information
 NC = merge(NC_RAW, SPECIES_ITIS[, .(species_group_gta = `Species group`, species_code_asfis = `ASFIS code`, taxon = `Scientific name`, species_aggregate = Aggregate, tsn = TSN)], by.x = "species", by.y = "species_code_asfis", all.x = TRUE)
@@ -22,8 +22,8 @@ NC = merge(NC, MAPPING_FLEET_COUNTRY, by.x = "fishing_fleet", by.y = "fleet_code
 NC[, year := year(time_start)]
 
 # Create ocean basin from areas
-NC[geographic_identifier %in% c("Atlantic", "ATW", "A+M", "ATL", "ATE", "ATS", "MED", "ASW", "ASE", "ATN", "AT", "ANW","ANE"), ocean_basin := "Atlantic Ocean"]
-NC[geographic_identifier %in% c("F51", "IOTC_WEST", "IOTC_EAST", "IOTC"), ocean_basin  := "Indian Ocean"]
+NC[geographic_identifier %in% c("AT", "AT-NE", "AT-NW", "AT-SE", "AT-SW", "ATS", "MD"), ocean_basin := "Atlantic Ocean"]
+NC[geographic_identifier %in% c("IOTC", "IOTC_EAST", "IOTC_WEST"), ocean_basin  := "Indian Ocean"]
 NC[geographic_identifier %in% c("WCPO", "WCPFC"), ocean_basin := "Western-Central Pacific Ocean"]
 NC[geographic_identifier == "EPO", ocean_basin := "Eastern Pacific Ocean"]
 

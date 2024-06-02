@@ -58,7 +58,7 @@ ft = fp_text(shading.color='#EFEFEF', bold = TRUE)
 ```{r child = "01_AUTHORS.Rmd"}
 ```
 
-```{r child = "02_ABSTRACT.Rmd"}
+```{r child = "02_02_CA_11_M_ABSTRACT.Rmd"}
 ```
 
 ```{r child = "03_BACKGROUND_SUMMARY.Rmd"}

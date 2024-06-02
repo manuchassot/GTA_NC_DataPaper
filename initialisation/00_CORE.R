@@ -24,7 +24,7 @@ if(!file.exists("../inputs/spatial_layers/SpatialLayers.RData"))
   source("00.3_DOWNLOAD_GTA_SPATIAL_LAYERS.R")
   source("01.3_LOAD_GTA_SPATIAL_LAYERS.R")
 
-# Load tuna RFMO catches
+# Load and consolidate the annual nominal catch dataset
 if(!file.exists("../inputs/data/GTA/global_nominal_catch_firms_level0_harmonized.csv")) 
   zip::unzip("../inputs/data/GTA/global_nominal_catch_firms_level0_harmonized.zip", exdir = "../inputs/data/GTA/")
   source("02_LOAD_NC_DATA.R")
@@ -41,6 +41,9 @@ if(!file.exists("../inputs/data/FSJ/Capture_Quantity.csv")){
 source("03.1_LOAD_FSJ_CODE_LISTS.R")
 source("03.2_LOAD_FSJ_DATA.R")
 source("03.3_LOAD_FSJ_MAPPING.R")
+
+# Read and consolidate the geo-referenced catch datasets
+source("04_LOAD_CA_DATA.R")
 
 # Describe the data
 #source("04_RFMO_MAPS.R")

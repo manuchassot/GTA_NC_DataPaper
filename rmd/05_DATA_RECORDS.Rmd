@@ -3,3 +3,183 @@
 _The Data Records section should be used to explain each data record associated with this work, including the repository where this information is stored, and to provide an overview of the data files and their formats. Each external data record should be cited as described below. A data citation should also be placed in the subsection of the Methods containing the data-collection or procedure(s) used to derive the corresponding record._
 
 _Tables can be used to support the data records, specifying the data output resulting from each data-collection or analytical step and the names of the corresponding files should these form part of the archived record._
+
+This study encompasses several data records detailing global nominal catch figures across various regions and timelines. Each record represents the aggregate catch, specified by fish species, geographic_identifier, gear_type, fishing_fleet, and respective time periods.
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+datasets_links_processing <- read_delim(here("inputs/Workflow/datasets_links_processing.csv"),
+    delim = ";", escape_double = FALSE, col_types = cols(`Dataset;RFMO;Link to downolad;Pre-processing function;Comments` = col_character()), trim_ws = TRUE)
+```
+
+```{r tab.cap = "Datasets and pre-processing functions used in the creation of the final dataset"}
+qflextable(datasets_links_processing)
+```
+
+
+## Data Repository
+
+All data associated with this study are deposited and made publicly accessible in the , a googledrive for fisheries data . 
+
+The datasets used to create the data are stored in a google drive, geoflow also allows to store in and use data from local environement or database.
+
+```{r include=FALSE}
+
+nominal_files_url <- "https://docs.google.com/spreadsheets/d/13SJB2PYkCCdrzw8HNJMPFg0yXs0OSYY2mUOAl5dagUc/edit#gid=374572086"
+
+if(!(file.exists(here("inputs/Workflow/nominal_files_recap.csv")))){
+drive_auth()
+  
+nominal_files_recap <- read_sheet(nominal_files_url, sheet = "Nominal catches")
+fwrite(nominal_files_recap,here("inputs/Workflow/nominal_files_recap.csv" ))
+} else {
+  nominal_files_recap <- read_csv(here("inputs/Workflow/nominal_files_recap.csv"))
+
+}
+```
+
+
+```{r nominal-files-recap, tab.cap = "Recap of the files and their associated process used for the creation of the final output 'global_nominal_catch_firms_level0'", results='asis', eval=FALSE}
+
+qflextable2(nominal_files_recap)
+
+```
+
+This sheet `r nominal_files_url` (table in annexe) is the input of the workflow through a json processed by the geoflow package. The first 3 lines concerned dataset being processed after receiving. The following two lines concerned data having minor processes has the format is already CWP. The last lines uses the 5 precedents outputs to create the final dataset. 
+
+The codelist datasets make the link between mappings dataset and dimension of the initial dataset. 
+
+### Dataset Overview
+
+#### Pre processed data
+
+##### Format
+
+For the inputs data corresponding to the first 5 lines, all the formats are recapped in the code of the processed associated. The outputs format are the CWP format.
+
+##### Storage
+
+The storage of the inputed files is done on the googledrive of firmstunaatlas, the output are stored in a database and in the googledrive. 
+
+#### Final data
+
+##### Format
+
+The final dataset named : contains `r ifelse((length(colnames(NC)) == 25), length(colnames(NC)), FALSE)` columns. 11 of them corresponds to the CWP standards columns, the remaining 14 drift from an enrichment on the basis of the columns fishing_fleet, species, gear_type, geographic_identifier.
+
+The CWP standards columns are the following **`r (colnames(NC))`**. 
+
+- The data is provided by year, from `r lubridate::year(min(NC$year))` to `r lubridate::year(max(NC$year))`.
+
+- 
+
+
+##### Storage
+
+This data is stocked on zenodo under the DOI: 10.5281/zenodo.8034731
+
+##### Other files used for the display of maps, enrichment or filtering.
+
+###### Mapping files
+
+The workflow uses the ASFIS mapping for species and the ISSCFG mapping for gear_type.
+
+To perform the mapping of the Nominal Catch dataset we built the specific GTA FIRMS fishing fleet code list. For each tRFMOs, the mapping of species and gear_type has been made. 
+
+
+
+
+```{r}
+
+file_url <- "https://docs.google.com/spreadsheets/d/1xzXgIxjQm81Fg7PCgtdiwhkB9sgtPKk-NByQDRtAGrE/edit#gid=1158322074"
+download_link <- paste0("[Download CSV](<", file_url, ">)")
+
+
+
+```
+
+```{r include=FALSE}
+link_for_mapping_files <- "https://docs.google.com/spreadsheets/d/1xzXgIxjQm81Fg7PCgtdiwhkB9sgtPKk-NByQDRtAGrE/edit#gid=1158322074"
+if(!(file.exists(here("inputs/Workflow/mapping_files.csv")))){
+drive_auth()
+  
+mapping_files <- read_sheet(link_for_mapping_files, sheet = "2023")
+fwrite(mapping_files,here("inputs/Workflow/mapping_files.csv" ))
+} else {
+  mapping_files <- read_csv(here("inputs/Workflow/mapping_files.csv"))
+
+}
+
+```
+
+
+All the dataframes used for the mapping and the metadata (Dublin Core) included are to find in this link `r link_for_mapping_files`. 
+
+
+Long table to find in annexe (\@ref(tab:mapping-files)).
+
+
+```{r mapping-files, eval=FALSE, include=FALSE, results='asis'}
+
+qflextable2(mapping_files)
+
+```
+
+###### Filtering files
+
+```{r}
+
+file_url <- "https://raw.githubusercontent.com/fdiwg/fdi-mappings/main/cross-term/codelist_mapping_source_authority_species.csv"
+download_link <- paste0("[Download CSV](<", file_url, ">)")
+
+
+
+```
+
+The file used to filter species for the Nominal Catch dataset: 
+`r download_link`
+
+
+```{r species-level-0, tab.cap = "Species retained in the final dataset by tRFMOs", eval = FALSE}
+
+cl_species_level0 <- readr::read_csv(file_url)
+ft <- flextable(as_grouped_data(cl_species_level0 %>% arrange(desc(species)) %>% dplyr::select(species, source_authority), groups = "species")) %>% 
+  merge_v(j = "species", part = "header") %>%
+  set_caption(caption = paste("Download Link:", download_link))
+
+ft
+```
+
+
+###### Enrichement files
+
+The files used to enrich data on the basis of mapping dataset are the following:
+
+ASFIS Species:
+https://raw.githubusercontent.com/fdiwg/fdi-codelists/main/global/cwp/cl_asfis_species.csv
+
+GTA Draft Species List:
+https://raw.githubusercontent.com/fdiwg/fdi-codelists/main/global/firms/gta/GTA_SPECIES_LIST_DRAFT.csv
+
+Species Groups:
+https://raw.githubusercontent.com/fdiwg/fdi-codelists/main/global/firms/gta/cl_speciesgroup.csv
+
+ISSCFG Gear Information:
+https://raw.githubusercontent.com/fdiwg/fdi-codelists/main/global/cwp/cl_isscfg_gear.csv
+
+Fishing Fleet Information:
+https://raw.githubusercontent.com/fdiwg/fdi-codelists/main/global/firms/gta/cl_fishing_fleet.csv
+
+Flag State ISO3 Codes:
+https://raw.githubusercontent.com/fdiwg/fdi-codelists/main/global/cwp/cl_flagstate_iso3.csv
+
+Cross-term Codelist Mapping Source Authority Species:
+https://raw.githubusercontent.com/fdiwg/fdi-mappings/main/cross-term/codelist_mapping_source_authority_species.csv
+
+
+###### Shapes files
+
+The shape files associated with the geographical_identifier column of the dataset are to be found in the following zip. https://github.com/fdiwg/fdi-codelists/raw/main/global/firms/gta/cl_task1_areas.zip
+
+
+
+

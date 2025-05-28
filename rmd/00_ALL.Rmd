@@ -1,5 +1,5 @@
 ---
-title: "Partnering with Regional Fisheries Management Organisations to build global data sets of tuna fisheries"
+title: "Partnering with Regional Fisheries Management Organisations to build global datasets of catches from tuna fisheries"
 #title: "From national to global: Building global catches from tuna fisheries"
 subtitle: "The Global Tuna Atlas"
 author: Emmanuel Chassot^1,2^, Emmanuel Blondel^2,\(^\dagger\)^, Peter Williams^3^,
@@ -58,7 +58,7 @@ ft = fp_text(shading.color='#EFEFEF', bold = TRUE)
 ```{r child = "01_AUTHORS.Rmd"}
 ```
 
-```{r child = "02_ABSTRACT.Rmd"}
+```{r child = "02_04_CA_ALL_M_ABSTRACT.Rmd"}
 ```
 
 ```{r child = "03_BACKGROUND_SUMMARY.Rmd"}

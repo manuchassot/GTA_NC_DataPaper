@@ -7,8 +7,9 @@ source("90_LIBS.R")
 # Includes defaults and helper functions
 source("91_COLOR_LAYOUT.R")
 source("92_MAP_PACIFIC_PROJECTION_FUNCTION.R")
+source("93_FUNCTIONS.R")
 
-# Download/load GTA code lists (8 files expected)
+# Download/load GTA codelists (8 files expected)
 if(!length(list.files(path = "../inputs/codelists/", pattern = "csv")) >= 8)
   source("00.1_DOWNLOAD_GTA_CODE_LISTS.R")
   source("01.1_LOAD_GTA_CODE_LISTS.R")
@@ -23,9 +24,9 @@ if(!file.exists("../inputs/spatial_layers/SpatialLayers.RData"))
   source("00.3_DOWNLOAD_GTA_SPATIAL_LAYERS.R")
   source("01.3_LOAD_GTA_SPATIAL_LAYERS.R")
 
-# Load tuna RFMO catches
-if(!file.exists("../inputs/data/GTA/global_nominal_catch_firms_level0.csv")) 
-  zip::unzip("../inputs/data/GTA/global_nominal_catch_firms_level0.zip", exdir = "../inputs/data/GTA/")
+# Load and consolidate the annual nominal catch dataset
+if(!file.exists("../inputs/data/GTA/global_nominal_catch_firms_level0_harmonized.csv")) 
+  zip::unzip("../inputs/data/GTA/global_nominal_catch_firms_level0_harmonized.zip", exdir = "../inputs/data/GTA/")
   source("02_LOAD_NC_DATA.R")
 
 # Download/load FAO FishstatJ (FSJ) code lists
@@ -40,6 +41,9 @@ if(!file.exists("../inputs/data/FSJ/Capture_Quantity.csv")){
 source("03.1_LOAD_FSJ_CODE_LISTS.R")
 source("03.2_LOAD_FSJ_DATA.R")
 source("03.3_LOAD_FSJ_MAPPING.R")
+
+# Read and consolidate the geo-referenced catch datasets
+source("04_LOAD_CA_DATA.R")
 
 # Describe the data
 #source("04_RFMO_MAPS.R")

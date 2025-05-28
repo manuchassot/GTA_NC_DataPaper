@@ -32,6 +32,11 @@ if(!file.exists("../inputs/codelists/cl_countries.csv"))
   
   download.file("https://raw.githubusercontent.com/fdiwg/fdi-codelists/main/global/cwp/cl_country_and_territory_iso3.csv", destfile = "../inputs/codelists/cl_countries.csv", mode = "wb")
 
+## NC areas ####
+if(!file.exists("../inputs/spatial_layers/cl_nc_areas.csv"))
+  
+  download.file("https://raw.githubusercontent.com/fdiwg/fdi-codelists/main/global/firms/gta/cl_nc_areas.csv", destfile = "../inputs/spatial_layers/cl_nc_areas.csv", mode = "wb")
+
 # FILTERINGS ####
 
 ## Species filtering file ####

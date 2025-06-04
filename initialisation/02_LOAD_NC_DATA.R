@@ -1,7 +1,7 @@
 print("Reading tRFMO nominal catches...")
 
 # Nominal catches ####
-NC_RAW = fread("../inputs/data/GTA/global_nominal_catch_firms_level0_harmonized.csv", colClasses = c(gear_type = "character"))
+NC_RAW = fread("../inputs/data/GTA/global_nominal_catch_firms_level0_public.csv", colClasses = c(gear_type = "character"))
 
 # Append taxonomic information
 NC = merge(NC_RAW, SPECIES_ITIS[, .(species_group_gta = `Species group`, species_code_asfis = `ASFIS code`, taxon = `Scientific name`, species_aggregate = Aggregate, tsn = TSN)], by.x = "species", by.y = "species_code_asfis", all.x = TRUE)

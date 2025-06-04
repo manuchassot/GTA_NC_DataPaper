@@ -44,3 +44,5 @@ vignettes/*.pdf
 *.html
 *.pdf
 *.csv
+!codelist_mapping_FishstatJ_GTA.csv
+!cl_fishing_fleet_with_country.csv

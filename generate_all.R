@@ -1,5 +1,8 @@
 # Run the R scripts
+# Load and save library environment
+source("initialisation/90_LIBS.R")
 setwd("./initialisation/")
+
 source("00_CORE.R")
 setwd("..")
 

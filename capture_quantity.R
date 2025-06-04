@@ -74,6 +74,15 @@ CAPTURED$ocean_basin <- recode(CAPTURED$ocean_basin,
                                          `Pacific, Southeast` = "Western-Central Pacific Ocean",
                                          `Pacific, Antarctic` = "Western-Central Pacific Ocean")
 
+CAPTURED$ocean_basin <- recode(CAPTURED$ocean_basin,
+                               `America, South - Inland waters` = "Pacific Ocean",
+                               `Western-Central Pacific Ocean` = "Pacific Ocean",
+                               `Eastern Pacific Ocean` = "Pacific Ocean")
+
+NCD$ocean_basin <- recode(NCD$ocean_basin,
+                               `Western-Central Pacific Ocean` = "Pacific Ocean",
+                               `Eastern Pacific Ocean` = "Pacific Ocean")
+
 
 CAPTURED$species_name <- recode(CAPTURED$species_name,
                                `True tunas NEI` = "True tunas nei",
@@ -116,7 +125,8 @@ test <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = CAPTU
                                                                                          "year", "measurement_value", "ocean_basin"),
                                                           parameter_titre_dataset_1 = "FishStatJ", 
                                                           parameter_titre_dataset_2 = "GTA")
-
+test$combined_summary_histogram <- NULL
+test$other_dimension_analysis_list <- NULL
 
 child_env_global = new.env()
 
@@ -143,6 +153,9 @@ test_major_tunas <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_
                                                           print_map = FALSE, 
                                                           parameter_titre_dataset_1 = "FishStatJ", 
                                                           parameter_titre_dataset_2 = "GTA", topnumber = 10)
+
+test_major_tunas$combined_summary_histogram <- NULL
+test_major_tunas$other_dimension_analysis_list <- NULL
 
 
 child_env_global = new.env()
@@ -179,6 +192,14 @@ for (species_name_ in c("Skipjack tuna"     ,
                                                                         parameter_titre_dataset_1 = "FishStatJ", 
                                                                         parameter_titre_dataset_2 = "GTA", topnumber = 10)
   
+  test_major_tunas$combined_summary_histogram <- NULL
+  test_major_tunas$other_dimension_analysis_list <- NULL
+  test_major_tunas$compare_strata_differences_list$number_init_column_final_column <- test_major_tunas$compare_strata_differences_list$number_init_column_final_column %>% 
+    dplyr::filter(!(" " %in% c("Number of gridtype", 
+                               "Number of measurement_unit", 
+                               "Number of ocean_basin"
+    )))
+  
   child_env_global = new.env()
   
   list2env(test_major_tunas, envir = child_env_global)
@@ -194,6 +215,50 @@ for (species_name_ in c("Skipjack tuna"     ,
 
 for (ocean_basin_ in unique(NCD_filtered$ocean_basin)) {
   
+  # Pour supprimer aussi les points et les espaces
+  for (species_name_ in c("Skipjack tuna"     ,  
+                          "Yellowfin tuna"    ,   
+                          "Albacore"            ,
+                          "Bigeye tuna"     ,      
+                          "Swordfish")) {
+  test_major_tunas <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = CAPTURED_filtered , 
+                                                                        parameter_final = NCD_filtered,
+                                                                        parameter_filtering = list(ocean_basin = ocean_basin_, 
+                                                                                                   species_name = species_name_),
+                                                                        parameter_time_dimension = c("year"), 
+                                                                        parameter_colnames_to_keep = c("species_name", 
+                                                                                                       "fishing_fleet_label", "measurement_unit", 
+                                                                                                       "year", "measurement_value", "ocean_basin"),
+                                                                        print_map = FALSE, 
+                                                                        parameter_titre_dataset_1 = "FishStatJ", 
+                                                                        parameter_titre_dataset_2 = "GTA", topnumber = 10, 
+                                                                        coverage = TRUE)
+  
+  test_major_tunas$combined_summary_histogram <- NULL
+  test_major_tunas$other_dimension_analysis_list <- NULL
+  test_major_tunas$compare_strata_differences_list$number_init_column_final_column <- test_major_tunas$compare_strata_differences_list$number_init_column_final_column %>% 
+    dplyr::filter(!(" " %in% c("Number of gridtype", 
+                               "Number of measurement_unit", 
+                               "Number of ocean_basin", "Number of species_name"
+                               )))
+  
+  ocean_basin_cleaned_ <- str_remove_all(ocean_basin_, "[-_/\\. ]")
+  
+  child_env_global = new.env()
+  
+  list2env(test_major_tunas, envir = child_env_global)
+  child_env_global$step_title_t_f <- FALSE
+  child_env_global$child_header <- ""
+  rmarkdown::render(system.file("rmd/comparison.Rmd", package = "CWP.dataset"),
+                    envir = child_env_global,
+                    output_format = "bookdown::pdf_document2",
+                    output_file = paste0("COMP_GTA_FishStat", ocean_basin_cleaned_, species_name_), output_dir = getwd())
+  }
+  
+}
+
+ for (ocean_basin_ in unique(NCD_filtered$ocean_basin)) {
+  
   test_major_tunas <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = parameter_init , 
                                                                         parameter_final = parameter_final,
                                                                         parameter_filtering = list(ocean_basin = ocean_basin_, 
@@ -205,6 +270,14 @@ for (ocean_basin_ in unique(NCD_filtered$ocean_basin)) {
                                                                         print_map = FALSE, 
                                                                         parameter_titre_dataset_1 = "FishStatJ", 
                                                                         parameter_titre_dataset_2 = "GTA", topnumber = 10)
+  
+  test_major_tunas$combined_summary_histogram <- NULL
+  test_major_tunas$other_dimension_analysis_list <- NULL
+  test_major_tunas$compare_strata_differences_list$number_init_column_final_column <- test_major_tunas$compare_strata_differences_list$number_init_column_final_column %>% 
+    dplyr::filter(!(" " %in% c("Number of gridtype", 
+                               "Number of measurement_unit", 
+                               "Number of ocean_basin"
+    )))
   
   child_env_global = new.env()
   

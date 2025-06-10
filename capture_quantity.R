@@ -4,92 +4,96 @@ setwd(here::here())
 map <- read_csv("mapping.csv")
 
 
-CAPTURED <- CAPTURE
-NCD <- NC
+CAPTURED <- as.data.frame(CAPTURE)
+NCD <- as.data.frame(NC)
+NCD <- NCD %>% dplyr::left_join(as.data.frame(MAPPING_FLEET_FSJ_COUNTRY %>% dplyr::filter(code != "GHA")), by = c("country_code" = "code")) %>% 
+  dplyr::mutate(fsj_country_code = ifelse(is.na(fsj_country_code), country_code, fsj_country_code))
+
+
+Mapping_code_country_code <- CAPTURED %>% dplyr::select(COUNTRY, COUNTRY_CODE) %>% dplyr::distinct()
+
+NCD <- NCD %>% dplyr::left_join(Mapping_code_country_code, by = c("fsj_country_code" = "COUNTRY_CODE"))%>% 
+      dplyr::mutate(fishing_fleet_label = ifelse(!is.na(COUNTRY), COUNTRY, country )) %>% 
+  dplyr::mutate(fishing_fleet_label = ifelse(is.na(fishing_fleet_label), "Other nei", fishing_fleet_label))
+
 
 # 2) renommage automatique
 names(CAPTURED)[ match(map$source, names(CAPTURED)) ] <- map$target
+
+
+
+# Mapping_ocean and source_autority ---------------------------------------
+
+CAPTURED$Ocean <- recode(CAPTURED$ocean_basin,
+                         `America, South - Inland waters` = "Western Pacific Ocean",
+                         `Atlantic, Northwest` = "Western Atlantic Ocean",
+                         `Atlantic, Northeast` = "Eastern Atlantic Ocean",
+                         `Atlantic, Western Central` = "Western Atlantic Ocean",
+                         `Atlantic, Eastern Central` = "Eastern Atlantic Ocean",
+                         `Mediterranean and Black Sea` = "Mediterranean and Black Sea",
+                         `Atlantic, Southwest` = "Western Atlantic Ocean",
+                         `Atlantic, Southeast` = "Eastern Atlantic Ocean",
+                         `Atlantic, Antarctic` = "Atlantic Antarctic",
+                         `Indian Ocean, Western` = "Western Indian Ocean",
+                         `Indian Ocean, Eastern` = "Eastern Indian Ocean",
+                         `Indian Ocean, Antarctic` = "Indian Antarctic",
+                         `Pacific, Northwest` = "Western Pacific Ocean",
+                         `Pacific, Northeast` = "Eastern Pacific Ocean",
+                         `Pacific, Western Central` = "Western Pacific Ocean",
+                         `Pacific, Eastern Central` = "Eastern Pacific Ocean",
+                         `Pacific, Southwest` = "Western Pacific Ocean",
+                         `Pacific, Southeast` = "Eastern Pacific Ocean",
+                         `Pacific, Antarctic` = "Pacific Antarctic")
+
+# Supprime la clé actuelle (ici fishing_fleet) et remet la table en mode "sans clé"
+mapping_ocean_source_authority <- NCD %>% dplyr::select(source_authority, Ocean)%>% distinct() %>% 
+  dplyr::mutate(source_authority = ifelse (Ocean == "Eastern Pacific Ocean", NA, source_authority)) %>% 
+  dplyr::mutate(source_authority = ifelse (Ocean == "Pacific Antarctic", NA, source_authority)) %>% 
+  dplyr::mutate(source_authority = ifelse (Ocean == "Indian Antarctic", NA, source_authority)) %>% 
+  dplyr::mutate(source_authority = ifelse (Ocean == "Atlantic Antarctic", NA, source_authority)) %>% 
+  dplyr::distinct() 
+CAPTURED <- as.data.frame(CAPTURED) %>% dplyr::left_join(as.data.frame(mapping_ocean_source_authority), by = "Ocean")
 
 CAPTURED$measurement_unit <- "t"
 class(NCD$measurement_unit) <- "character"
 NCD$measurement_unit <- "t"
 
-NC_not_FS <- setdiff(NCD$fishing_fleet, CAPTURED$fishing_fleet)
-FS_not_NC <- setdiff(CAPTURED$fishing_fleet, NCD$fishing_fleet)
-
-NC_not_FS_label <- setdiff(NCD$fleet_label, CAPTURED$fishing_fleet_label)
-NC_not_FS_label <- setdiff(NCD$country, CAPTURED$fishing_fleet_label)
-FS_not_NC_label <- setdiff(CAPTURED$fishing_fleet_label, NCD$fleet_label)
-FS_not_NC_label <- setdiff(CAPTURED$fishing_fleet_label, NCD$country)
+FS_not_NC_label <- setdiff(CAPTURED$fishing_fleet_label, NCD$fishing_fleet_label)
+NC_not_FS_label <- setdiff(NCD$fishing_fleet_label, CAPTURED$fishing_fleet_label)
 
 mapping_from_FSJ_to_NC <- read_delim("inputs/mappings/Mapping_from_fsj_to_nc.csv", 
                                      delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
 
-CAPTURED <- CAPTURED %>% dplyr::left_join(mapping_from_FSJ_to_NC, 
-                                                              by = c("fishing_fleet_label"="FSJ")) %>% 
-  mutate(fishing_fleet_label = ifelse(!is.na(NC), NC, fishing_fleet_label)) %>% dplyr::select(-NC)
+CAPTURED_test <- CAPTURED %>% dplyr::filter(fishing_fleet_label%in%FS_not_NC_label)%>% dplyr::left_join(mapping_from_FSJ_to_NC %>% dplyr::select(FSJ, NC), 
+                                                              by = c("fishing_fleet_label"="FSJ"))%>% 
+  dplyr::mutate(fishing_fleet_label = ifelse(!is.na(NC), NC, fishing_fleet_label)) %>% dplyr::select(-NC)
 
-NC_not_FS <- setdiff(NCD$fishing_fleet, CAPTURED$fishing_fleet)
-FS_not_NC <- setdiff(CAPTURED$fishing_fleet, NCD$fishing_fleet)
-
-NC_not_FS_label <- setdiff(NCD$fleet_label, CAPTURED$fishing_fleet_label)
-FS_not_NC_label <- setdiff(CAPTURED$fishing_fleet_label, NCD$fleet_label)
-
-mapping_FS_NC <- read_csv(here("inputs/mappings/mapping_FS_NC.csv"))
-
-CAPTURED <- CAPTURED%>% dplyr::left_join(mapping_FS_NC, 
-                                         by = c("fishing_fleet_label" = "Country_FishStatJ")) %>% 
-  dplyr::mutate(fishing_fleet = ifelse(!is.na(fishing_fleet.y),fishing_fleet.y , fishing_fleet.x)) %>% 
-  dplyr::mutate(fishing_fleet_label = ifelse(!is.na(Country_GTA),Country_GTA , fishing_fleet_label)) %>% 
-  dplyr::select(-c(Country_GTA, fishing_fleet.y, fishing_fleet.x))
+CAPTURED <- rbind(CAPTURED_test, CAPTURED %>% dplyr::filter(!fishing_fleet_label%in%FS_not_NC_label))
 
 
-NC_not_FS <- setdiff(NCD$fishing_fleet, CAPTURED$fishing_fleet)
-FS_not_NC <- setdiff(CAPTURED$fishing_fleet, NCD$fishing_fleet)
-
-NC_not_FS_label <- setdiff(NCD$fleet_label, CAPTURED$fishing_fleet_label)
-FS_not_NC_label <- setdiff(CAPTURED$fishing_fleet_label, NCD$fleet_label)
+# mapping_FS_NC <- read_csv(here("inputs/mappings/mapping_FS_NC.csv"))
+# 
+# CAPTURED <- CAPTURED%>% dplyr::left_join(mapping_FS_NC, 
+#                                          by = c("fishing_fleet_label" = "Country_FishStatJ")) %>% 
+#   dplyr::mutate(fishing_fleet = ifelse(!is.na(fishing_fleet.y),fishing_fleet.y , fishing_fleet.x)) %>% 
+#   dplyr::mutate(fishing_fleet_label = ifelse(!is.na(Country_GTA),Country_GTA , fishing_fleet_label)) %>% 
+#   dplyr::select(-c(Country_GTA, fishing_fleet.y, fishing_fleet.x))
+# 
+# 
+# NC_not_FS <- setdiff(NCD$fishing_fleet, CAPTURED$fishing_fleet)
+# FS_not_NC <- setdiff(CAPTURED$fishing_fleet, NCD$fishing_fleet)
+# 
+# NC_not_FS_label <- setdiff(NCD$fleet_label, CAPTURED$fishing_fleet_label)
+# FS_not_NC_label <- setdiff(CAPTURED$fishing_fleet_label, NCD$fleet_label)
   
 
-CAPTURED$ocean_basin <- recode(CAPTURED$ocean_basin,
-                                         `America, South - Inland waters` = "America, South - Inland waters",
-                                         `Atlantic, Northwest` = "Atlantic Ocean",
-                                         `Atlantic, Northeast` = "Atlantic Ocean",
-                                         `Atlantic, Western Central` = "Atlantic Ocean",
-                                         `Atlantic, Eastern Central` = "Atlantic Ocean",
-                                          # `Mediterranean and Black Sea` = "Mediterranean and Black Sea",
-                                          `Mediterranean and Black Sea` = "Atlantic Ocean",
-                                          `Atlantic, Southwest` = "Atlantic Ocean",
-                                         `Atlantic, Southeast` = "Atlantic Ocean",
-                                         `Atlantic, Antarctic` = "Atlantic Ocean",
-                                         `Indian Ocean, Western` = "Indian Ocean",
-                                         `Indian Ocean, Eastern` = "Indian Ocean",
-                                         `Indian Ocean, Antarctic` = "Indian Ocean",
-                                         `Pacific, Northwest` = "Western-Central Pacific Ocean",
-                                         `Pacific, Northeast` = "Western-Central Pacific Ocean",
-                                         `Pacific, Western Central` = "Western-Central Pacific Ocean",
-                                         `Pacific, Eastern Central` = "Eastern Pacific Ocean",
-                                         `Pacific, Southwest` = "Western-Central Pacific Ocean",
-                                         `Pacific, Southeast` = "Western-Central Pacific Ocean",
-                                         `Pacific, Antarctic` = "Western-Central Pacific Ocean")
-
-CAPTURED$ocean_basin <- recode(CAPTURED$ocean_basin,
-                               `America, South - Inland waters` = "Pacific Ocean",
-                               `Western-Central Pacific Ocean` = "Pacific Ocean",
-                               `Eastern Pacific Ocean` = "Pacific Ocean")
-
-NCD$ocean_basin <- recode(NCD$ocean_basin,
-                               `Western-Central Pacific Ocean` = "Pacific Ocean",
-                               `Eastern Pacific Ocean` = "Pacific Ocean")
 
 
 CAPTURED$species_name <- recode(CAPTURED$species_name,
                                `True tunas NEI` = "True tunas nei",
                                `Tunas NEI` = "Tunas nei")
 
-NC_not_FS_label <- setdiff(unique(NCD$fleet_label), unique(CAPTURED$fishing_fleet_label))
-FS_not_NC_label <- setdiff(unique(CAPTURED$fishing_fleet_label), unique(NCD$fleet_label))
 
 # NCD_test <- NCD %>% dplyr::inner_join(as.data.frame(MAPPING_FLEET_FSJ_COUNTRY), by = c("country_code" = "code"))
 
@@ -97,32 +101,48 @@ require(CWP.dataset)
 
 CAPTURED$year <- paste0(CAPTURED$year, "-01-01")
 NCD$year <- paste0(NCD$year, "-01-01")
-NCD <- NCD %>% dplyr::rename(fishing_fleet_label =fleet_label )
 
-species_intersect <- intersect(CAPTURED$species, NC$species)
+species_intersect <- intersect(unique(CAPTURED$species), unique(NCD$species))
 
+CAPTURED$species_name <- gsub("NEI", "nei", CAPTURED$species_name)
 
-CAPTURED_filtered <- CAPTURED %>% dplyr::filter(species %in% species_intersect
-                                                | species_name %in% c("Tuna-like fishes NEI", 
-                                                                      "True tunas nei", 
-                                                                      "Tunas nei", 
-                                                                      "Frigate and bullet tunas"))
+CAPTURED_filtered <- CAPTURED %>% dplyr::filter(species %in% species_intersect) %>% 
+  dplyr::filter(species != "SBF")
 sum(CAPTURED$measurement_value)
 sum(CAPTURED_filtered$measurement_value)
 
-NCD_filtered <- NCD%>% dplyr::filter(species %in% species_intersect
-                            | species %in% c("TUN", 
-                                                  "TUS"))
+NCD_filtered <- NCD%>% dplyr::filter(species %in% species_intersect) %>% 
+  dplyr::filter(species != "SBF")
 sum(NCD$measurement_value)
 sum(NCD_filtered$measurement_value)
 
+
+CAPTURED_filtered <- CAPTURED_filtered %>%
+  dplyr::mutate(ocean_simple = case_when(
+    Ocean %in% c("Western Atlantic Ocean", "Eastern Atlantic Ocean","Atlantic Antarctic") ~ "Atlantic Ocean",
+    Ocean %in% c("Western Indian Ocean", "Eastern Indian Ocean","Indian Antarctic")   ~ "Indian Ocean",
+    Ocean %in% c("Western Pacific Ocean", "Eastern Pacific Ocean","Pacific Antarctic") ~ "Pacific Ocean",
+    Ocean == "Mediterranean and Black Sea"                          ~ "Mediterranean and Black Sea",
+    TRUE ~ NA_character_
+  ))
+
+NCD_filtered <- NCD_filtered %>%
+  dplyr::mutate(ocean_simple = case_when(
+    Ocean %in% c("Western Atlantic Ocean", "Eastern Atlantic Ocean","Atlantic Antarctic") ~ "Atlantic Ocean",
+    Ocean %in% c("Western Indian Ocean", "Eastern Indian Ocean","Indian Antarctic")   ~ "Indian Ocean",
+    Ocean %in% c("Western Pacific Ocean", "Eastern Pacific Ocean","Pacific Antarctic") ~ "Pacific Ocean",
+    Ocean == "Mediterranean and Black Sea"                          ~ "Mediterranean and Black Sea",
+    TRUE ~ NA_character_
+  ))
+
 test <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = CAPTURED_filtered, 
-                                                          parameter_final = NCD,
+                                                          parameter_final = NCD_filtered,
                                                           parameter_time_dimension = c("year"), 
                                                           print_map = FALSE, 
+                                                          parameter_diff_value_or_percent = "Difference in value",
                                                           parameter_colnames_to_keep = c("species_name", 
                                                                                          "fishing_fleet_label", "measurement_unit", 
-                                                                                         "year", "measurement_value", "ocean_basin"),
+                                                                                         "year", "measurement_value", "Ocean", "source_authority"),
                                                           parameter_titre_dataset_1 = "FishStatJ", 
                                                           parameter_titre_dataset_2 = "GTA")
 test$combined_summary_histogram <- NULL
@@ -140,16 +160,76 @@ rmarkdown::render(system.file("rmd/comparison.Rmd", package = "CWP.dataset"),
                   envir = child_env_global,
                   output_file = "COMP_GTA_FishStat", output_dir = getwd())
 
+species_intersect <- NCD_filtered %>% dplyr::filter(source_authority == "IOTC") %>% dplyr::select(species) %>% dplyr::distinct()%>% dplyr::pull(species)
 
+CAPTURED_filtered <- CAPTURED %>% dplyr::filter(species %in% species_intersect) %>% 
+  dplyr::filter(species != "SBF")
+sum(CAPTURED$measurement_value)
+sum(CAPTURED_filtered$measurement_value)
 
-test_major_tunas <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = CAPTURED_filtered %>% 
-                                                                        dplyr::filter(species %in% c("YFT", "SKJ", "ALB", "BET", "SWO")), 
-                                                          parameter_final = NCD_filtered%>% 
-                                                            dplyr::filter(species %in% c("YFT", "SKJ", "ALB", "BET", "SWO")),
+NCD_filtered <- NCD%>% dplyr::filter(species %in% species_intersect) %>% 
+  dplyr::filter(species != "SBF")
+sum(NCD$measurement_value)
+sum(NCD_filtered$measurement_value)
+
+test <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = CAPTURED_filtered, 
+                                                          parameter_final = NCD_filtered,
                                                           parameter_time_dimension = c("year"), 
+                                                          print_map = FALSE, 
+                                                          parameter_diff_value_or_percent = "Difference in value",
                                                           parameter_colnames_to_keep = c("species_name", 
                                                                                          "fishing_fleet_label", "measurement_unit", 
-                                                                                         "year", "measurement_value", "ocean_basin"),
+                                                                                         "year", "measurement_value", "Ocean", "source_authority"),
+                                                          parameter_titre_dataset_1 = "FishStatJ", 
+                                                          parameter_titre_dataset_2 = "GTA")
+test$combined_summary_histogram <- NULL
+test$other_dimension_analysis_list <- NULL
+
+child_env_global = new.env()
+
+list2env(test, envir = child_env_global)
+child_env_global$step_title_t_f <- FALSE
+child_env_global$child_header <- ""
+require(kableExtra)
+require(webshot)
+base::options(knitr.duplicate.label = "allow")
+rmarkdown::render(system.file("rmd/comparison.Rmd", package = "CWP.dataset"),
+                  envir = child_env_global,
+                  output_file = "COMP_GTA_FishStat_only_GTA_species", output_dir = getwd())
+
+CAPTURED_filtered$measurement_processing_level <- CAPTURED_filtered$STATUS
+CAPTURED_filtered$gear_label <- "Gear not known"
+
+onlyminortable <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = CAPTURED_filtered, 
+                                                                    parameter_final = NCD_filtered,
+                                                                    parameter_time_dimension = c("year"), 
+                                                                    print_map = FALSE, 
+                                                                    parameter_diff_value_or_percent = "Difference in value",
+                                                                    parameter_colnames_to_keep = c("species_name", 
+                                                                                                   "fishing_fleet_label", "measurement_unit", 
+                                                                                                   "measurement_processing_level", "gear_label", 
+                                                                                                   "year", "measurement_value", "Ocean", "source_authority"),
+                                                                    parameter_titre_dataset_1 = "FishStatJ", 
+                                                                    parameter_titre_dataset_2 = "GTA")$compare_strata_differences_list$number_init_column_final_column 
+
+onlyminortabletest <- onlyminortable %>%
+  dplyr::filter(
+    !(` ` %in% c(
+      "Number of source_authority",
+      "Number of gridtype",
+      "Number of measurement_unit"
+    ))
+  )
+
+test_major_tunas <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = CAPTURED_filtered %>% 
+                                                                        dplyr::filter(species %in% c("YFT", "SKJ", "ALB", "BET")), 
+                                                          parameter_final = NCD_filtered%>% 
+                                                            dplyr::filter(species %in% c("YFT", "SKJ", "ALB", "BET")),
+                                                          parameter_time_dimension = c("year"), 
+                                                          parameter_diff_value_or_percent = "Difference in value",
+                                                          parameter_colnames_to_keep = c("species_name", 
+                                                                                         "fishing_fleet_label", "measurement_unit", 
+                                                                                         "year", "measurement_value", "Ocean", "source_authority"),
                                                           print_map = FALSE, 
                                                           parameter_titre_dataset_1 = "FishStatJ", 
                                                           parameter_titre_dataset_2 = "GTA", topnumber = 10)
@@ -174,20 +254,22 @@ rmarkdown::render(system.file("rmd/comparison.Rmd", package = "CWP.dataset"),
                   output_format = "bookdown::pdf_document2",
                   output_file = "COMP_GTA_FishStat_major_tunas", output_dir = getwd())
 
-
+stop("Stop")
 for (species_name_ in c("Skipjack tuna"     ,  
                         "Yellowfin tuna"    ,   
                         "Albacore"            ,
-                        "Bigeye tuna"     ,      
-                        "Swordfish")) {
+                        "Bigeye tuna"  , 
+                        "Kawakawa", "Narrow-barred Spanish mackerel", 
+                        "Longtail tuna", "Bullet tuna")) {
 
   test_major_tunas <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = CAPTURED_filtered , 
                                                                         parameter_final = NCD_filtered,
                                                                         parameter_filtering = list(species_name = species_name_),
                                                                         parameter_time_dimension = c("year"), 
+                                                                        parameter_diff_value_or_percent = "Difference in value",
                                                                         parameter_colnames_to_keep = c("species_name", 
                                                                                                        "fishing_fleet_label", "measurement_unit", 
-                                                                                                       "year", "measurement_value", "ocean_basin"),
+                                                                                                       "year", "measurement_value", "Ocean", "source_authority"),
                                                                         print_map = FALSE, 
                                                                         parameter_titre_dataset_1 = "FishStatJ", 
                                                                         parameter_titre_dataset_2 = "GTA", topnumber = 10)
@@ -213,22 +295,22 @@ for (species_name_ in c("Skipjack tuna"     ,
 }
 
 
-for (ocean_basin_ in unique(NCD_filtered$ocean_basin)) {
+for (ocean_basin_ in unique(NCD_filtered$ocean_simple)) {
   
   # Pour supprimer aussi les points et les espaces
   for (species_name_ in c("Skipjack tuna"     ,  
                           "Yellowfin tuna"    ,   
                           "Albacore"            ,
-                          "Bigeye tuna"     ,      
-                          "Swordfish")) {
+                          "Bigeye tuna"     )) {
   test_major_tunas <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = CAPTURED_filtered , 
                                                                         parameter_final = NCD_filtered,
-                                                                        parameter_filtering = list(ocean_basin = ocean_basin_, 
+                                                                        parameter_filtering = list(ocean_simple = ocean_basin_, 
                                                                                                    species_name = species_name_),
                                                                         parameter_time_dimension = c("year"), 
+                                                                        parameter_diff_value_or_percent = "Difference in value",
                                                                         parameter_colnames_to_keep = c("species_name", 
                                                                                                        "fishing_fleet_label", "measurement_unit", 
-                                                                                                       "year", "measurement_value", "ocean_basin"),
+                                                                                                       "year", "measurement_value", "ocean_simple", "source_authority"),
                                                                         print_map = FALSE, 
                                                                         parameter_titre_dataset_1 = "FishStatJ", 
                                                                         parameter_titre_dataset_2 = "GTA", topnumber = 10, 
@@ -257,16 +339,17 @@ for (ocean_basin_ in unique(NCD_filtered$ocean_basin)) {
   
 }
 
- for (ocean_basin_ in unique(NCD_filtered$ocean_basin)) {
+for (ocean_basin_ in unique(NCD_filtered$ocean_simple)) {
   
-  test_major_tunas <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = parameter_init , 
-                                                                        parameter_final = parameter_final,
-                                                                        parameter_filtering = list(ocean_basin = ocean_basin_, 
-                                                                                                   species = c("YFT", "SKJ", "ALB", "BET", "SWO")),
+  test_major_tunas <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = CAPTURED_filtered , 
+                                                                        parameter_final = NCD_filtered,
+                                                                        parameter_filtering = list(ocean_simple = ocean_basin_, 
+                                                                                                   species = c("YFT", "SKJ", "ALB", "BET")),
                                                                         parameter_time_dimension = c("year"), 
+                                                                        parameter_diff_value_or_percent = "Difference in value",
                                                                         parameter_colnames_to_keep = c("species","species_name", 
                                                                                                        "fishing_fleet_label", "measurement_unit", 
-                                                                                                       "year", "measurement_value", "ocean_basin"),
+                                                                                                       "year", "measurement_value", "ocean_simple", "source_authority"),
                                                                         print_map = FALSE, 
                                                                         parameter_titre_dataset_1 = "FishStatJ", 
                                                                         parameter_titre_dataset_2 = "GTA", topnumber = 10)
@@ -278,6 +361,8 @@ for (ocean_basin_ in unique(NCD_filtered$ocean_basin)) {
                                "Number of measurement_unit", 
                                "Number of ocean_basin"
     )))
+  ocean_basin_cleaned_ <- str_remove_all(ocean_basin_, "[-_/\\. ]")
+  
   
   child_env_global = new.env()
   
@@ -290,6 +375,83 @@ for (ocean_basin_ in unique(NCD_filtered$ocean_basin)) {
                     output_file = paste0("COMP_GTA_FishStat", ocean_basin_), output_dir = getwd())
   
 }
+
+
+for (ocean_basin_ in unique(NCD_filtered$ocean_simple)) {
+  
+  test_major_tunas <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = CAPTURED_filtered , 
+                                                                        parameter_final = NCD_filtered,
+                                                                        parameter_filtering = list(ocean_simple = ocean_basin_), 
+                                                                        parameter_time_dimension = c("year"), 
+                                                                        parameter_diff_value_or_percent = "Difference in value",
+                                                                        parameter_colnames_to_keep = c("species_name", 
+                                                                                                       "fishing_fleet_label", "measurement_unit", 
+                                                                                                       "year", "measurement_value", "ocean_simple", "source_authority"),
+                                                                        print_map = FALSE, 
+                                                                        parameter_titre_dataset_1 = "FishStatJ", 
+                                                                        parameter_titre_dataset_2 = "GTA", topnumber = 10)
+  
+  test_major_tunas$combined_summary_histogram <- NULL
+  test_major_tunas$other_dimension_analysis_list <- NULL
+  test_major_tunas$compare_strata_differences_list$number_init_column_final_column <- test_major_tunas$compare_strata_differences_list$number_init_column_final_column %>% 
+    dplyr::filter(!(" " %in% c("Number of gridtype", 
+                               "Number of measurement_unit", 
+                               "Number of ocean_basin"
+    )))
+  ocean_basin_cleaned_ <- str_remove_all(ocean_basin_, "[-_/\\. ]")
+  
+  
+  child_env_global = new.env()
+  
+  list2env(test_major_tunas, envir = child_env_global)
+  child_env_global$step_title_t_f <- FALSE
+  child_env_global$child_header <- ""
+  rmarkdown::render(system.file("rmd/comparison.Rmd", package = "CWP.dataset"),
+                    envir = child_env_global,
+                    output_format = "bookdown::pdf_document2",
+                    output_file = paste0("COMP_GTA_FishStat_only_GTA_species", ocean_basin_), output_dir = getwd())
+  
+}
+
+
+# only_couple_species_ocean -----------------------------------------------
+
+couple_species_ocean <- NCD_filtered %>% dplyr::select(ocean_simple, species) %>% dplyr::distinct() %>% 
+  dplyr::inner_join(CAPTURED_filtered%>% dplyr::select(ocean_simple, species)%>% dplyr::distinct(), 
+                    by = c("ocean_simple", "species"))
+
+
+NCD_filtered_much <- NCD_filtered %>% dplyr::inner_join(couple_species_ocean)
+CAPTURED_filtered_much <- CAPTURED_filtered %>% dplyr::inner_join(couple_species_ocean)
+
+test <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = CAPTURED_filtered_much, 
+                                                          parameter_final = NCD_filtered_much,
+                                                          parameter_time_dimension = c("year"), 
+                                                          print_map = FALSE, 
+                                                          parameter_diff_value_or_percent = "Difference in value",
+                                                          parameter_colnames_to_keep = c("species_name", 
+                                                                                         "fishing_fleet_label", "measurement_unit", 
+                                                                                         "year", "measurement_value", "ocean_simple", "source_authority"),
+                                                          parameter_titre_dataset_1 = "FishStatJ", 
+                                                          parameter_titre_dataset_2 = "GTA")
+
+
+test$combined_summary_histogram <- NULL
+test$other_dimension_analysis_list <- NULL
+
+child_env_global = new.env()
+
+list2env(test, envir = child_env_global)
+child_env_global$step_title_t_f <- FALSE
+child_env_global$child_header <- ""
+require(kableExtra)
+require(webshot)
+base::options(knitr.duplicate.label = "allow")
+rmarkdown::render(system.file("rmd/comparison.Rmd", package = "CWP.dataset"),
+                  envir = child_env_global,
+                  output_file = "COMP_GTA_FishStat_only_matching_couple", output_dir = getwd())
+
+
 # Comparison_big ----------------------------------------------------------
 
 

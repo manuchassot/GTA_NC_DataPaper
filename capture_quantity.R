@@ -200,15 +200,16 @@ rmarkdown::render(system.file("rmd/comparison.Rmd", package = "CWP.dataset"),
 CAPTURED_filtered$measurement_processing_level <- CAPTURED_filtered$STATUS
 CAPTURED_filtered$gear_label <- "Gear not known"
 
-onlyminortable <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = CAPTURED_filtered, 
-                                                                    parameter_final = NCD_filtered,
+NCD$ocean_basin <- NCD$Ocean
+onlyminortable <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = CAPTURED, 
+                                                                    parameter_final = NCD,
                                                                     parameter_time_dimension = c("year"), 
                                                                     print_map = FALSE, 
                                                                     parameter_diff_value_or_percent = "Difference in value",
                                                                     parameter_colnames_to_keep = c("species_name", 
                                                                                                    "fishing_fleet_label", "measurement_unit", 
                                                                                                    "measurement_processing_level", "gear_label", 
-                                                                                                   "year", "measurement_value", "Ocean", "source_authority"),
+                                                                                                   "year", "measurement_value", "Ocean", "source_authority", "ocean_basin"),
                                                                     parameter_titre_dataset_1 = "FishStatJ", 
                                                                     parameter_titre_dataset_2 = "GTA")$compare_strata_differences_list$number_init_column_final_column 
 
@@ -216,6 +217,7 @@ onlyminortabletest <- onlyminortable %>%
   dplyr::filter(
     !(` ` %in% c(
       "Number of source_authority",
+      "Number of Ocean",
       "Number of gridtype",
       "Number of measurement_unit"
     ))

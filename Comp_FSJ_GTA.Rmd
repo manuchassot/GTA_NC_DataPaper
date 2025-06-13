@@ -4,6 +4,7 @@ output:
   bookdown::pdf_document2:
     latex_engine: pdflatex
     keep_tex: true
+    extra_dependencies: [placeins]
     pandoc_args:
       - "--variable=geometry:margin=0.2in"
 date: "2025-06-06"
@@ -30,6 +31,11 @@ knitr::opts_chunk$set(
 
 The GTA dataset is in CWP format, with 16 columns, 3 of which are redundant.  
 
+```{=latex}
+\FloatBarrier
+```
+
+
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 if(!exists("NC_RAW")){
   require(here)
@@ -44,19 +50,24 @@ knitr::kable(head(NC_RAW), booktabs = TRUE) %>%
   kableExtra::kable_styling(latex_options = "scale_down")
 ```
 
-
 The second dataset (FSJ) has 7 columns. The measurement, measurement_type and measurement_unit columns are explicit in the Global Tuna Atlas dataset, whereas they are implicit in the FSJ dataset (respectively: "catch", "NL" for nominal catch as there are no discards, "t" for tons (which is the only unit for the species of interest of the GTA)). In the following document every measurement_value i.e value of catches and/or discards is presented in tons.
+
+```{=latex}
+\FloatBarrier
+```
 
 ```{r tab.cap="First lines of the FSJ dataset", results='asis', echo=FALSE}
 knitr::kable(head(CAPTURE_RAW), booktabs = TRUE) %>%
   kableExtra::kable_styling(latex_options = "scale_down")
 ```
 
+```{=latex}
+\FloatBarrier
+```
+
 # Details of differences between columns
 
-Information on fishing gear and fishing method (fishing_mode) is available in GTA but not in FSJ.
-
-The FSJ dataset is much more exhaustive for species and flags. A greater number of species can be observed in FSJ, 3700 species, while GTA lists only 65. The fishing_fleet categories are also more numerous in FSJ, due to the higher level of detail, whereas in GTA some data are aggregated (for example, 'Réunion' is included in France).
+Information on fishing gear and fishing method (fishing_mode) is available in GTA but not in FSJ. The tRFMO is not displayed as well but as the Spatial Area is much precise in FSJ it can be retrieved (excepted one part in the Pacific Oean that is overlapped between two tRFMOs areas).
 
 ```{r}
 table_recap <- readr::read_csv(here::here("diff_FSJ_GTA_recap.csv"))
@@ -72,11 +83,18 @@ ft_recap <-
   flextable::autofit() %>% 
   flextable::set_table_properties(
     layout = "autofit", 
-    width  = 1         # 100% de la largeur
+    width  = 0.9         # 100% de la largeur
   ) %>%
-  flextable::fontsize(size = 8, part = "all") 
+  flextable::fontsize(size = 7, part = "all") 
 
 ft_recap
+```
+
+
+The FSJ dataset is much more exhaustive for species and flags. A greater number of species can be observed in FSJ, 347 species, while GTA lists only 65. The fishing_fleet categories are also more numerous in FSJ, due to the higher level of detail, whereas in GTA some data are aggregated (for example, 'Réunion' is included in France).
+
+```{r numberdim, tab.cap="Number of dimensions for each dataset, after mapping of fishing_fleet and species for FSJ"}
+qflextable(onlyminortabletest)
 ```
 
 
@@ -94,9 +112,10 @@ percent_non_GTA <- 100 - (sum( (CAPTURED %>% dplyr::filter(species %in% species_
 
 captured <- CAPTURED_filtered %>% dplyr::filter(species %in% species_intersect)
 ncd <- NCD_filtered %>% dplyr::filter(species %in% species_intersect)
+
 ```
 
-We note that catches of species not present in GTA, but present in FSJ, represent `r round(percent_non_GTA)` % of total catches, for over 3000 additional species.  
+We note that catches of species not present in GTA, but present in FSJ, represent `r round(percent_non_GTA)` % of total catches, for over 250 additional species.  
 
 ## Spatial data
 
@@ -118,7 +137,7 @@ Ocean basins surveyed in FSJ: `r phrase_oce`.
 
 ## Time data
 
-GTA captures begin in 1918, while FSJ captures begin in 1950.
+GTA catch data begin in 1918, while FSJ data start in 1950, providing 32 additional years of historical coverage in the GTA dataset. Table \@ref(tab:numberdim))
 
 ```{r eval=FALSE, include=FALSE}
 
@@ -727,7 +746,7 @@ gg4 <- ggplot() +
 ```
 
 
-```{r finalplot,    echo=FALSE,   warning=FALSE,   message=FALSE,  fig.width=16,   fig.height=16,   out.width='100%', fig.cap="Evolutions of values for the dimension year and differences by ocean for 4 major species between GTA (Blue) and FSJ (red)"}
+```{r finalplot,    echo=FALSE,   warning=FALSE,   message=FALSE,  fig.width=16,   fig.height=16,   out.width='100%', fig.cap="Evolutions of values for the dimension year and differences by ocean for 4 major species between FSJ (Dataset 1 - red) and GTA (Dataset 2 - Blue)"}
 # 1. Chargez cowplot (et non ggpubr pour get_legend avec return_all)
 library(cowplot)
 library(patchwork)

@@ -20,12 +20,26 @@ NC = merge(NC, MAPPING_FLEET_COUNTRY, by.x = "fishing_fleet", by.y = "fleet_code
 
 # Add year
 NC[, year := year(time_start)]
-
 # Create ocean basin from areas
-NC[geographic_identifier %in% c("AT", "AT-NE", "AT-NW", "AT-SE", "AT-SW", "ATS", "MD"), ocean_basin := "Atlantic Ocean"]
-NC[geographic_identifier %in% c("IOTC", "IOTC_EAST", "IOTC_WEST"), ocean_basin  := "Indian Ocean"]
-NC[geographic_identifier %in% c("WCPO", "WCPFC"), ocean_basin := "Western-Central Pacific Ocean"]
-NC[geographic_identifier == "EPO", ocean_basin := "Eastern Pacific Ocean"]
+
+NC[geographic_identifier %in% c("AT-NE"), Ocean  := "Eastern Atlantic Ocean"]
+NC[geographic_identifier %in% c("AT-NW"), Ocean  := "Western Atlantic Ocean"]
+NC[geographic_identifier %in% c("AT-SE"), Ocean := "Eastern Atlantic Ocean"]
+NC[geographic_identifier %in% c("AT-SW"), Ocean := "Western Atlantic Ocean"]
+
+NC[geographic_identifier %in% c("MD"), Ocean := "Mediterranean and Black Sea"]
+
+NC[geographic_identifier %in% c("IOTC_WEST"), Ocean  := "Western Indian Ocean"]
+NC[geographic_identifier %in% c("IOTC_EAST"), Ocean  := "Eastern Indian Ocean"]
+NC[geographic_identifier %in% c("IOTC"), Ocean  := "Indian Antarctic"]
+
+NC[geographic_identifier %in% c("WCPO"), Ocean := "Western Pacific Ocean"]
+
+NC[geographic_identifier %in% c("WCPFC") & source_authority %in% c("WCPFC"), Ocean := "Western Pacific Ocean"]
+NC[geographic_identifier %in% c("WCPFC") & source_authority %in% c("CCSBT"), Ocean := "Pacific Antarctic"]
+NC[geographic_identifier %in% c("AT"), Ocean := "Atlantic Antarctic"]
+
+NC[geographic_identifier == "EPO", Ocean := "Eastern Pacific Ocean"]
 
 print("tRFMO nominal catches read!")
 

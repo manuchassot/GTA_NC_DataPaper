@@ -1,0 +1,11 @@
+source,target
+SPECIES.ALPHA_3_CODE,species
+MEASURE,measurement_type
+PERIOD,year
+VALUE,measurement_value
+COUNTRY_CODE,COUNTRY_CODE
+COUNTRY,fishing_fleet_label
+SPECIES,species_name
+ISSCAAP_NAME,species_group_gta
+FISHING_GROUND,ocean_basin
+MEASUREMENT_NAME,measurement_unit

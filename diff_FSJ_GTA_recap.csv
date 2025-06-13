@@ -1,0 +1,14 @@
+Dimension,FSJ ,GTA ,Comments
+Authority,x,source_authority,RFMO authority
+Fishing Fleet,"COUNTRY.UN_CODE",fishing_fleet,"More precise for FSJ"
+Spatial Area,AREA.CODE,geographic_identifier,"More precise for FSJ"
+Species,SPECIES.ALPHA_3_CODE,species,""
+Gear Type,x,gear_type,"Type of gear (longline, purse seine, net, etc.)"
+Fishing Mode,x,fishing_mode,"Free school, associated school, etc."
+Temporal Coverage,"PERIOD (annual)","time_start; time_end; year; 
+month; quarter","Both annual"
+Measurement Specifications,"MEASURE for unit, the rest is implicit in metadata","measurement; 
+measurement_type; 
+measurement_unit","FSJ catch in tons without discards; GTA explicit type, unit and discards"
+Quantity Value,VALUE,measurement_value,"Catches (and discards) in tons"
+Processing Level,STATUS,measurement_processing_level,""

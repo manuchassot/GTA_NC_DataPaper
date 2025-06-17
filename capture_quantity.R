@@ -122,7 +122,7 @@ CAPTURED_filtered <- CAPTURED_filtered %>%
     Ocean %in% c("Western Atlantic Ocean", "Eastern Atlantic Ocean","Atlantic Antarctic") ~ "Atlantic Ocean",
     Ocean %in% c("Western Indian Ocean", "Eastern Indian Ocean","Indian Antarctic")   ~ "Indian Ocean",
     Ocean %in% c("Western Pacific Ocean", "Eastern Pacific Ocean","Pacific Antarctic") ~ "Pacific Ocean",
-    Ocean == "Mediterranean and Black Sea"                          ~ "Mediterranean and Black Sea",
+    Ocean == "Mediterranean and Black Sea"                          ~ "Atlantic Ocean",
     TRUE ~ NA_character_
   ))
 
@@ -131,7 +131,7 @@ NCD_filtered <- NCD_filtered %>%
     Ocean %in% c("Western Atlantic Ocean", "Eastern Atlantic Ocean","Atlantic Antarctic") ~ "Atlantic Ocean",
     Ocean %in% c("Western Indian Ocean", "Eastern Indian Ocean","Indian Antarctic")   ~ "Indian Ocean",
     Ocean %in% c("Western Pacific Ocean", "Eastern Pacific Ocean","Pacific Antarctic") ~ "Pacific Ocean",
-    Ocean == "Mediterranean and Black Sea"                          ~ "Mediterranean and Black Sea",
+    Ocean == "Mediterranean and Black Sea"                          ~ "Atlantic Ocean",
     TRUE ~ NA_character_
   ))
 
@@ -193,10 +193,6 @@ child_env_global$child_header <- ""
 require(kableExtra)
 require(webshot)
 base::options(knitr.duplicate.label = "allow")
-rmarkdown::render(system.file("rmd/comparison.Rmd", package = "CWP.dataset"),
-                  envir = child_env_global,
-                  output_file = "COMP_GTA_FishStat_only_GTA_species", output_dir = getwd())
-
 CAPTURED_filtered$measurement_processing_level <- CAPTURED_filtered$STATUS
 CAPTURED_filtered$gear_label <- "Gear not known"
 
@@ -222,6 +218,12 @@ onlyminortabletest <- onlyminortable %>%
       "Number of measurement_unit"
     ))
   )
+
+rmarkdown::render(system.file("rmd/comparison.Rmd", package = "CWP.dataset"),
+                  envir = child_env_global,
+                  output_file = "COMP_GTA_FishStat_only_GTA_species", output_dir = getwd())
+
+
 
 test_major_tunas <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = CAPTURED_filtered %>% 
                                                                         dplyr::filter(species %in% c("YFT", "SKJ", "ALB", "BET")), 

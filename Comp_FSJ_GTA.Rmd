@@ -1,18 +1,17 @@
 ---
-title: "Comp_GTA_FSJ"
+title: "Comparative analysis between GTA dataset and FishstatJ dataset"
 output:
   bookdown::pdf_document2:
     latex_engine: pdflatex
     keep_tex: true
     extra_dependencies: [placeins]
-    pandoc_args:
-      - "--variable=geometry:margin=0.2in"
-date: "2025-06-06"
+    toc: true
+    toc_depth: 1
 abstract: > 
   This article presents a detailed comparison of two sources of fish catch data: the FAO FishStatJ set (FSJ) and the FIRMS Global Tuna Atlas set (GTA). 
-  These two databases differ in structure, temporal coverage and level of detail. FSJ includes some 3,700 species, detailed information on fishing fleets, and more precise geographical data. GTA, on the other hand, focuses on a restricted set of 65 species (32 of which are considered major) and aggregates certain geographical or national entities that FSJ treats in greater detail. It does, however, include three additional items of information : gear, fishing method and information on discards. 
-  Among the 32 common species, the overall discrepancy in catches between FSJ and GTA is moderate, particularly for the major tuna ('Yellowfin', 'Bigeye', 'Skipjack', 'Albacore') but can be high for other heavily fished species ('Bullet tuna', 'Kawakawa', 'Narrow-barred Spanish mackerel', 'Longtail tuna','Swordfish'), due to the uncomplete coverage for each oceans for these species in GTA. Within oceans, GTA has lower catches in the  Pacific than FSJ, due to the absence of key species such as Kawakawa, Spanish mackerel and Longtail tuna from the WCPFC database. However even without those species responsible for the majority of the differences, the catches remain lower in Pacific for GTA. For the Indian Ocean, the Atlantic Ocean and the Mediterraneand and Black Sea, the catches for the 32 major species of GTA 
-  Detailed analyses, limited to the species and areas for which both sources provide data, show an overall difference of less than 2%. Limited to the species where both sources are provided in each areas, the differences are less than 1%. For every of this cases, the GTA datasets is higher for Indian Ocean, Atlantic Ocean and Mediterranean and Black Sea, but lower for Pacific.
+  These two databases differ in structure, temporal coverage and level of detail. FSJ includes some 347 species, detailed information on fishing fleets, and more precise geographical data. GTA, on the other hand, focuses on a restricted set of 65 species (32 of which are considered major) and aggregates certain geographical or national entities that FSJ treats in greater detail. It does, however, include three additional items of information : gear, fishing method and information on discards. 
+  Among the 32 common species, the overall discrepancy in catches between FSJ and GTA is moderate, particularly for the major tuna ('Yellowfin', 'Bigeye', 'Skipjack', 'Albacore') but can be high for other heavily fished species ('Bullet tuna', 'Kawakawa', 'Narrow-barred Spanish mackerel', 'Longtail tuna','Swordfish'), due to the uncomplete coverage for each oceans for these species in GTA. Within oceans, GTA has lower catches in the  Pacific than FSJ, due to the absence of key species such as Kawakawa, Spanish mackerel and Longtail tuna from the WCPFC database. However even without those species responsible for the majority of the differences, the catches remain lower in Pacific for GTA. For the Indian Ocean and the Atlantic Ocean the catches for the 32 major species of GTA are higher in the GTA than in FSJ.
+  Detailed analyses, limited to the species and areas for which both sources provide data, show an overall difference of less than 2%. Limited to the species where both sources are provided in each areas, the differences are less than 1%. For every of this cases, the GTA datasets is higher for Indian Ocean and Atlantic Ocean but lower for Pacific.
   In conclusion, while FSJ offers exhaustive coverage and a higher level of detail, GTA remains well suited to the study of major species and for studies related to gear_type or fishing_mode." 
 ---
 
@@ -29,12 +28,9 @@ knitr::opts_chunk$set(
 
 \clearpage
 
+# Exploratory analysis 
+
 The GTA dataset is in CWP format, with 16 columns, 3 of which are redundant.  
-
-```{=latex}
-\FloatBarrier
-```
-
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 if(!exists("NC_RAW")){
@@ -51,10 +47,6 @@ knitr::kable(head(NC_RAW), booktabs = TRUE) %>%
 ```
 
 The second dataset (FSJ) has 7 columns. The measurement, measurement_type and measurement_unit columns are explicit in the Global Tuna Atlas dataset, whereas they are implicit in the FSJ dataset (respectively: "catch", "NL" for nominal catch as there are no discards, "t" for tons (which is the only unit for the species of interest of the GTA)). In the following document every measurement_value i.e value of catches and/or discards is presented in tons.
-
-```{=latex}
-\FloatBarrier
-```
 
 ```{r tab.cap="First lines of the FSJ dataset", results='asis', echo=FALSE}
 knitr::kable(head(CAPTURE_RAW), booktabs = TRUE) %>%
@@ -279,45 +271,17 @@ always_both_or_none <- presence_df_complete %>%
 presence_df_complete <- presence_df_complete %>%
   dplyr::mutate(
     flag = case_when(
-      species_name %in% always_both_or_none ~ "Always Both or None",
+      species_name %in% always_both_or_none ~ "Common in both datasets",
       TRUE                           ~ "Other"
     )
   )
-
-# 4. Heatmap avec mise en lumiÃ¨re des espÃ¨ces "Always Both" et "Always None"
-# ggplot(presence_df_complete, aes(x = ocean_simple, y = species_name, fill = presence)) +
-#   geom_tile(color = "white") +
-#   # contour Ã©pais pour les espÃ¨ces flagged
-#   geom_tile(
-#     data = presence_df_complete %>% dplyr::filter(flag != "Other"),
-#     aes(x = ocean_simple, y = species_name),
-#     fill = NA, color = "black", size = 0.5
-#   ) +
-#   scale_fill_manual(
-#     values = c("Both"     = "#66C2A5",
-#                "GTA"      = "#8DA0CB",
-#                "FSJ" = "#FC8D62",
-#                "None"     = "#E5E5E5")
-#   ) +
-#   labs(
-#     x    = "Ocean",
-#     y    = "Species",
-#     fill = "Presence"
-#   ) +
-#   theme_minimal() +
-#   theme(
-#     axis.text.y       = element_text(size = 6),
-#     axis.text.x       = element_text(angle = 45, hjust = 1),
-#     panel.grid.major  = element_blank(),
-#     panel.grid.minor  = element_blank()
-#   )
 
 
 
 ```
 
 ```{r}
-species_both <- presence_df_complete %>% dplyr::select(species_name, flag) %>% dplyr::distinct() %>% dplyr::filter(flag == "Always Both or None") %>% dplyr::pull(species_name)
+species_both <- presence_df_complete %>% dplyr::select(species_name, flag) %>% dplyr::distinct() %>% dplyr::filter(flag == "Common in both datasets") %>% dplyr::pull(species_name)
 ```
 
 There are in fact only `r length(species_both)` species that occur in both in all oceans. We will analyze all the species/oceans pairs to get a general idea of the differences between each data set, we will later focus on the `r length(species_both)` species that are present in each dataset and ocean. 
@@ -372,38 +336,80 @@ presence_df <- base::expand.grid(
     )
   )
 
-# 3. TracÃ© de la heatmap avec comparaison des valeurs
-ggplot2::ggplot(presence_df, ggplot2::aes(x = ocean_simple, y = species_name, fill = presence)) +
+presence_df <- presence_df %>%
+  dplyr::left_join(
+    presence_df_complete %>% dplyr::select(ocean_simple, species_name, flag),
+    by = c("ocean_simple", "species_name")
+  )
+
+ggplot2::ggplot(
+  presence_df, 
+  ggplot2::aes(x = ocean_simple, y = species_name, fill = presence)
+) +
   ggplot2::geom_tile(color = "white") +
-  # contour Ã©pais pour les espÃ¨ces flagged
-  geom_tile(
-    data = presence_df_complete %>% dplyr::filter(flag != "Other"),
-    aes(x = ocean_simple, y = species_name),
-    fill = NA, color = "black", size = 0.5
-  ) +
+  
   ggplot2::scale_fill_manual(
     values = c(
-      "Both: GTA > FSJ" = "#66C2A5",
-      "Both: FSJ > GTA" = "#FC8D62",
-      "GTA only"        = "#66A61E",
-      "FSJ only"        = "#E7298A",
-      "None"            = "#E5E5E5"
+      "Both: GTA > FSJ" = "#1B9E77",
+      "GTA only"        = "#66C2A5",
+      "Both: FSJ > GTA" = "#D95F02",
+      "FSJ only"        = "#FC8D62",
+      "None"            = "#BDBDBD"
     )
   ) +
+  
   ggplot2::labs(
     x    = "Ocean",
     y    = "Species",
-    fill = "Presence & Dominance"
+    fill = "Presence & dominance"
   ) +
+  
   ggplot2::theme_minimal() +
   ggplot2::theme(
     axis.text.y      = ggplot2::element_text(size = 6),
     axis.text.x      = ggplot2::element_text(angle = 45, hjust = 1),
     panel.grid.major = ggplot2::element_blank(),
     panel.grid.minor = ggplot2::element_blank()
-  )
+  ) +
+  
+  ggplot2::facet_wrap(~ flag, scales = "free_y", ncol = 1)
+
+# 3. TracÃ© de la heatmap avec comparaison des valeurs
+# ggplot2::ggplot(presence_df, ggplot2::aes(x = ocean_simple, y = species_name, fill = presence)) +
+#   ggplot2::geom_tile(color = "white") +
+#   # contour Ã©pais pour les espÃ¨ces flagged
+#   geom_tile(
+#     data = presence_df_complete %>% dplyr::filter(flag != "Other"),
+#     aes(x = ocean_simple, y = species_name),
+#     fill = NA, color = "black", size = 0.5
+#   ) +
+# ggplot2::scale_fill_manual(
+#   values = c(
+#     "Both: GTA > FSJ" = "#1B9E77",  # vert bleuté foncé
+#     "GTA only"        = "#66C2A5",  # vert bleuté clair (même teinte)
+#     
+#     "Both: FSJ > GTA" = "#D95F02",  # orange foncé (ou rouge brun)
+#     "FSJ only"        = "#FC8D62",  # orange clair (même teinte)
+#     
+#     "None"            = "#BDBDBD"   # gris neutre
+#   )
+# )+
+#   ggplot2::labs(
+#     x    = "Ocean",
+#     y    = "Species",
+#     fill = "Presence & Dominance"
+#   ) +
+#   ggplot2::theme_minimal() +
+#   ggplot2::theme(
+#     axis.text.y      = ggplot2::element_text(size = 6),
+#     axis.text.x      = ggplot2::element_text(angle = 45, hjust = 1),
+#     panel.grid.major = ggplot2::element_blank(),
+#     panel.grid.minor = ggplot2::element_blank()
+#   )
 
 ```
+
+
 
 We can see that for species/ocean pairs where there is data for both sets, it's GTA > FSJ in Indian Ocean, but Pacific for all species FSJ > GTA, and the rest roughly equivalent (Figure: \@ref(fig:presenceabsence)).
 
@@ -505,8 +511,6 @@ CWP.dataset::qflextable2(table %>% dplyr::ungroup()%>% dplyr::select(-measuremen
 
 
 We observe the same differences as before for Skipjack, Swordfish, and Pacific Bluefin tunaâ€”which is expected, as these species occur in all oceans and are therefore not affected by the new filtering criteria. However, even after excluding Pacific data for Kawakawa and sharks, the FSJ dataset still reports higher values. This suggests that records for these species may be inaccurate for GTA.
-
-\clearpage
 
 <!-- ## Analysis for the all comparable species i.e. 8 species present in both datasets in every ocean -->
 
@@ -615,7 +619,9 @@ We observe the same differences as before for Skipjack, Swordfish, and Pacific B
 
 # Global analysis for major tunas
 
-As major tunas are also present in all oceans for both datasets and are the main topic of the Global Tuna Atlas, it seems appropriate to focus on these species for specifics analysis.
+## Albacore, Bigeye, Skypjack, Yellowgin
+
+As major tunas are also present in all oceans for both datasets and are the main topic of the Global Tuna Atlas, we focus here on these species for specifics analysis.
 
 ```{r}
   skipjack <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = CAPTURED_filtered , 
@@ -698,8 +704,6 @@ g4 <- (Yellowfin$time_coverage_analysis_list$plots[[1]])
 #   label_size = 12
 # )
 ```
-
-\clearpage
 
 ```{r tabtunadifferencesfirst, fig.cap="Summary of catches in tons for major tunas from FSJ and GTA datasets."}
 library(gridExtra)
@@ -818,7 +822,7 @@ print(final_plot)
 
 We note that the trends are identical for GTA dataset and FSJ dataset, except for yellowfin tuna, where a peak in the 1990s is observed in FSJ and not in GTA (Figure: \@ref(fig:tabtunadifferences)).  The yellowfin tuna with the smallest total difference between the two sets of data is also the one with the biggest difference per year, but these data are smoothed out in total. This serves as a reminder that a similarity in total catches does not presume any similarity in the distribution of catches within the different strata.
 
-# Southern Bluefin Tuna
+## Southern Bluefin Tuna
 
 ```{r}
   sbf <- CWP.dataset::comprehensive_cwp_dataframe_analysis(parameter_init = CAPTURED , 
@@ -903,4 +907,35 @@ CWP.dataset::qflextable2(table%>% dplyr::ungroup()%>% dplyr::select(-measurement
 
 ```
 
+
+```{r fig.cap="Presence and absence of the 32 main GTA species in each Ocean basin (black boxes represent the species commun in all ocean basin for both datasets)"}
+ggplot(presence_df_complete, aes(x = ocean_simple, y = species_name, fill = presence)) +
+  geom_tile(color = "white") +
+  # contour Ã©pais pour les espÃ¨ces flagged
+  geom_tile(
+    data = presence_df_complete %>% dplyr::filter(flag != "Other"),
+    aes(x = ocean_simple, y = species_name),
+    fill = NA, color = "black", size = 0.5
+  ) +
+  scale_fill_manual(
+values = c(
+  "Both" = "#1B9E77",   # vert plus profond
+  "GTA"  = "#377EB8",   # bleu foncé
+  "FSJ"  = "#FFD700",   # orange vif
+  "None" = "#999999"    # gris moyen, moins clair
+)
+  ) +
+  labs(
+    x    = "Ocean",
+    y    = "Species",
+    fill = "Presence"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.y       = element_text(size = 6),
+    axis.text.x       = element_text(angle = 45, hjust = 1),
+    panel.grid.major  = element_blank(),
+    panel.grid.minor  = element_blank()
+  )
+```
 
